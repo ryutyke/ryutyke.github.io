@@ -1,8 +1,12 @@
 ---
-title: "Hi all! I'm OOOOOO👋🏻"
+title: "Hi all! I'm RyuZZi👋🏻"
 permalink: /about/
 layout: single
 comments: false
 ---
 
-본인 소개 여기에 입력
+Seoul, Korea
+https://github.com/ryutyke
+play2ski@gmail.com
+https://www.instagram.com/tyrshke/
+https://www.youtube.com/channel/UCNdE82f7zuZo9TgaXQ3QZ3w

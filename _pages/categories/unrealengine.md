@@ -1,9 +1,9 @@
 ---
-title: "66666"
+title: "33333"
 layout: category
-permalink: /categories/categories6/
+permalink: /categories/categories3/
 author_profile: true
-taxonomy: Categories6
+taxonomy: Categories3
 sidebar:
   nav: "categories"
 ---

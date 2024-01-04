@@ -1,13 +1,13 @@
 # main links
 main:
   - title: "Home"
-    url: https://choiiis.github.io/
+    url: https://ryutyke.1github.io/
 
   - title: "About"
     url: /about/
 
   - title: "GitHub"
-    url: https://github.com/choiiis
+    url: https://github.com/ryutyke
 
   # - title: "Projects"
   #   url: /projects/
@@ -17,26 +17,40 @@ main:
 
 # sidebar navigation (categories)
 # 2022.09.24 sidebar ver2.0 : main-sub version
+
+
 categories:
-  - title: "Title1"
-    children:
-      - title: "Categories1"
-        url: /categories/categories1/
-      - title: "Categories2"
-        url: /categories/categories2/
-      - title: "Categories3"
-        url: /categories/categories3/
-      - title: "Categories4"
-        url: /categories/categories4/
+  - title: "C/C++"
+    url: /categories/c-cpp/
+  - title: "Algorithm"
+    url: /categories/algorithm/
+  - title: "UnrealEngine"
+    url: /categories/unrealengine/
+  - title: "Unity"
+    url: /categories/unity/
+  - title: "Portfolio"
+    url: /categories/portfolio/
 
-  - title: "Title2"
-    children:
-      - title: "Categories5"
-        url: /categories/categories5/
-      - title: "Categories6"
-        url: /categories/categories6/
+# categories:
+#   - title: "Study"
+#     children:
+#       - title: "UnrealEngine"
+#         url: /categories/categories1/
+#       - title: "Unity"
+#         url: /categories/categories2/
+#       - title: "Categories3"
+#         url: /categories/categories3/
+#       - title: "Categories4"
+#         url: /categories/categories4/
 
-  - title: "Title3"
-    children:
-      - title: "Categories7"
-        url: /categories/categories7/
+#   - title: "Portfolio"
+#     children:
+#       - title: "UnrealEngine"
+#         url: /categories/categories5/
+#       - title: "Unity"
+#         url: /categories/categories6/
+
+#   - title: "Title3"
+#     children:
+#       - title: "Categories7"
+#         url: /categories/categories7/
