@@ -1,13 +1,13 @@
 ---
-title: "[C++] 테스트"
-excerpt: "테스트입니다."
+title: "[About] Ryuzzi's Devlog"
+excerpt: "류찌의 블로그에 대한 설명입니다."
 
 categories:
-  - C/C++
+  - etc.
 tags:
-  - [C++, STL]
+  - [etc, Devlog]
 
-permalink: /cpp/testpost/
+permalink: /etc/start/
 
 toc: true
 toc_sticky: true
