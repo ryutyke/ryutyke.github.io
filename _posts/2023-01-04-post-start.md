@@ -3,7 +3,7 @@ title: "[About] Ryuzzi's Devlog"
 excerpt: "류찌의 블로그에 대한 설명입니다."
 
 categories:
-  - etc.
+  - etc
 tags:
   - [etc, Devlog]
 
