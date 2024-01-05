@@ -15,8 +15,7 @@ toc_sticky: true
 date: 2024-01-04
 last_modified_at: 2024-01-05
 ---
-
-
+<br>
 
 ```cpp
 #include <iostream>
@@ -33,6 +32,7 @@ int main()
 >이 게시글을 시작으로,<br>
 >내 블로그는 시작됐다아.
 <br>
+
 공부한 내용, Portfolio, 그 외 잡담 등으로 구성된다.
 <br>
 ## 🐈 공부한 내용 : 수업에서 배운 내용들이나 따로 공부한 내용
