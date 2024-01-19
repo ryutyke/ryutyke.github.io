@@ -17,6 +17,10 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
+<div>
+    <img src="/assets/images/thumbnail/rabbittothemoon.png" alt="thumbnail" width="70%" min-width="700px" itemprop="image">
+</div>
+
 게임 영상 : [https://www.youtube.com/watch?v=-OYL7jdTiYY](https://www.youtube.com/watch?v=-OYL7jdTiYY)
 
 ## 주인공 설정 및 줄거리
