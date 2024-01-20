@@ -25,7 +25,7 @@ last_modified_at: 2024-01-20
 
 <br>
 
-[(이전 포스팅) Real-time Voronoi Fracturing](https://ryutyke.github.io/Portfolio/Real-time_Voronoi_Fracturing/)
+[(관련 포스팅) Real-time Voronoi Fracturing](https://ryutyke.github.io/Portfolio/Real-time_Voronoi_Fracturing/)
 
 총알 충돌 지점 근처 점들을 사용한 Real-time Voronoi Fracturing 기술을 사용하여 만든 게임 Space Station입니다.
 
