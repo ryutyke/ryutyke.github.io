@@ -50,7 +50,7 @@ Free sound라는 홈페이지에서 퍼플릭도메인인 음원을 다운하고
 ## 스토리 화면
 
 <div>
-    <img src="/assets/images/spacegame/1.png" alt="Intro Screen1" width="70%" min-width="700px" itemprop="image">
+    <img src="/assets/images/spacegame/1.png" alt="Intro Screen1" width="100%" min-width="700px" itemprop="image">
 </div>
 
 <div>

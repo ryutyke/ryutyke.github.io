@@ -18,7 +18,7 @@ last_modified_at: 2024-01-20
 <br>
 
 <div>
-    <img src="/assets/images/thumbnail/leapzombie.png" alt="thumbn    ail" width="100%" min-width="700px" itemprop="image">
+    <img src="/assets/images/thumbnail/leapzombie.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 
 게임 영상 : [https://www.youtube.com/watch?v=QjRFuAHs78c](https://www.youtube.com/watch?v=QjRFuAHs78c)
