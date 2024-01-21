@@ -21,8 +21,8 @@ last_modified_at: 2024-01-20
     <img src="/assets/images/thumbnail/voronoi.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 
-구현 영상 : [https://www.youtube.com/watch?v=DU3mkiz4B9g](https://www.youtube.com/watch?v=DU3mkiz4B9g)
-github 링크 : [https://github.com/ryutyke/SpaceStation](https://github.com/ryutyke/SpaceStation)
+- 구현 영상 : [https://www.youtube.com/watch?v=DU3mkiz4B9g](https://www.youtube.com/watch?v=DU3mkiz4B9g)
+- github 링크 : [https://github.com/ryutyke/SpaceStation](https://github.com/ryutyke/SpaceStation)
 
 ## 주제
 Real-time Voronoi Fracturing

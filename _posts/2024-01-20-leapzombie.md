@@ -21,8 +21,8 @@ last_modified_at: 2024-01-20
     <img src="/assets/images/thumbnail/leapzombie.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 
-게임 영상 : [https://www.youtube.com/watch?v=QjRFuAHs78c](https://www.youtube.com/watch?v=QjRFuAHs78c)
-github 링크 : [https://github.com/ryutyke/LeapZombie](https://github.com/ryutyke/LeapZombie)
+- 게임 영상 : [https://www.youtube.com/watch?v=QjRFuAHs78c](https://www.youtube.com/watch?v=QjRFuAHs78c)
+- github 링크 : [https://github.com/ryutyke/LeapZombie](https://github.com/ryutyke/LeapZombie)
 
 ## 1. 프로젝트 소개
 - Leap motion을 사용한 핸드 트래킹 게임 (Hand Tracking Game)
