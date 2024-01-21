@@ -17,6 +17,10 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
+<div>
+    <img src="/assets/images/thumbnail/learningtogetup.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
+</div>
+
 - 구현 영상 : [https://www.youtube.com/watch?v=sk4Bt2QC1OI](https://www.youtube.com/watch?v=sk4Bt2QC1OI)
 - github 링크 : [https://github.com/ryutyke/Learning-To-Get-Up](https://github.com/ryutyke/Learning-To-Get-Up)
 
