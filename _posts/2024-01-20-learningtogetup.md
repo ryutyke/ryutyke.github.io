@@ -17,7 +17,8 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
-구현 영상 : [https://www.youtube.com/watch?v=sk4Bt2QC1OI&t=1s](https://www.youtube.com/watch?v=sk4Bt2QC1OI&t=1s)
+구현 영상 : [https://www.youtube.com/watch?v=sk4Bt2QC1OI](https://www.youtube.com/watch?v=sk4Bt2QC1OI)
+github 링크 : [https://github.com/ryutyke/Learning-To-Get-Up](https://github.com/ryutyke/Learning-To-Get-Up)
 
 ## 주제
 SAC 강화학습 알고리즘, Strong to Weak 방법으로 기립 애니메이션 생성

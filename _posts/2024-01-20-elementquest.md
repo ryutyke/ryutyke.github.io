@@ -22,6 +22,7 @@ last_modified_at: 2024-01-20
 </div>
 
 게임 영상 : 학교에서 대여한 VR 기기를 반납했는데 방학이라 다시 대여가 안된다고 한다... 아직 영상 못 찍었는데 흑흑
+github 링크 : [https://github.com/ryutyke/ElementQuest](https://github.com/ryutyke/ElementQuest)
 
 <br>
 

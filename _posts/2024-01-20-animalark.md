@@ -22,6 +22,7 @@ last_modified_at: 2024-01-20
 </div>
 
 게임 영상 : [https://www.youtube.com/watch?v=GkHoIK5gWyE](https://www.youtube.com/watch?v=GkHoIK5gWyE)
+github 링크 : [https://github.com/ryutyke/Animal_Ark](https://github.com/ryutyke/Animal_Ark)
 
 ## 게임 설명
 싱글 플레이

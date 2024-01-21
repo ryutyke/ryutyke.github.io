@@ -22,6 +22,7 @@ last_modified_at: 2024-01-20
 </div>
 
 게임 영상 : [https://www.youtube.com/watch?v=-OYL7jdTiYY](https://www.youtube.com/watch?v=-OYL7jdTiYY)
+github 링크 : [https://github.com/ryutyke/Rabbit_To_The_Moon](https://github.com/ryutyke/Rabbit_To_The_Moon)
 
 ## 주인공 설정 및 줄거리
 1. 인간과 토끼 사이에서 태어난 인간 토끼이다. 

@@ -21,7 +21,8 @@ last_modified_at: 2024-01-20
     <img src="/assets/images/thumbnail/spacestation.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 
-게임 영상 : [https://www.youtube.com/watch?v=vEbmR1M-XIA&t=4s](https://www.youtube.com/watch?v=vEbmR1M-XIA&t=4s)
+게임 영상 : [https://www.youtube.com/watch?v=vEbmR1M-XI](https://www.youtube.com/watch?v=vEbmR1M-XIA)
+github 링크 : [https://github.com/ryutyke/SpaceStation](https://github.com/ryutyke/SpaceStation)
 
 <br>
 

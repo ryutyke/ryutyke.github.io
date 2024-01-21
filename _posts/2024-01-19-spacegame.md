@@ -18,6 +18,7 @@ last_modified_at: 2024-01-20
 <br>
 
 게임 영상 : [https://www.youtube.com/watch?v=Al0VxvH8jYo](https://www.youtube.com/watch?v=Al0VxvH8jYo)
+github 링크 : [https://github.com/ryutyke/Space_Game](https://github.com/ryutyke/Space_Game)
 
 ### 1. 스토리
 

@@ -22,6 +22,7 @@ last_modified_at: 2024-01-20
 </div>
 
 게임 영상 : [https://www.youtube.com/watch?v=soscmdZPXn4](https://www.youtube.com/watch?v=soscmdZPXn4)
+github 링크 : [https://github.com/ryutyke/Handwriting-practice](https://github.com/ryutyke/Handwriting-practice)
 
 <br>
 
