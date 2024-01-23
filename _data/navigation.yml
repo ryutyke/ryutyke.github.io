@@ -33,12 +33,12 @@ categories:
   - title: "Portfolio"
     url: /categories/portfolio/
     children:
-       - title: "UnrealEngine"
-         url: /categories/portfolio_unrealengine
-       - title: "Unity"
-         url: /categories/portfolio_unity
+       - title: "unreal engine"
+         url: /categories/portfolio_unrealengine/
+       - title: "unity"
+         url: /categories/portfolio_unity/
        - title: "etc"
-         url: /categories/portfolio_etc
+         url: /categories/portfolio_etc/
 
 # categories:
 #   - title: "Study"
