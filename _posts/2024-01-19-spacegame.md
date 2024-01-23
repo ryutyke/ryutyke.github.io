@@ -17,7 +17,7 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
-{ % include embed/youtube.html id='Al0VxvH8jYo'  % }
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Al0VxvH8jYo?si=x5PAh4B8w_G3UccX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 - 게임 영상 : [https://www.youtube.com/watch?v=Al0VxvH8jYo](https://www.youtube.com/watch?v=Al0VxvH8jYo)
 - github 링크 : [https://github.com/ryutyke/Space_Game](https://github.com/ryutyke/Space_Game)

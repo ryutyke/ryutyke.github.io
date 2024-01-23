@@ -17,9 +17,13 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
+<!--
 <div>
     <img src="/assets/images/thumbnail/rabbittothemoon.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
+-->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-OYL7jdTiYY?si=ry2TDQpnJdzShhnd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 - 게임 영상 : [https://www.youtube.com/watch?v=-OYL7jdTiYY](https://www.youtube.com/watch?v=-OYL7jdTiYY)
 - github 링크 : [https://github.com/ryutyke/Rabbit_To_The_Moon](https://github.com/ryutyke/Rabbit_To_The_Moon)

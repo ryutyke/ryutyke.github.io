@@ -17,9 +17,13 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
+<!--
 <div>
     <img src="/assets/images/thumbnail/learningtogetup.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
+-->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sk4Bt2QC1OI?si=vwUsF2lLW5yUpbP9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 - 구현 영상 : [https://www.youtube.com/watch?v=sk4Bt2QC1OI](https://www.youtube.com/watch?v=sk4Bt2QC1OI)
 - github 링크 : [https://github.com/ryutyke/Learning-To-Get-Up](https://github.com/ryutyke/Learning-To-Get-Up)
