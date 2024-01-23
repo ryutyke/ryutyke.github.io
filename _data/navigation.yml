@@ -36,14 +36,15 @@ categories:
     url: /categories/etc/
  
   - title: "Portfolio"
+    url: /categories/portfolio/  
     children:
-      - title: "esffx"
+      - title: "ue"
         url: /categories/portfolio/unrealengine/
-      - title: "afsefs"
+      - title: "uni"
         url: /categories/portfolio/unity/
       - title: "etc"
         url: /categories/portfolio/etc/
-    #url: /categories/portfolio/
+    
 # categories:
 #   - title: "Study"
 #     children:
