@@ -22,20 +22,24 @@ main:
 categories:
   - title: "C/C++"
     url: /categories/c-cpp/
+
   - title: "Algorithm"
     url: /categories/algorithm/
+
   - title: "UnrealEngine"
     url: /categories/unrealengine/
+
   - title: "Unity"
     url: /categories/unity/
+
   - title: "etc."
     url: /categories/etc/
  
   - title: "Portfolio"
     children:
-      - title: "ddddd"
+      - title: "esffx"
         url: /categories/portfolio/unrealengine/
-      - title: "ddd"
+      - title: "afsefs"
         url: /categories/portfolio/unity/
       - title: "etc"
         url: /categories/portfolio/etc/
