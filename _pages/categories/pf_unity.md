@@ -1,7 +1,7 @@
 ---
 title: "Portfolio_Unity"
 layout: category
-permalink: /categories/pf/pf_unity/
+permalink: /categories/pf_unity/
 author_profile: true
 taxonomy: pfunity
 sidebar:
