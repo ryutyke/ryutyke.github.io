@@ -32,7 +32,6 @@ categories:
     url: /categories/etc/
  
   - title: "Portfolio"
-#    url: /categories/portfolio/
     children:
        - title: "ddddd"
          url: /categories/portfolio/unrealengine/
@@ -40,7 +39,7 @@ categories:
          url: /categories/portfolio/unity/
        - title: "etc"
          url: /categories/portfolio/etc/
-
+         #    url: /categories/portfolio/
 # categories:
 #   - title: "Study"
 #     children:
