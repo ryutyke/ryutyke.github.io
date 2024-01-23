@@ -17,9 +17,11 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
+<!--
 <div>
     <img src="/assets/images/thumbnail/animalark.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
+-->
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GkHoIK5gWyE?si=qGdIoDoJt4-CrECx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
