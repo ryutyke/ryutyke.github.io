@@ -34,11 +34,11 @@ categories:
     url: /categories/portfolio/
     children:
       - title: "unreal engine"
-        url: /categories/pf/pf_unrealengine/
+        url: /categories/pf_unrealengine/
       - title: "unity"
-        url: /categories/pf/pf_unity/
+        url: /categories/pf_unity/
       - title: "etc"
-        url: /categories/pf/pf_etc/
+        url: /categories/pf_etc/
 
 # categories:
 #   - title: "Study"
