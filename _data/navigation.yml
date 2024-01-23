@@ -19,44 +19,40 @@ main:
 # 2022.09.24 sidebar ver2.0 : main-sub version
 
 
-# categories:
-#   - title: "C/C++"
-#     url: /categories/c-cpp/
-#   - title: "Algorithm"
-#     url: /categories/algorithm/
-#   - title: "UnrealEngine"
-#     url: /categories/unrealengine/
-#   - title: "Unity"
-#     url: /categories/unity/
-#   - title: "etc."
-#     url: /categories/etc/
-#   - title: "Portfolio"
-#     url: /categories/portfolio/
-
 categories:
-  - title: "Study"
-    children:
-      - title: "C/C++"
-        url: /categories/c-cpp/
-      - title: "Algorithm"
-        url: /categories/algorithm/
-      - title: "UnrealEngine"
-        url: /categories/unrealengine/
-      - title: "Unity"
-        url: /categories/unity/
-      - title: "etc."
-        url: /categories/etc/
-      - title: "Portfolio"
-        url: /categories/portfolio/
-
+  - title: "C/C++"
+    url: /categories/c-cpp/
+  - title: "Algorithm"
+    url: /categories/algorithm/
+  - title: "UnrealEngine"
+    url: /categories/unrealengine/
+  - title: "Unity"
+    url: /categories/unity/
+  - title: "etc."
+    url: /categories/etc/
   - title: "Portfolio"
-    children:
-      - title: "UnrealEngine"
-        url: /categories/categories5/
-      - title: "Unity"
-        url: /categories/categories6/
+    url: /categories/portfolio/
 
-  - title: "Title3"
-    children:
-      - title: "Categories7"
-        url: /categories/categories7/
+# categories:
+#   - title: "Study"
+#     children:
+#       - title: "UnrealEngine"
+#         url: /categories/categories1/
+#       - title: "Unity"
+#         url: /categories/categories2/
+#       - title: "Categories3"
+#         url: /categories/categories3/
+#       - title: "Categories4"
+#         url: /categories/categories4/
+
+#   - title: "Portfolio"
+#     children:
+#       - title: "UnrealEngine"
+#         url: /categories/categories5/
+#       - title: "Unity"
+#         url: /categories/categories6/
+
+#   - title: "Title3"
+#     children:
+#       - title: "Categories7"
+#         url: /categories/categories7/
