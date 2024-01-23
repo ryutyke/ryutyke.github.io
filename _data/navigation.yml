@@ -21,7 +21,6 @@ main:
 
 categories:
   - title: "Portfolio"
-    url: /categories/portfolio/  
     children:
       - title: "Portfolio_UnrealEngine"
         url: /categories/portfolio/unrealengine/
