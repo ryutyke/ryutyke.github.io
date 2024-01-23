@@ -36,14 +36,18 @@ main:
 categories:
   - title: "Study"
     children:
+      - title: "C/C++"
+        url: /categories/c-cpp/
+      - title: "Algorithm"
+        url: /categories/algorithm/
       - title: "UnrealEngine"
-        url: /categories/categories1/
+        url: /categories/unrealengine/
       - title: "Unity"
-        url: /categories/categories2/
-      - title: "Categories3"
-        url: /categories/categories3/
-      - title: "Categories4"
-        url: /categories/categories4/
+        url: /categories/unity/
+      - title: "etc."
+        url: /categories/etc/
+      - title: "Portfolio"
+        url: /categories/portfolio/
 
   - title: "Portfolio"
     children:
