@@ -4,6 +4,7 @@ excerpt: "2023년에 Unity로 만든 Leapmotion 핸드 트래킹 게임입니다
 
 categories:
   - Portfolio
+  - pfunity
 tags:
   - [Portfolio, Game, Unity, Leapmotion, Handtracking]
 

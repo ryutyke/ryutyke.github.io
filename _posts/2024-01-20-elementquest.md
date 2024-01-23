@@ -4,6 +4,7 @@ excerpt: "2023년에 Unity로 만든 Oculus Quest 핸드 트래킹 게임입니�
 
 categories:
   - Portfolio
+  - pfunity
 tags:
   - [Portfolio, Game, Unity, Oculus, Handtracking]
 

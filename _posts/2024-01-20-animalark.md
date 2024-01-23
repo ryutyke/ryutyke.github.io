@@ -4,7 +4,7 @@ excerpt: "2020년에 Unreal Engine으로 만든 게임입니다."
 
 categories:
   - Portfolio
-  - pfunreal
+  - pfunrealengine
 tags:
   - [Portfolio, Game, UnrealEngine]
 
