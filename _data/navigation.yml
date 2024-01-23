@@ -28,10 +28,17 @@ categories:
     url: /categories/unrealengine/
   - title: "Unity"
     url: /categories/unity/
-  - title: "Portfolio"
-    url: /categories/portfolio/
   - title: "etc."
     url: /categories/etc/
+  - title: "Portfolio"
+    url: /categories/portfolio/
+    children:
+       - title: "UnrealEngine"
+         url: /categories/portfolio_unrealengine
+       - title: "Unity"
+         url: /categories/portfolio_unity
+       - title: "etc"
+         url: /categories/portfolio_etc
 
 # categories:
 #   - title: "Study"
