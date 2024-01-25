@@ -56,6 +56,10 @@ UnrealEngine을 사용하면서 오오~ 했던 내용들이나 개발 일지를 
 
 Unity를 사용하면서 오오~ 했던 내용들이나 개발 일지를 적을 것이다.
 
+### 5. etc. : 그 외 잡담
+
+해당 글과 같이 위 카테고리들에 적합하지 않는 내용들을 etc로 분류할 것이다.
+
 <br>
 
 ## 🐈 Portfolio : 내가 한 프로젝트 정리
@@ -71,12 +75,6 @@ Unity를 사용하면서 오오~ 했던 내용들이나 개발 일지를 적을 
 
 논문 참고해서 구현한 기술들을 소개합니다.<br>
 **예) [Real-time Voronoi Fracturing](https://youtu.be/DU3mkiz4B9g?si=b4jfCm_XX3ullIMi), [Learning to Get Up](https://youtu.be/sk4Bt2QC1OI?si=QYK9blqZLkJ6O88k)**
-
-<br>
-
-## 🐈 etc. : 그 외 잡담
-
-해당 글과 같이 위 카테고리들에 적합하지 않는 내용들을 etc로 분류할 것이다.
 
 <br>
 
