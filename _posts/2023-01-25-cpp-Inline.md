@@ -41,16 +41,16 @@ last_modified_at: 2024-01-25
 
 - 작은 규모의 함수나 빈번하게 호출되는 함수에 사용하기 좋다. (ex. 접근자 함수, 간단한 계산 함수)
 
-'''cpp
+```cpp
 inline int max(int a, int b)
 {
     return a < b ? b : a;
 }
-'''
+```
 
 - 클래스 정의 내에 함수 정의를 배치하면 암시적으로 인라인 함수로 간주된다.
 
-'''cpp
+```cpp
 #include <iostream>
 
 class MyClass
@@ -61,7 +61,7 @@ public:
 private:
     int i;
 };
-'''
+```
 
 - 템플릿(Template) 함수에 사용 가능하다.
 
