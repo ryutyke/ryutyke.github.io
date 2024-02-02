@@ -20,7 +20,7 @@ last_modified_at: 2024-02-02
 ## Memory Structure
 
 <div>
-    <img src="/assets/images/posts_img/memory_structure.png" alt="memory_structure" width="100%" min-width="700px" itemprop="image">
+    <img src="/assets/images/posts_img/memory_structure.png" alt="memory_structure" width="100%" min-width="300px" itemprop="image">
 </div>
 
 - Stack section : Function parameters, Return address, Local variables (컴파일 타임)
@@ -30,6 +30,8 @@ last_modified_at: 2024-02-02
 
 Stack은 높은 주소에서 낮은 주소로<br>
 Heap은 낮은 주소에서 높은 주소로
+
+<br>
 
 ## TMI Zone
 const 변수는 Data section에 있는 read-only로 들어가는가? : X<br>
