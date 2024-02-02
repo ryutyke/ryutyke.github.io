@@ -25,7 +25,7 @@ C++ STL 컨테이너는 같은 타입의 객체들을 저장하고 관리할 수
 # 시퀀스 컨테이너 : 데이터가 선형적으로 저장되는 컨테이너
 
 ## 1. 배열 (std::array)
->헤더파일 <array>, namespace std<br>
+>헤더파일 \<array>, namespace std<br>
 >template <typename T, std::size_t Num> class array;
 
 <br>
@@ -75,8 +75,8 @@ int main()
 <br>
 
 ## 2. 벡터(vector)
->헤더파일 <vector>, namespace std<br>
->template <typename T> class vector;
+>헤더파일 \<vector>, namespace std<br>
+>template \<typename T> class vector;
 
 <br>
 
@@ -173,8 +173,8 @@ vector<int> v1(10, 1); // 모든 값이 1인 size = 10 벡터 생성
 <br>
 
 ## 3. 리스트(list)
->헤더파일 <list>, namespace std<br>
->template <typename T> class list;
+>헤더파일 \<list>, namespace std<br>
+>template \<typename T> class list;
 
 ### 특징
 - 노드 기반 컨테이너다.
@@ -194,5 +194,5 @@ vector<int> v1(10, 1); // 모든 값이 1인 size = 10 벡터 생성
 임의 접근 불가능하다.
 
 ### 사용
-- 벡터랑 다르게 삽입/삭제가 효율적이다 보니 특정 값을 가지는 데이터를 없애는 remove()가 있다.
+- 벡터랑 다르게 삽입/삭제가 효율적이다 보니 특정 값을 가지는 데이터를 없애는 remove()가 있다.<br>
 li.remove(10); // 10 모두 제거
