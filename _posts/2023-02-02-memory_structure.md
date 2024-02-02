@@ -28,6 +28,8 @@ last_modified_at: 2024-02-02
 - Data section : global and static variables (프로그램 종료 전까지 유지된다. initialized, uninitialized, read-only 세 가지로 나눌 수 있다.)
 - Text section : program code (read only)
 
+<br>
+
 Stack은 높은 주소에서 낮은 주소로<br>
 Heap은 낮은 주소에서 높은 주소로
 
