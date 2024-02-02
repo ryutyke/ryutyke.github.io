@@ -17,12 +17,11 @@ last_modified_at: 2024-02-02
 ---
 <br>
 
-
 ## C++ 언어 특징
 -	C 언어로 작성된 프로그램과의 호환성 유지
 -	[**객체 지향 프로그래밍**](https://ryutyke.github.io/c-cpp/object-oriented_programming/)의 개념을 도입 (캡슐화 + 정보은닉, 추상화, 상속, 다형성)
 -	타입 체크를 엄격히 하여 런타임 오류의 가능성을 줄이고 디버깅을 도움.
--	실행 시간의 효율성 저하를 최소화 [**인라인 함수**](https://ryutyke.github.io/c-cpp/inline/)
+-	실행 시간의 효율성 저하를 최소화 [[**인라인 함수**](https://ryutyke.github.io/c-cpp/inline/)]
 
 ## C++에 추가된 기능
 -	(연산자) 오버로딩 : 매개 변수의 개수나 타입이 서로 다른 동일한 이름의 함수 선언 가능
@@ -73,3 +72,7 @@ realloc 같은 크기 재할당 기능이 없어서 메모리를 새로 할당�
 
 -	제네릭 함수와 클래스 : 함수나 클래스를 데이터 타입에 의존하지 않고 일반화 시킬 수 있다. (template)
 -	[**인라인 함수**](https://ryutyke.github.io/c-cpp/inline/) : 자주 호출되는 함수의 경우 호출 대신 함수 코드를 확장 삽입한다. 실행 시간을 단축할 수 있다.
+
+<br>
+
+그 외에도 새로운 기능들: concept, move, shared_mutex, 스마트 포인터(shared_ptr) 등. 
