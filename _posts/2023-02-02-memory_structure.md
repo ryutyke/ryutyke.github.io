@@ -20,7 +20,7 @@ last_modified_at: 2024-02-02
 ## Memory Structure
 
 <div>
-    <img src="/assets/images/posts_img/memory_structure.png" alt="memory_structure" width="100%" min-width="300px" itemprop="image">
+    <img src="/assets/images/posts_img/memory_structure.png" alt="memory_structure" width="40%" min-width="700px" itemprop="image">
 </div>
 
 - Stack section : Function parameters, Return address, Local variables (컴파일 타임)
