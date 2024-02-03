@@ -12,7 +12,7 @@ permalink: /c-cpp/stl_container_2/
 toc: true
 toc_sticky: true
 
-date: 2024-02-02 23:00:00
+date: 2024-02-03 17:00:00
 last_modified_at: 2024-02-02
 ---
 <br>
@@ -25,8 +25,8 @@ vector, list와 같은 시퀀스 컨테이너는 원하는 조건에 해당하�
 연관 컨테이너는 Key – Value 구조를 가지는 컨테이너로, 요소들에 대한 빠른 접근을 제공한다.
 
 ## 1. 맵 (map)
->헤더파일 <map>, namespace std<br>
->template <typename Key, typename Value> class map;
+>헤더파일 \<map>, namespace std<br>
+>template \<typename Key, typename Value> class map;
 
 <br>
 
@@ -130,8 +130,8 @@ int main()
 <br>
 
 ## 2. 해시맵 (unordered map)
->헤더파일 <unordered_map>, namespace std<br>
->template <typename Key, typename Value> class unordered_map;
+>헤더파일 \<unordered_map>, namespace std<br>
+>template \<typename Key, typename Value> class unordered_map;
 
 <br>
 
