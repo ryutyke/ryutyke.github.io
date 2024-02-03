@@ -35,16 +35,15 @@ last_modified_at: 2024-02-04
 자식 노드는 부모 노드한테 결과를 반환합니다<br>
 1. Success (성공) <br>
 2. Failure (실패) <br>
-//Running (실행 중)
 
 <br>
+
+## 노드
 
 <div>
     <img src="/assets/images/posts_img/behavior_tree.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 출처 : https://steemit.com/ai/@leeyoosung/ai-behavior-tree
-
-## 노드
 
 ### Control flow 노드
 1. Composite Node<br>
@@ -55,13 +54,9 @@ last_modified_at: 2024-02-04
 
 2. Decorator Node<br>
 오직 하나의 자식을 가지며 자식 노드의 결과를 변형하거나 반복하는 등의 역할을 하게 된다.<br>
-
-- Condition<br>
- 조건에 따라 자식을 실행하거나 실패를 반환합니다.
-- Loop<br>
- 일정 횟수, 혹은 무한히 자식을 반복 실행합니다.
-- Inverter<br>
- 자식의 결과를 반대로 바꿔서 반환합니다.
+- Condition : 조건에 따라 자식을 실행하거나 실패를 반환합니다.<br>
+- Loop : 일정 횟수, 혹은 무한히 자식을 반복 실행합니다.<br>
+- Inverter : 자식의 결과를 반대로 바꿔서 반환합니다.
 
 ### Execution 노드
 최하위 노드로 액션(action)이라고도 한다. 실제 게임에 필요한 로직(걷기, 공격 등)이다.<br>
@@ -69,7 +64,9 @@ last_modified_at: 2024-02-04
 - Precondition(조건) : agent가 이 behavior를 실행할 수 있는가?
 - Action : behavior 실행 시 agent가 실제로 하는 일
 
-조건에 따라 Action 및 부모 노드에게 Success나 Failure를 반환.
+조건에 따라 Action을 하고, 부모 노드에게 Success나 Failure를 반환.
+
+<br>
 
 ## 장점:
 - Simplicity : AI 로직을 쉽게 파악 가능. 구현이 쉽다. 깊이 우선 탐색으로 진행됨.
@@ -90,4 +87,6 @@ last_modified_at: 2024-02-04
 ## TMI Zone
 Utility Systems<br>
 심즈 처럼 수 많은 가능한 행동이 있는 게임. 수 많은 **고려사항에 기반한 선호하는 행동의 선택.**<br>
-이런 경우 Utility Systems => 확률을 넣는 방법도 있음.
+이런 경우 Utility Systems => 확률을 넣는 방법도 있음. <br>
+나중에 더 알아보자.
+
