@@ -33,8 +33,8 @@ last_modified_at: 2024-02-04
 <br>
 
 자식 노드는 부모 노드한테 결과를 반환합니다<br>
-1. Success (성공) <br>
-2. Failure (실패) <br>
+- Success (성공)
+- Failure (실패)
 
 <br>
 
@@ -45,21 +45,25 @@ last_modified_at: 2024-02-04
 </div>
 출처 : https://steemit.com/ai/@leeyoosung/ai-behavior-tree
 
+<br>
+
 ### Control flow 노드
-1. Composite Node<br>
+(1) Composite Node<br>
 하나 이상의 자식 노드를 가질 수 있다.<br>
-- Sequence : 순차적으로 자식을 탐사하여 자식 노드에서 Failure가 반환되는 즉시 Failure를 반환. 모든 자식 노드가 Success되면 Success 반환.<br>
+- Sequence : 순차적으로 자식을 탐사하여 자식 노드에서 Failure가 반환되는 즉시 Failure를 반환. 모든 자식 노드가 Success되면 Success 반환.
 - Selector : 순차적으로 자식을 탐사하여 자식 노드에서 Success가 반환되는 즉시 Success를 반환. 모든 자식 노드가 Failure되면 Failure 반환.
 
 
-2. Decorator Node<br>
+(2) Decorator Node<br>
 오직 하나의 자식을 가지며 자식 노드의 결과를 변형하거나 반복하는 등의 역할을 하게 된다.<br>
-- Condition : 조건에 따라 자식을 실행하거나 실패를 반환합니다.<br>
-- Loop : 일정 횟수, 혹은 무한히 자식을 반복 실행합니다.<br>
+- Condition : 조건에 따라 자식을 실행하거나 실패를 반환합니다.
+- Loop : 일정 횟수, 혹은 무한히 자식을 반복 실행합니다.
 - Inverter : 자식의 결과를 반대로 바꿔서 반환합니다.
 
+<br>
+
 ### Execution 노드
-최하위 노드로 액션(action)이라고도 한다. 실제 게임에 필요한 로직(걷기, 공격 등)이다.<br>
+최하위 노드로 행동 그 자체다. 실제 게임에 필요한 로직(걷기, 공격 등)이다.<br>
 
 - Precondition(조건) : agent가 이 behavior를 실행할 수 있는가?
 - Action : behavior 실행 시 agent가 실제로 하는 일
