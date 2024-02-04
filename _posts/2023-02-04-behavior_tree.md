@@ -43,7 +43,7 @@ last_modified_at: 2024-02-04
 <div>
     <img src="/assets/images/posts_img/behavior_tree.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
-출처 : https://steemit.com/ai/@leeyoosung/ai-behavior-tree
+출처 : [https://steemit.com/ai/@leeyoosung/ai-behavior-tree](https://steemit.com/ai/@leeyoosung/ai-behavior-tree)
 
 <br>
 
