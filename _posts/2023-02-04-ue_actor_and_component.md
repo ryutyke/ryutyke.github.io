@@ -17,8 +17,6 @@ last_modified_at: 2024-02-04
 ---
 <br>
 
-[https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/)
-
 ## 액터
 - 레벨에 배치할 수 있는 오브젝트.
 - Tick() 함수를 통해 틱 가능.
@@ -44,11 +42,12 @@ ACharacter<br>
 - APawn 클래스는 "플레이어 또는 AI가 제어할 수 있는 액터들"의 베이스 클래스입니다.
 - ACharacter 클래스는 APawn을 좀 더 특화시킨. 즉, 좀 더 특징을 구체적으로 만든 느낌. SkeletalMeshComponent (Primitive), CapsuleComponent (Primitive), CharacterMovementComponent (Actor)를 Pawn에 추가.  
 
-
-[https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/)
+<br>
 
 ## 컴포넌트
 액터는 컴포넌트를 담는 컨테이너로 생각할 수 있다.
+
+<br>
 
 ### 주요 컴포넌트 타입
 - UActorComponent : 베이스 컴포넌트로 입력(Input) 해석과 같은 개념적 기능에 사용된다. TickComponent() 함수를 사용하여 컴포넌트를 틱 시킬 수 있다. 
@@ -57,8 +56,10 @@ ACharacter<br>
 1. 박스 컴포넌트(Box Component)
 2. 캡슐 컴포넌트(Capsule Component)
 3. 스태틱 메시 컴포넌트(Static Mesh Component)
-4. 스켈레탈 메시 컴포넌트(Skeletal Mesh Component)
+4. 스켈레탈 메시 컴포넌트(Skeletal Mesh Component)<br>
 이 있다.
+
+<br>
 
 ### 상속 계층구조
 UObjectBase<br>
@@ -74,3 +75,8 @@ UStaticMeshComponent<br>
 
 ### TMI Zone
 <mark>ActorComponent는</mark> TickComponent()를 통해 틱 할 수 있는데, <mark>기본적으로는 Tick하지 않게 설정되어 있음.</mark> 그래서 Tick 하려면 <mark>생성자에서 PrimaryComponentTick.bCanEverTick 을 true로 세팅</mark>하고, 생성자 또는 다른 위치에서 <mark>PrimaryComponentTick.SetTickFunctionEnable(true) 을 호출하여</mark> 틱을 실행할 수 있다. PrimaryComponentTick.SetTickFunctionEnable(false)로 틱 실행을 멈출 수도 있다. 
+
+<br>
+
+[https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/)
+[https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/)
