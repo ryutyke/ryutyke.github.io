@@ -25,8 +25,10 @@ last_modified_at: 2024-02-05
 그래서 언리얼 헤더 툴이 알 수 있게 다 표시를 해줘야 함.<br>
 언리얼 헤더 툴이 그 표시들 보고 언리얼 특유의 코드를 분석해서 intermediate에 정리. 그 후 컴파일.
 
+<br>
+
 ## 매크로
----
+
 ### 필수 매크로
  
 언리얼 오브젝트 선언 규칙<br>
@@ -121,4 +123,4 @@ ConstructorHelpers::ObjectFinder
 <br>
 
 ---
-https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/
+[https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/](https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/)
