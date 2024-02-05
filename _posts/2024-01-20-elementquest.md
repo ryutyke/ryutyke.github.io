@@ -22,8 +22,17 @@ last_modified_at: 2024-01-20
     <img src="/assets/images/thumbnail/elementquest.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 
+
 - 게임 영상 : 학교에서 대여한 VR 기기를 반납했는데, 방학이라 다시 대여를 못해서 영상을 찍지 못했습니다.
 - github 링크 : [https://github.com/ryutyke/ElementQuest](https://github.com/ryutyke/ElementQuest)
+
+<br>
+
+<p align="center">
+<img src = "/assets/gif/elementquest.gif">
+</p>
+
+그나마 개발 중기에 찍어뒀던 영상.
 
 <br>
 
