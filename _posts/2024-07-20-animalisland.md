@@ -26,6 +26,7 @@ last_modified_at: 2024-07-20
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JilkfSQLIYs?si=GaJtiil9-SmhBUdA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+(영상이 아직 노트북으로밖에 못 찍어서 렉이 많이 걸립니다.)
 - 게임 영상 : [https://www.youtube.com/watch?v=JilkfSQLIYs](https://www.youtube.com/watch?v=JilkfSQLIYs)
 - github 링크 : [https://github.com/ryutyke/Animal_Island](https://github.com/ryutyke/Animal_Island) <br>
 Github 우측 Releases에서 게임 파일 설치 및 플레이 가능합니다.
