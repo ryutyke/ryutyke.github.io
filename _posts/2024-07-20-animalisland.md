@@ -1,0 +1,50 @@
+---
+title: "[Game] Animal Island"
+excerpt: "2024년 넥슨 게임잼에서 Unreal Engine으로 만든 게임입니다."
+
+categories:
+  - Portfolio
+  - pfunrealengine
+tags:
+  - [Portfolio, Game, UnrealEngine]
+
+permalink: /Portfolio/AnimalIsland/
+
+toc: true
+toc_sticky: true
+
+date: 2024-07-20 14:50:00
+last_modified_at: 2024-07-20
+---
+<br>
+
+<!--
+<div>
+    <img src="/assets/images/thumbnail/spacestation.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
+</div>
+-->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JilkfSQLIYs?si=GaJtiil9-SmhBUdA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+- 게임 영상 : [https://www.youtube.com/watch?v=JilkfSQLIYs](https://www.youtube.com/watch?v=JilkfSQLIYs)
+- github 링크 : [https://github.com/ryutyke/Animal_Island](https://github.com/ryutyke/Animal_Island)
+Github 우측 Releases에서 게임 파일 설치 및 플레이 가능합니다.
+
+<br>
+
+## 게임의 장르 
+캐주얼, 슈팅, 3D 닷지
+
+## 플레이어의 조작 
+마우스 회전 : 시야 조정
+왼쪽 마우스 클릭 : 먹이 투척 (쿨타임)
+스페이스바 : 점프
+Esc : 설정창
+
+## 게임의 규칙 
+- 공격 메커니즘은 액터 둘이 부딪혔을 때, 체력이 더 낮은 액터의 체력만큼 서로 데미지 받는 것 
+- 동물에게 먹이를 주면 빛나는 동물은 아이템을 주고, 빛나지 않는 동물은 반대로 걸어가며 다른 동물을 공격해 준다 (플레이어 공격 x)
+- 아이템 : 빨강->체력 회복, 파랑->일정 시간 이동속도 증가, 초록->일정 시간 먹이 투척 쿨타임 x
+- 섬 밖으로 나가면 게임오버
+- 동물은 점점 더 많이 스폰 되고, 스폰 간격이 점점 짧아진다.
+- 이지모드와 하드모드 차이는 먹이 투척 쿨타임, 아이템 드랍율, 아이템별 등장 확률
