@@ -18,14 +18,14 @@ last_modified_at: 2024-01-20
 ---
 <br>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/iDmJkGvQ_MM?si=H8psRnGzvw7qeS49" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mOyZspeflXM?si=PWy0BD0PK8UKHLAT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 <!--<div>
     <img src="/assets/images/thumbnail/elementquest.png" alt="thumbnail" width="100%" min-width="700px" itemprop="image">
 </div>
 -->
 
-- 게임 영상 : [https://www.youtube.com/watch?v=iDmJkGvQ_MM](https://www.youtube.com/watch?v=iDmJkGvQ_MM)
+- 게임 영상 : [https://www.youtube.com/watch?v=mOyZspeflXM](https://www.youtube.com/watch?v=mOyZspeflXM)
 - github 링크 : [https://github.com/ryutyke/ElementQuest](https://github.com/ryutyke/ElementQuest)
 
 <br>
