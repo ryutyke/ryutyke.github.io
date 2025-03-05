@@ -1,3 +1,5 @@
+비공개
+
 ---
 title: "[UnrealEngine] Actor and Component"
 excerpt: "언리얼 엔진이 게임 제작을 위해 제공하는 프레임워크"

@@ -1,3 +1,5 @@
+비공개
+
 ---
 title: "[C/C++] C++ 언어 특징"
 excerpt: "Features of C++"

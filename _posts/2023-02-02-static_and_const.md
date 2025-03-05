@@ -1,3 +1,5 @@
+비공개
+
 ---
 title: "[C/C++] Static과 Const"
 excerpt: "코드 실행 결과로 알아보는 Static과 Const"

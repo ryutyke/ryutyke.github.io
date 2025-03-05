@@ -1,3 +1,5 @@
+비공개
+
 ---
 title: "[Algorithm] Behavior Tree"
 excerpt: "게임 알고리즘"

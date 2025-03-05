@@ -1,3 +1,5 @@
+비공개
+
 ---
 title: "[C/C++] 메모리 구조"
 excerpt: "Memory structure"
