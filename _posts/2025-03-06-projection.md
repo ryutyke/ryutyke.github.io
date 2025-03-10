@@ -31,13 +31,13 @@ last_modified_at: 2024-03-02
 
 <br>
 
-### 게임에서 일반적으로 사용되는 Projection.
+### 게임에서 일반적으로 사용되는 Projection
 
 perspective projection : 3D 공간상의 게임을 2D 모니터에 보여주기 위해 사용합니다. 멀리 있는 물체가 가까이 있는 물체보다 작게 보이는 원근법이 적용됩니다.
 
 <br>
 
-### 3 차원 공간상의 임의의 점 ${v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정.
+### 3 차원 공간상의 임의의 점 ${v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정
 
 우선, view transform을 통해 world space에서 camera space로 변환해 줘야 합니다.
 
@@ -51,7 +51,7 @@ UP : 카메라의 위 벡터
     <img src="/assets/images/projection/image1.png" alt="" width="30%" min-width="300px" itemprop="image">
 </div>
 
-이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행우선 행렬**로 표현하겠습니다.)
+이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행 우선**으로 작성하겠습니다.)
 
 <div>
     <img src="/assets/images/projection/matrix1.png" alt="matrix" width="85%" min-width="500px" itemprop="image">
@@ -59,7 +59,7 @@ UP : 카메라의 위 벡터
 
 그 후, projection transform을 통해 camera space에서 clip space로 변환해 줘야 합니다.
 
-camera는 시야(field of view)가 제한적이기 때문에 씬에 있는 모든 오브젝트를 볼 수 없습니다. 볼 수 있는 지역을 절두체(view frustum)라고 합니다. 절두체는 **fovy(y축 시야각), aspect(w/h, 가로 세로 비율), n(near plane z축 거리), f(far plane z축 거리)** 4개의 파라미터로 이루어진 truncated pyramid 모양입니다. projection transform을 통해 절두체 카메라 공간을 2*2*1 크기의 직육면체 클립 공간으로 투영합니다. (Clip space 범위를 Direct3D 기준으로 하겠습니다.)
+camera는 시야(field of view)가 제한적이기 때문에 씬에 있는 모든 오브젝트를 볼 수 없습니다. 볼 수 있는 지역을 절두체(view frustum)라고 합니다. 절두체는 **fovy(y축 시야각), aspect(w/h, 가로 세로 비율), n(near plane z축 거리), f(far plane z축 거리)** 4개의 파라미터로 이루어진 truncated pyramid 모양입니다. projection transform을 통해 절두체 카메라 공간을 2\*2\*1 크기의 직육면체 클립 공간으로 투영합니다. (Clip space 범위를 Direct3D 기준으로 하겠습니다.)
 
 <div>
     <img src="/assets/images/projection/image2.png" alt="" width="70%" min-width="700px" itemprop="image">
