@@ -49,7 +49,9 @@ UP : 카메라의 위 벡터
 
 이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행우선 행렬**로 표현하겠습니다.)
 
-$= \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix1.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 그 후, projection transform을 통해 camera space에서 clip space로 변환해 줘야 합니다.
 
@@ -95,11 +97,15 @@ $zv’ = (\frac{D}{A}x, Dy, zz’, z)$
 
 점 v를 점 v’로 변환하는 projection transform은,
 
-$\begin{pmatrix} \frac{D}{A}x & Dy & zz’ & z\end{pmatrix}$ = $\begin{pmatrix} x & y & z & 1\end{pmatrix}$$\begin{pmatrix} \frac{D}{A} & 0 & m_1 & 0 \\ 0 & D & m_2 & 0 \\ 0  & 0  & m_3 & 1  \\ 0 & 0 & m_4 & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix2.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 근데 z’는 점 v의 x좌표 y좌표와는 관련이 없기 때문에 이렇게 나타낼 수 있습니다.
 
-$\begin{pmatrix} \frac{D}{A}x & Dy & zz’ & z\end{pmatrix}$ = $\begin{pmatrix} x & y & z & 1\end{pmatrix}$$\begin{pmatrix} \frac{D}{A} & 0 & 0 & 0 \\ 0 & D & 0 & 0 \\ 0  & 0  & m_3 & 1  \\ 0 & 0 & m_4 & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix3.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 $zz’ = m_3z + m_4$ 이고
 
@@ -123,7 +129,9 @@ $m_4 = \frac{-fn}{f-n}$
 
 따라서, projection transform은
 
-$M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & cot\frac{fovy}{2} & 0 & 0 \\ 0  & 0  & \frac{f}{f-n} & 1  \\ 0 & 0 & \frac{-fn}{f-n} & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix4.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 입니다.
 
@@ -135,23 +143,33 @@ projection transform까지 적용하면 동차 좌표계에서 w에 해당하는
 
 Scaling :
 
-$\begin{pmatrix} \frac{Width}{2} & 0 & 0 & 0 \\ 0 & -\frac{Height}{2} & 0 & 0 \\ 0  & 0  & MaxZ - MinZ & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix5.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 Translation :
 
-$\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ TopLeftX + \frac{Width}{2} & TopLeftY + \frac{Height}{2} & MinZ & 1 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix6.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 둘을 합치면,
 
-$\begin{pmatrix} \frac{Width}{2} & 0 & 0 & 0 \\ 0 & -\frac{Height}{2} & 0 & 0 \\ 0  & 0  & MaxZ - MinZ & 0  \\ TopLeftX + \frac{Width}{2} & TopLeftY + \frac{Height}{2} & MinZ & 1 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix7.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 만약 카메라 화면 전체를 사용해 TopLeftX = 0, TopLeftY = 0. 그리고 MinZ = 0, MaxZ = 1이라고 하면
 
-$M_{viewport}=\begin{pmatrix} \frac{Width}{2} & 0 & 0 & 0 \\ 0 & -\frac{Height}{2} & 0 & 0 \\ 0  & 0  & 1 & 0  \\ \frac{Width}{2} & \frac{Height}{2} & 0 & 1 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix8.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 ### 4. Reverse-Z Projection 의 개념과 장점.
 
-$M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & cot\frac{fovy}{2} & 0 & 0 \\ 0  & 0  & \frac{f}{f-n} & 1  \\ 0 & 0 & \frac{-fn}{f-n} & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix9.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 점 v (x, y, z, 1)에 projection transform을 적용하면 점 v’(zx’, zy’, zz’, z)가 되고 
 
@@ -190,11 +208,15 @@ z가 1000이라면 z’가 1.0 입니다.
 
 위의 projection transform을
 
-$M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & cot\frac{fovy}{2} & 0 & 0 \\ 0  & 0  & \frac{f}{f-n} & 1  \\ 0 & 0 & \frac{-fn}{f-n} & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix9.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 아래 것으로 바꾸는 것입니다.
 
-$M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & cot\frac{fovy}{2} & 0 & 0 \\ 0  & 0  & \frac{n}{n-f} & 1  \\ 0 & 0 & \frac{-fn}{n-f} & 0 \end{pmatrix}$
+<div>
+    <img src="/assets/images/projection/matrix10.png" alt="matrix" width="30%" min-width="300px" itemprop="image">
+</div>
 
 장점 : 
 
