@@ -49,21 +49,35 @@ UP : 카메라의 위 벡터
 
 이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행우선 행렬**로 표현하겠습니다.)
 
+
 $M_{view} = TR$
 \begin{equation}
 $$= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{bmatrix} \begin{bmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{bmatrix}$$
 \end{equation}
 
-$M_{view} = TR$
-\begin{equation}
-$= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{bmatrix} \begin{bmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{bmatrix}$
-\end{equation}
+$$
+M_{view} = TR =
+\begin{bmatrix}
+ 1 & 0 & 0 & 0 \\
+ 0 & 1 & 0 & 0 \\
+ 0 & 0 & 1 & 0 \\
+ -EYE_x & -EYE_y & -EYE_z & 1
+\end{bmatrix}
+\begin{bmatrix}
+ u_x & v_x & n_x & 0 \\
+ u_y & v_y & n_y & 0 \\
+ u_z & v_z & n_z & 0 \\
+ 0 & 0 & 0 & 1
+\end{bmatrix}
+$$
 
-\begin{equation}
+
+$$
 $M_{view} = TR$
+\begin{equation}
 $$= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{bmatrix} \begin{bmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{bmatrix}$$
 \end{equation}
-
+$$
 
 $= \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}$
 
