@@ -33,7 +33,7 @@ last_modified_at: 2024-03-02
 
 perspective projection : 3D 공간상의 게임을 2D 모니터에 보여주기 위해 사용합니다. 멀리 있는 물체가 가까이 있는 물체보다 작게 보이는 원근법이 적용됩니다.
 
-### 3. 3 차원 공간상의 임의의 점 $\bold{v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정.
+### 3. 3 차원 공간상의 임의의 점 ${v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정.
 
 우선, view transform을 통해 world space에서 camera space로 변환해 줘야 합니다.
 
@@ -51,9 +51,9 @@ UP : 카메라의 위 벡터
 
 $M_{view} = TR$
 
-$= \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{pmatrix}$$\begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}$
+\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{pmatrix} \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}
 
-$= \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}$
+\begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}
 
 그 후, projection transform을 통해 camera space에서 clip space로 변환해 줘야 합니다.
 
@@ -157,7 +157,7 @@ $\begin{pmatrix} \frac{Width}{2} & 0 & 0 & 0 \\ 0 & -\frac{Height}{2} & 0 & 0 \\
 
 $M_{viewport}=\begin{pmatrix} \frac{Width}{2} & 0 & 0 & 0 \\ 0 & -\frac{Height}{2} & 0 & 0 \\ 0  & 0  & 1 & 0  \\ \frac{Width}{2} & \frac{Height}{2} & 0 & 1 \end{pmatrix}$
 
-### 4. Reverse-Z Projection 의 개념과 장점에 대해서 서술해 주세요.
+### 4. Reverse-Z Projection 의 개념과 장점.
 
 $M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & cot\frac{fovy}{2} & 0 & 0 \\ 0  & 0  & \frac{f}{f-n} & 1  \\ 0 & 0 & \frac{-fn}{f-n} & 0 \end{pmatrix}$
 
@@ -219,7 +219,7 @@ Reverse-Z Projection을 하지 않으면
 <aside>
 💡
 
-https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html
+[https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html](https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html)
 
 > If we do the math, we can see that out of the total range between 0.0 and 1.0, only approximately **0.79%** of all representable values are between 0.5 and 1.0, with a staggering **99.21%** between 0.0 and 0.5. I always knew there was more precision near 0, but I don’t think I’d fully appreciated by quite how much.
 > 
