@@ -122,30 +122,34 @@ $$
 $$
 
 $$
-\left(\begin{smallmatrix} \frac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
+\( {\scriptstyle
+\left(\begin{smallmatrix} \tfrac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
 =
 \left(\begin{smallmatrix} x & y & z & 1 \end{smallmatrix}\right)
 \left(\begin{smallmatrix}
- \frac{D}{A} & 0 & m_1 & 0 \\
+ \tfrac{D}{A} & 0 & m_1 & 0 \\
  0 & D & m_2 & 0 \\
  0 & 0 & m_3 & 1 \\
  0 & 0 & m_4 & 0
 \end{smallmatrix}\right)
+} \)
 $$
 
 $$
-{\small
-\left(\begin{smallmatrix} \frac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
-=
+\( {\scriptstyle
+\left(\begin{smallmatrix} \tfrac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
+\;=\;
 \left(\begin{smallmatrix} x & y & z & 1 \end{smallmatrix}\right)
-\left(\begin{smallmatrix}
- \frac{D}{A} & 0 & m_1 & 0 \\
+\;\left(\begin{smallmatrix}
+ \tfrac{D}{A} & 0 & m_1 & 0 \\
  0 & D & m_2 & 0 \\
  0 & 0 & m_3 & 1 \\
  0 & 0 & m_4 & 0
 \end{smallmatrix}\right)
-}
+} \)
 $$
+
+
 
 근데 z’는 점 v의 x좌표 y좌표와는 관련이 없기 때문에 이렇게 나타낼 수 있습니다.
 
