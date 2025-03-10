@@ -25,7 +25,7 @@ last_modified_at: 2024-03-02
 <br>
 
 ---
-### Projection이란.
+## 1. Projection
 
 벡터를 다른 벡터나 공간으로 투영하는 것입니다.
 
@@ -187,7 +187,7 @@ Translation :
 
 <br>
 
-## Reverse-Z Projection 개념.
+## 2. Reverse-Z Projection
 
 <div>
     <img src="/assets/images/projection/matrix9.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
