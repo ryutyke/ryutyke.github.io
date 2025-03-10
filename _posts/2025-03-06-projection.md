@@ -1,5 +1,5 @@
 ---
-title: "[Graphics] Projection"
+title: "[Graphics] Projection (작성 중)"
 excerpt: "Projection 과정과 Reverse-Z Projection에 대해"
 
 categories:
@@ -17,9 +17,11 @@ last_modified_at: 2024-03-02
 ---
 <br>
 
+<div markdown="1">
+
 ## 다음 내용들을 다룹니다.
-- 함수에 inline을 명시하는 것의 구체적인 효과 (중복 정의, inline 최적화)
-- inline 최적화를 조절하는 방법 (변수, 옵션)
+- Projection 과정
+- Reverse-Z Projection 개념
 
 <br>
 
@@ -43,7 +45,7 @@ AT : 카메라가 보고 있는 기준점
 UP : 카메라의 위 벡터
 
 <div>
-    <img src="/assets/images/projection/image1.png" alt="" width="70%" min-width="700px" itemprop="image">
+    <img src="/assets/images/projection/image1.png" alt="" width="30%" min-width="300px" itemprop="image">
 </div>
 
 이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행우선 행렬**로 표현하겠습니다.)
@@ -227,3 +229,5 @@ https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html
 이로 인해 Z-Fighting 문제가 더 많이 발생할 가능성이 큽니다.
 
 Reverse-Z Projection을 사용하면 멀리 있는 더 많은 객체를 깊이값의 변화를 크게 줄 수 있고, 더 작은 값을 가지게 해서 부동소수점 정밀도를 높여 이 문제를 해결할 수 있습니다.
+
+</div>
