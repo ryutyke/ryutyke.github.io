@@ -1,5 +1,5 @@
 ---
-title: "[Graphics] Projection (작성 중)"
+title: "[Graphics] Projection, Reverse-Z Projection"
 excerpt: "Projection 과정과 Reverse-Z Projection에 대해"
 
 categories:
