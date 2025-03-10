@@ -49,36 +49,6 @@ UP : 카메라의 위 벡터
 
 이렇게 {u,v,n, EYE}인 camera space를 {e1,e2,e3,O}인 world space로 변환하는 것이 view transform입니다. (**행우선 행렬**로 표현하겠습니다.)
 
-
-$M_{view} = TR$
-\begin{equation}
-$$= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{bmatrix} \begin{bmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{bmatrix}$$
-\end{equation}
-
-$$
-M_{view} = TR =
-\begin{bmatrix}
- 1 & 0 & 0 & 0 \\
- 0 & 1 & 0 & 0 \\
- 0 & 0 & 1 & 0 \\
- -EYE_x & -EYE_y & -EYE_z & 1
-\end{bmatrix}
-\begin{bmatrix}
- u_x & v_x & n_x & 0 \\
- u_y & v_y & n_y & 0 \\
- u_z & v_z & n_z & 0 \\
- 0 & 0 & 0 & 1
-\end{bmatrix}
-$$
-
-
-$$
-$M_{view} = TR$
-\begin{equation}
-$$= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{bmatrix} \begin{bmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{bmatrix}$$
-\end{equation}
-$$
-
 $= \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}$
 
 그 후, projection transform을 통해 camera space에서 clip space로 변환해 줘야 합니다.
@@ -93,29 +63,25 @@ projection plane을 z = cot fovy/2 에 직교하게 두면
 
 camera space에서의 점 v(x, y, z, 1)를 projection plane에 투영한 점 v’(x’, y’, z’, 1)는 삼각형의 닮음을 이용해서 구할 수 있습니다.
 
-$$
-x' = cot\frac{fovx}{2}\frac{x}{z}
-$$
 
-$$
-y' = cot\frac{fovy}{2}\frac{y}{z}
-$$
+$x' = cot\frac{fovx}{2}\frac{x}{z}$
+
+
+$y' = cot\frac{fovy}{2}\frac{y}{z}$
+
 
 aspect도 구할 수 있습니다.
 
-$$
-aspect = \frac{W}{H} = \frac{tan\frac{fovx}{2}}{tan\frac{fovy}{2}} = \frac{cot\frac{fovy}{2}}{cot\frac{fovx}{2}}
-$$
 
-$$
-cot\frac{fovx}{2} = \frac{cot\frac{fovy}{2}}{aspect}
-$$
+$aspect = \frac{W}{H} = \frac{tan\frac{fovx}{2}}{tan\frac{fovy}{2}} = \frac{cot\frac{fovy}{2}}{cot\frac{fovx}{2}}$
+
+
+$cot\frac{fovx}{2} = \frac{cot\frac{fovy}{2}}{aspect}$
 
 를 이용해서
 
-$$
-x' = cot\frac{fovx}{2}\frac{x}{z} = \frac{cot\frac{fovy}{2}}{aspect}\frac{x}{z}
-$$
+$x' = cot\frac{fovx}{2}\frac{x}{z} = \frac{cot\frac{fovy}{2}}{aspect}\frac{x}{z}$
+
 
 x’를 이렇게 표현해 주면, v’는 aspect와 $cot\frac{fovy}{2}$로 표현할 수 있게 됩니다.
 
@@ -191,23 +157,20 @@ $M_{proj}=\begin{pmatrix} \frac{cot\frac{fovy}{2}}{aspect} & 0 & 0 & 0 \\ 0 & co
 
 여기서 점 v’의 깊이값은, 
 
-$$
-zz' = \frac{f(z-n)}{f-n}
-$$
+
+$zz' = \frac{f(z-n)}{f-n}$
 
 에다가 동차 좌표계에서 w인 z를 나눠준
 
-$$
-z' = \frac{f(z-n)}{z(f-n)}
-$$
+
+$z' = \frac{f(z-n)}{z(f-n)}$
 
 이 됩니다.
 
 여기에 Near Plane Z축 좌표인 n이 0.1, Far Plane Z축 좌표인 f가 1000이라고 하면
 
-$$
-z' = \frac{1000(z-0.1)}{z(999.9)}
-$$
+
+$z' = \frac{1000(z-0.1)}{z(999.9)}$
 
 가 됩니다.
 
