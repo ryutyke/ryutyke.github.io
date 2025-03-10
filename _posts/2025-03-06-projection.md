@@ -51,7 +51,9 @@ UP : 카메라의 위 벡터
 
 $M_{view} = TR$
 
-$= \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{pmatrix}$$\begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}$
+$$= \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{pmatrix}$$$$\begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}$$
+
+$$= \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0  & 0  & 1 & 0  \\ -EYE_x & -EYE_y & -EYE_z & 1 \end{pmatrix} \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ 0 & 0 & 0 & 1 \end{pmatrix}$$
 
 $= \begin{pmatrix} u_x & v_x & n_x & 0 \\ u_y & v_y & n_y & 0 \\ u_z  & v_z  & n_z & 0  \\ -u·EYE & -v·EYE & -n·EYE & 1 \end{pmatrix}$
 
@@ -104,52 +106,6 @@ $zv’ = (\frac{D}{A}x, Dy, zz’, z)$
 점 v를 점 v’로 변환하는 projection transform은,
 
 $\begin{pmatrix} \frac{D}{A}x & Dy & zz’ & z\end{pmatrix}$ = $\begin{pmatrix} x & y & z & 1\end{pmatrix}$$\begin{pmatrix} \frac{D}{A} & 0 & m_1 & 0 \\ 0 & D & m_2 & 0 \\ 0  & 0  & m_3 & 1  \\ 0 & 0 & m_4 & 0 \end{pmatrix}$
-
-$$
-\begin{pmatrix}
- \frac{D}{A}x & Dy & zz' & z
-\end{pmatrix}
-=
-\begin{pmatrix}
- x & y & z & 1
-\end{pmatrix}
-\begin{pmatrix}
- \frac{D}{A} & 0 & m_1 & 0 \\
- 0 & D & m_2 & 0 \\
- 0 & 0 & m_3 & 1 \\
- 0 & 0 & m_4 & 0
-\end{pmatrix}
-$$
-
-$$
-\( {\scriptstyle
-\left(\begin{smallmatrix} \tfrac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
-=
-\left(\begin{smallmatrix} x & y & z & 1 \end{smallmatrix}\right)
-\left(\begin{smallmatrix}
- \tfrac{D}{A} & 0 & m_1 & 0 \\
- 0 & D & m_2 & 0 \\
- 0 & 0 & m_3 & 1 \\
- 0 & 0 & m_4 & 0
-\end{smallmatrix}\right)
-} \)
-$$
-
-$$
-\( {\scriptstyle
-\left(\begin{smallmatrix} \tfrac{D}{A}x & Dy & zz' & z \end{smallmatrix}\right)
-\;=\;
-\left(\begin{smallmatrix} x & y & z & 1 \end{smallmatrix}\right)
-\;\left(\begin{smallmatrix}
- \tfrac{D}{A} & 0 & m_1 & 0 \\
- 0 & D & m_2 & 0 \\
- 0 & 0 & m_3 & 1 \\
- 0 & 0 & m_4 & 0
-\end{smallmatrix}\right)
-} \)
-$$
-
-
 
 근데 z’는 점 v의 x좌표 y좌표와는 관련이 없기 때문에 이렇게 나타낼 수 있습니다.
 
