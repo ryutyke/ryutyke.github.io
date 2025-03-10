@@ -25,15 +25,19 @@ last_modified_at: 2024-03-02
 <br>
 
 ---
-### 1. Projection이란.
+### Projection이란.
 
 벡터를 다른 벡터나 공간으로 투영하는 것입니다.
 
-### 2. 게임에서 일반적으로 사용되는 Projection 의 종류.
+<br>
+
+### 게임에서 일반적으로 사용되는 Projection.
 
 perspective projection : 3D 공간상의 게임을 2D 모니터에 보여주기 위해 사용합니다. 멀리 있는 물체가 가까이 있는 물체보다 작게 보이는 원근법이 적용됩니다.
 
-### 3. 3 차원 공간상의 임의의 점 ${v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정.
+<br>
+
+### 3 차원 공간상의 임의의 점 ${v}$ 가 Perspective Camera 를 통해 화면에 Projection 되는 과정.
 
 우선, view transform을 통해 world space에서 camera space로 변환해 줘야 합니다.
 
@@ -71,12 +75,14 @@ $x' = cot\frac{fovx}{2}\frac{x}{z}$
 
 $y' = cot\frac{fovy}{2}\frac{y}{z}$
 
+<br>
 
 aspect도 구할 수 있습니다.
 
 
 $aspect = \frac{W}{H} = \frac{tan\frac{fovx}{2}}{tan\frac{fovy}{2}} = \frac{cot\frac{fovy}{2}}{cot\frac{fovx}{2}}$
 
+<br>
 
 $cot\frac{fovx}{2} = \frac{cot\frac{fovy}{2}}{aspect}$
 
@@ -87,13 +93,19 @@ $x' = cot\frac{fovx}{2}\frac{x}{z} = \frac{cot\frac{fovy}{2}}{aspect}\frac{x}{z}
 
 x’를 이렇게 표현해 주면, v’는 aspect와 $cot\frac{fovy}{2}$로 표현할 수 있게 됩니다.
 
+<br>
+
 aspect를 A, $cot\frac{fovy}{2}$를 D라고 하면
 
 $v’ = (x’, y’, z’, 1) = (\frac{D}{A}\frac{x}{z}, D\frac{y}{z}, z’, 1)$
 
+<br>
+
 동차 좌표계이기 때문에 w = z로 하면
 
 $zv’ = (\frac{D}{A}x, Dy, zz’, z)$
+
+<br>
 
 점 v를 점 v’로 변환하는 projection transform은,
 
@@ -111,6 +123,8 @@ $zz’ = m_3z + m_4$ 이고
 
 $z’ = m_3 + \frac{m_4}{z}$ 입니다.
 
+<br>
+
 Direct3D clip space의 z값 범위인 [0,1]에 따라
 
 z가 n일 때는 z’를 0으로, z가 f일 때는 z’를 1으로 두면,
@@ -127,6 +141,8 @@ $m_4 = \frac{-fn}{f-n}$
 
 을 구할 수 있습니다. 
 
+<br>
+
 따라서, projection transform은
 
 <div>
@@ -135,7 +151,11 @@ $m_4 = \frac{-fn}{f-n}$
 
 입니다.
 
+<br>
+
 projection transform까지 적용하면 동차 좌표계에서 w에 해당하는 부분이 z가 됩니다. 그래서 z로 나눠주는 perspective division을 해줍니다. 만약 점 v가 카메라로부터 z축 거리가 멀리 있었다면 더 크게 나눠지고, 가까이 있었다면 더 작게 나눠지면서 **원근법이 적용이 됩니다**. (NDC 공간)
+
+<br>
 
 이제 viewport transform을 통해 NDC 공간(2x2x1)에 있는 점을 카메라 화면 해상도에 맞게 Screen Space로 변환해 주면 됩니다.
 
@@ -165,7 +185,9 @@ Translation :
     <img src="/assets/images/projection/matrix8.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
 </div>
 
-### 4. Reverse-Z Projection 의 개념과 장점.
+<br>
+
+## Reverse-Z Projection 개념.
 
 <div>
     <img src="/assets/images/projection/matrix9.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
@@ -185,12 +207,15 @@ $z' = \frac{f(z-n)}{z(f-n)}$
 
 이 됩니다.
 
-여기에 Near Plane Z축 좌표인 n이 0.1, Far Plane Z축 좌표인 f가 1000이라고 하면
+<br>
 
+여기에 Near Plane Z축 좌표인 n이 0.1, Far Plane Z축 좌표인 f가 1000이라고 하면
 
 $z' = \frac{1000(z-0.1)}{z(999.9)}$
 
 가 됩니다.
+
+<br>
 
 z가 0.1이라면 z’가 0.0이고,
 
@@ -203,6 +228,8 @@ z가 1000이라면 z’가 1.0 입니다.
 즉, z가 Near Plane과 가까울 때의 깊이값의 변화가 크지만 Far Plane에 가까워지면 깊이값의 변화가 매우 작아집니다.
 
 그래서 Far Plane 근처에 있는 원거리 객체들은 깊이값이 실제로는 동일하지 않지만, 깊이값의 차이가 매우 작은데 거기에 더해 부동소수점의 정밀도의 한계로 인해서 깊이값이 동일하게 처리될 수 있습니다. 이로 인해 Z-fighting 문제가 생길 수 있습니다.
+
+<br>
 
 **Reverse-Z Projection**은 Near Plane과 Far Plane의 깊이값을 서로 바꿔 원거리 객체들의 깊이값 정밀도를 올리는 방법입니다.
 
@@ -218,7 +245,7 @@ z가 1000이라면 z’가 1.0 입니다.
     <img src="/assets/images/projection/matrix10.png" alt="matrix" width="70%" min-width="500px" itemprop="image">
 </div>
 
-장점 : 
+### 장점 : 
 
 오픈 월드 게임 등 Far Plane이 아주 멀리 있는 경우에는 View Frustum에서 가까이 있는 객체들보다 멀리 있는 객체들의 비중이 더 클 가능성이 큽니다. 
 
@@ -227,14 +254,10 @@ Reverse-Z Projection을 하지 않으면
 1. 먼 거리에 있는 더 많은 객체들의 깊이값 변화가 작게 표현되게 되고, 
 2. 부동소수점은 값이 클수록 정밀도가 떨어지는데 먼 거리 객체들이라 [0,1] 범위에서 1에 가까운 더 큰 값을 가지게 됩니다. 
 
-<aside>
-💡
+> If we do the math, we can see that out of the total range between 0.0 and 1.0, only approximately **0.79%** of all representable values are between 0.5 and 1.0, with a staggering **99.21%** between 0.0 and 0.5. I always knew there was more precision near 0, but I don’t think I’d fully appreciated by quite how much. 
 
-[https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html](https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html)
+출처 : [https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html](https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html)
 
-> If we do the math, we can see that out of the total range between 0.0 and 1.0, only approximately **0.79%** of all representable values are between 0.5 and 1.0, with a staggering **99.21%** between 0.0 and 0.5. I always knew there was more precision near 0, but I don’t think I’d fully appreciated by quite how much.
-> 
-</aside>
 
 이로 인해 Z-Fighting 문제가 더 많이 발생할 가능성이 큽니다.
 
