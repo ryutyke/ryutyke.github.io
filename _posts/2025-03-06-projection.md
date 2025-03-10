@@ -6,6 +6,7 @@ categories:
   - etc
 tags:
   - [Graphics, Projection, ReverseZ]
+use_math: true
 
 permalink: /etc/graphics/projection
 
@@ -16,8 +17,6 @@ date: 2025-03-02 20:00:00
 last_modified_at: 2024-03-02
 ---
 <br>
-
-<div markdown="1">
 
 ## 다음 내용들을 다룹니다.
 - Projection 과정
@@ -229,5 +228,3 @@ https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html
 이로 인해 Z-Fighting 문제가 더 많이 발생할 가능성이 큽니다.
 
 Reverse-Z Projection을 사용하면 멀리 있는 더 많은 객체를 깊이값의 변화를 크게 줄 수 있고, 더 작은 값을 가지게 해서 부동소수점 정밀도를 높여 이 문제를 해결할 수 있습니다.
-
-</div>
