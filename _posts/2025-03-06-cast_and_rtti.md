@@ -27,6 +27,8 @@ last_modified_at: 2024-03-13
 ---
 ## Upcasting, Downcasting
 
+<br>
+
 ### 업캐스팅(Upcasting)
 업캐스팅은 파생 클래스(derived class)의 객체를 기본 클래스(base class)의 포인터나 참조로 사용하는 것입니다.  
 파생 클래스 객체를 기본 클래스 포인터에 할당하면, 파생 클래스의 고유 멤버는 사용할 수 없고, 기본 클래스에 정의된 멤버만 접근할 수 있습니다.  
@@ -62,6 +64,8 @@ int main()
 	return 0;
 }
 ```
+
+<br>
 
 ### 다운캐스팅(Downcasting)
 
@@ -149,6 +153,7 @@ int main()
 
 <br>
 
+---
 ## 런타임 타입 정보(RTTI)
 
 dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위해 RTTI를 사용합니다.  
