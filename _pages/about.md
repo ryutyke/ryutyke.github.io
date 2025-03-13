@@ -41,10 +41,11 @@ comments: false
     </ul>
   </div>
 
+<br>
 
 ### 갤럭시 앱 설치  
 [Google Drive](https://drive.google.com/file/d/1NePIuWSv3M445IvAUqPUTJQQBpU-OHVR/view?usp=sharing)
 
 <div>
-    <img src="/assets/images/AppDownloadQR.png" alt="" width="80%" min-width="300px" itemprop="image">
+    <img src="/assets/images/AppDownloadQR.png" alt="" width="50%" min-width="200px" itemprop="image">
 </div>
