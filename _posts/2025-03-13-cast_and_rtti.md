@@ -1,5 +1,3 @@
-테스트
-
 ---
 title: "형변환과 RTTI"
 excerpt: "업캐스팅 -> 다운캐스팅 -> dynamic_cast -> RTTI"
