@@ -18,9 +18,9 @@ last_modified_at: 2024-03-13
 <br>
 
 ## 다음 내용들을 다룹니다.
-- Upcasting과 Downcasting
-- dynamic_cast
-- RTTI (Run-Time Type Information)
+- Upcasting과 Downcasting  
+- dynamic_cast  
+- RTTI (Run-Time Type Information)  
 
 <br>
 
@@ -70,9 +70,9 @@ int main()
 
 특징 :  
 
-- **명시적 변환 필요** : 다운캐스팅은 암시적으로 이루어지지 않으므로, 명시적으로 캐스팅을 해주어야 합니다.
-- **안정성 문제** : 실제 객체가 변환하려는 파생 클래스가 아니라면, 잘못된 캐스팅이 발생할 수 있습니다. 예를 들어, C 스타일 캐스팅의 경우에는 컴파일러가 강제로 타입 변환을 수행하므로 정의되지 않은 동작을 초래할 수 있습니다.
-    - **dynamic_cast** : 다형성이 적용된 (즉, 최소한 하나 이상의 virtual 함수가 있는) 기본 클래스의 경우, dynamic_cast를 사용하면 RTTI를 사용해서 **런타임에 타입 체크**가 이루어져 안전하게 다운캐스팅할 수 있습니다. 만약 실제 객체가 변환하려는 파생 클래스가 아니라면, 런타임 에러(nullptr 반환 또는 bad_cast 예외)가 발생합니다.
+- **명시적 변환 필요** : 다운캐스팅은 암시적으로 이루어지지 않으므로, 명시적으로 캐스팅을 해주어야 합니다.  
+- **안정성 문제** : 실제 객체가 변환하려는 파생 클래스가 아니라면, 잘못된 캐스팅이 발생할 수 있습니다. 예를 들어, C 스타일 캐스팅의 경우에는 컴파일러가 강제로 타입 변환을 수행하므로 정의되지 않은 동작을 초래할 수 있습니다.  
+    - **dynamic_cast** : 다형성이 적용된 (즉, 최소한 하나 이상의 virtual 함수가 있는) 기본 클래스의 경우, dynamic_cast를 사용하면 RTTI를 사용해서 **런타임에 타입 체크**가 이루어져 안전하게 다운캐스팅할 수 있습니다. 만약 실제 객체가 변환하려는 파생 클래스가 아니라면, 런타임 에러(nullptr 반환 또는 bad_cast 예외)가 발생합니다.  
 
 ```cpp
 class Base
@@ -155,22 +155,24 @@ dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위�
 
 [https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170](https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170)
 
-RTTI(Run-Time Type Information) : 프로그램 실행 중에 객체의 타입이 결정될 수 있도록 하는 메커니즘입니다. 가상 함수 테이블에 있는 type_info 객체에 대한 포인터를 사용합니다.  
-- typeid 연산자 : 객체의 정확한 타입을 식별하는 데 사용됩니다.
-- type_info 클래스 : 연산자가 반환한 타입 정보(typeid)를 보관하는 데 사용됩니다.
+**RTTI(Run-Time Type Information)** : 프로그램 실행 중에 객체의 타입이 결정될 수 있도록 하는 메커니즘입니다. 가상 함수 테이블에 있는 type_info 객체에 대한 포인터를 사용합니다.  
+- typeid 연산자 : 객체의 정확한 타입을 식별하는 데 사용됩니다.  
+- type_info 클래스 : 연산자가 반환한 타입 정보(typeid)를 보관하는 데 사용됩니다.  
 
 ### typeid 연산자
-<typeinfo> 헤더에 존재하는 typeid 연산자를 통해 데이터의 타입을 얻어올 수 있습니다.  
+\<typeinfo> 헤더에 존재하는 typeid 연산자를 통해 데이터의 타입을 얻어올 수 있습니다.  
 
-- typeid(변수)
-- typeid(데이터 타입)
+- typeid(변수)  
+- typeid(데이터 타입)  
 
-반환 타입은 const std::type_info& 입니다.
+반환 타입은 const std::type_info& 입니다.  
 
 
 ### type_info 클래스
+
 [https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170](https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170)
-type_info는 typeid로 얻어온 데이터 타입을 보관하는 클래스입니다.
+
+type_info는 typeid로 얻어온 데이터 타입을 보관하는 클래스입니다.  
 
 - type_info 클래스의 객체를 생성하는 유일한 방법은 typeid 연산자의 반환값을 사용하는 것입니다. (상수 객체)  
 - 복사 생성자, 복사 대입 연산자는 삭제되어 객체를 복사 생성하거나 할당할 수 없습니다.  
@@ -201,7 +203,7 @@ int main()
     <img src="/assets/images/rtti/result1.png" alt="matrix" width="70%" min-width="300px" itemprop="image">
 </div>
 
-이렇게 활용할 수 있다.  
+이렇게 활용할 수 있습니다.  
 ```cpp
 #include<iostream>
 #include<typeinfo>
