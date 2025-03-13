@@ -153,11 +153,13 @@ int main()
 
 dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위해 RTTI를 사용합니다.  
 
-[https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170](https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170)
+[Microsoft Learn : RTTI](https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170)
 
 **RTTI(Run-Time Type Information)** : 프로그램 실행 중에 객체의 타입이 결정될 수 있도록 하는 메커니즘입니다. 가상 함수 테이블에 있는 type_info 객체에 대한 포인터를 사용합니다.  
 - typeid 연산자 : 객체의 정확한 타입을 식별하는 데 사용됩니다.  
 - type_info 클래스 : 연산자가 반환한 타입 정보(typeid)를 보관하는 데 사용됩니다.  
+
+<br>
 
 ### typeid 연산자
 \<typeinfo> 헤더에 존재하는 typeid 연산자를 통해 데이터의 타입을 얻어올 수 있습니다.  
@@ -167,10 +169,11 @@ dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위�
 
 반환 타입은 const std::type_info& 입니다.  
 
+<br>
 
 ### type_info 클래스
 
-[https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170](https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170)
+[Microsoft Learn : type_info 클래스](https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170)
 
 type_info는 typeid로 얻어온 데이터 타입을 보관하는 클래스입니다.  
 
@@ -202,6 +205,8 @@ int main()
 <div>
     <img src="/assets/images/rtti/result1.png" alt="matrix" width="70%" min-width="300px" itemprop="image">
 </div>
+
+<br>
 
 이렇게 활용할 수 있습니다.  
 ```cpp
