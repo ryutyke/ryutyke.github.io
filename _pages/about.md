@@ -1,9 +1,11 @@
 ---
-title: "Hi all! I'm RyuZZi👋🏻"
+title: "Hi! I’m RyuZZi👋🏻"
 permalink: /about/
 layout: single
 comments: false
 ---
+
+게임을 통해 사람들에게 다양한 경험을 제공하고 싶은 게임 개발자입니다.
 
 <div>
     <img src="/assets/images/meee.png" alt="about_meee" width="70%" min-width="700px" itemprop="image">
