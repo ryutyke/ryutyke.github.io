@@ -1,5 +1,5 @@
 ---
-title: "[RL] Learning to Get Up"
+title: "[강화학습] Learning to Get Up"
 excerpt: "2023년에 Unreal Engine 위에서 구현한 강화학습입니다."
 
 categories:

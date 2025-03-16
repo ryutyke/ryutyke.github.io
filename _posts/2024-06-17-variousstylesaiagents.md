@@ -1,5 +1,5 @@
 ---
-title: "[RL] AI Agents of Various Gameplay Styles using RL"
+title: "[강화학습] AI Agents of Various Gameplay Styles using RL"
 excerpt: "2024년에 Unity 위에서 구현한 강화학습입니다."
 
 categories:
