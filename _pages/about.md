@@ -44,6 +44,8 @@ comments: false
 <br>
 
 ### 갤럭시 앱 설치  
+(설치가 안 되면, Google Drive 출처를 알 수 없는 앱 설치 허용 필요)
+
 [Google Drive](https://drive.google.com/file/d/1NePIuWSv3M445IvAUqPUTJQQBpU-OHVR/view?usp=sharing)
 
 <div>
