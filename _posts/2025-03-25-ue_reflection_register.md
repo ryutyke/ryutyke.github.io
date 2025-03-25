@@ -21,11 +21,15 @@ last_modified_at: 2025-03-25
 
 프로그램이 실행 중에 자신의 구조(예를 들어 클래스, 메서드, 필드 등)를 동적으로 조사하고 수정할 수 있는 기능입니다.
 
+<br>
+
 ### C++에 리플렉션이 있는가?
 
 없습니다. 그나마 C++의 RTTI는 런타임에 타입 정보를 제공하지만, 클래스, 메서드, 프로퍼티의 상세 정보를 자동으로 나열하거나 수정하는 기능은 제공하지 않습니다. 즉, 전형적인 리플렉션이 제공하는 수준의 메타데이터 접근이나 조작 기능을 갖추고 있지 않습니다.
 
 언리얼엔진은 이처럼 C++에 없는 리플렉션을, 컴파일 전에 메타데이터(.generated.h, .gen.cpp)를 만들고, 런타임에 이를 사용하여 클래스를 나타내는 `정적 객체`를 만들어 사용하는 방법으로 직접 구현했습니다.
+
+<br>
 
 ### 언리얼 엔진에 리플렉션이 왜 필요했을까?
 
@@ -37,6 +41,8 @@ last_modified_at: 2025-03-25
     2. 직렬화, 역직렬화 : 필드 유형, 크기 확인 및 메모리 오프셋에 직접 쓰기
 
 이러한 기능을 위해 메타데이터들이 런타임 중에 필요합니다.
+
+<br>
 
 ### 리플렉션 방식 (C# vs 언리얼)
 
@@ -50,11 +56,15 @@ last_modified_at: 2025-03-25
 
 (대신 이러한 이유로 런타임에 C#은 동적 타입 생성이 허용되고, 언리얼엔진은 동적 타입 생성이 안 됩니다. 그래서 블루프린트 클래스를 생성 및 수정하면, 에디터가 C++ 코드를 생성하고 프로젝트를 리빌드 하는 것입니다.)
 
+<br>
+
 ### Unreal Header Tool(UHT)
 
 Unreal Header Tool이 컴파일 전에 .h 파일 내 UCLASS(), UPROPERTY(), UFUNCTION() 등의 매크로를 분석해서 리플렉션에 필요한 메타데이터(.generated.h, .gen.cpp 파일)를 생성합니다.
 
 (UhtHeaderCodeGeneratorHFile.cs, UhtHeaderCodeGeneratorCppFile.cs)
+
+<br>
 
 # 리플렉션 등록 과정
 
@@ -70,7 +80,7 @@ Unreal Header Tool이 컴파일 전에 .h 파일 내 UCLASS(), UPROPERTY(), UFUN
 
 ### **UFUNCTION :**
 
-### `struct Z_Construct_UFunction_클래스이름_멤버함수이름_Statics`
+#### `struct Z_Construct_UFunction_클래스이름_멤버함수이름_Statics`
 
 UFUNCTION 멤버 함수당 한 개씩입니다. 함수에 대한 정보를 가지고 있습니다. **모든 데이터가 static const이고 초기화**됩니다.
 
@@ -103,15 +113,18 @@ UFUNCTION 멤버 함수당 한 개씩입니다. 함수에 대한 정보를 가�
     #endif
     };
     ```
-    
 
-### `Z_Construct_UFunction_클래스이름_함수이름()`
+<br>  
+
+#### `Z_Construct_UFunction_클래스이름_함수이름()`
 
 UFunction 정적 객체를 생성하는 함수입니다.
 
+<br>
+
 ### **UCLASS :**
 
-### `Z_Construct_UClass_클래스이름_Statics`
+#### `Z_Construct_UClass_클래스이름_Statics`
 
 UCLASS당 한 개씩입니다. 클래스에 대한 정보를 가지고 있습니다. **모든 데이터가 static const이고 초기화**됩니다.
 
@@ -121,7 +134,8 @@ UCLASS당 한 개씩입니다. 클래스에 대한 정보를 가지고 있습니
 - 모든 멤버 함수에 대한 ‘UFunction 객체의 포인터 주소’, ‘함수 이름’을 저장하는 배열 `FuncInfo`
 - 의존하는 클래스 인스턴스 생성 함수 배열 `DependentSingletons[]`
 - 인터페이스 `FImplementedInterfaceParams` 배열
-- `FClassParams` : StaticClass함수 주소, 클래스 플래그, `FuncInfo` , `PropPointers`, `FMetaDataPairParam` 등 이 객체 안에 있는 것들을 포함한 클래스에 대한 모든 정보
+- `FClassParams` : StaticClass함수 주소, 클래스 플래그, `FuncInfo` , `PropPointers`, `FMetaDataPairParam` 등 이 객체 안에 있는 것들을 포함한 클래스에 대한 모든 정보  
+
     
     ```cpp
     struct FClassParams
@@ -145,7 +159,7 @@ UCLASS당 한 개씩입니다. 클래스에 대한 정보를 가지고 있습니
     };
     
     ```
-    
+<br>
 
 ### `Z_Construct_UClass_클래스이름()`
 
@@ -161,6 +175,8 @@ UClass* Z_Construct_UClass_클래스이름()
 ```
 
 UClass 정적 객체를 생성하는 함수입니다.
+
+<br>
 
 ### `DECLARE_CLASS`
 
@@ -316,7 +332,7 @@ typedef TSuperClass Super;\
 </div>
 </details> 
 
-- **StaticClassCastFlags (EClassCastFlags)** : **핵심 클래스의 빠른 타입 캐스팅**을 위해 사용되는 비트마스크 플래그. 값이 상속됩니다. **Cast<>()**에 사용된다. (예 : AActor 상속 받았으면 CASTCLASS_AActor)
+- **StaticClassCastFlags (EClassCastFlags)** : **핵심 클래스의 빠른 타입 캐스팅**을 위해 사용되는 비트마스크 플래그. 값이 상속됩니다. **Cast<>()**에 사용됩니다. (예 : AActor 상속 받았으면 CASTCLASS_AActor)
 
 <details>
 <summary>코드 접기/펼치기</summary>
@@ -406,6 +422,8 @@ inline static UClass* StaticClass() \
 	return GetPrivateStaticClass(); \
 } \
 ```
+
+<br>
 
 ### **UPROPERTY :**
 
@@ -511,6 +529,9 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UDSStatCompone
         
         };
         ```
+
+</div>
+</details> 
         
 - EPropertyFlags : 프로퍼티에 대한 플래그 (Edit, BlueprintVisible, Transient 등)
 
