@@ -418,10 +418,10 @@ enum EClassCastFlags : uint64
 
 ```cpp
 /** Returns a UClass object representing this class at runtime */ \
-inline static UClass* StaticClass() \
-{ \
-  return GetPrivateStaticClass(); \
-} \
+inline static UClass* StaticClass()
+{
+   return GetPrivateStaticClass();
+}
 ```
 
 <br>
@@ -834,7 +834,7 @@ AddResult AddRegistration(TType* (*InOuterRegister)(), TType* (*InInnerRegister)
 
 에서
 
-`void UClassRegisterAllCompiledInClasses()` 에서 `InnerRegister(Registrant)`가 호출됩니다.
+`void UClassRegisterAllCompiledInClasses()` => `InnerRegister(Registrant)`가 호출됩니다.
 
 ```cpp
 /** Register all loaded classes */
@@ -1046,6 +1046,8 @@ void UDSStatComponent::StaticRegisterNativesUDSStatComponent()
 `FCoreUObjectModule`의 `StartupModule()` 에서 `void UClassRegisterAllCompiledInClasses()` → `InnerRegister(Registrant)`가 호출된 후 `FCoreDelegates::OnInit.AddStatic(InitUObject);`
     
 `InitUObject()`->`StaticUObjectInit()`→ `UObjectBaseInit()` → `UObjectProcessRegistrants()`
+
+<br>
     
 </div>
 </details> 
@@ -1074,19 +1076,23 @@ while (GFirstPendingRegistrant ||
 
 <br>
 
-#### <u>UObjectProcessRegistrants()</u>> :
+#### <u>UObjectProcessRegistrants()</u> :
 
 시스템에 클래스를 등록합니다.
 
-`UObjectProcessRegistrants()` → `UObjectForceRegistration()` ->`DeferredRegister()`
+`UObjectProcessRegistrants()` → `UObjectForceRegistration()` → `DeferredRegister()`
 
 `UObjectProcessRegistrants()`는 FPendingRegistrant* GFirstPendingRegistrant에 next 포인터로 연결되어 있는 FPendingRegistrant들을 등록합니다.
 
 `DeferredRegister()`는 UObject의 `ClassPrivate`에 UClassStaticClass를 넣고, GUObjectArray에 등록하고 ClassMap에 등록합니다.  
 
+<br>
+
 #### <u>UObjectLoadAllCompiledInStructs()</u> :
 
 Struct Registrations, Enum Registrations에 있는 것들을 등록합니다.  
+
+<br>
 
 #### <u>UObjectLoadAllCompiledInDefaultProperties()</u> :
 
@@ -1095,11 +1101,11 @@ Struct Registrations, Enum Registrations에 있는 것들을 등록합니다.
 ```cpp
 UClass* Z_Construct_UClass_클래스이름()
 {
-  if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
-  {
-    UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
-  }
-  return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
+   if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
+   {
+     UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
+   }
+   return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
 }
 ```
 
@@ -1208,7 +1214,7 @@ NotifyRegistrationEvent(PackageName, ClassName, ENotifyRegistrationType::NRT_Cla
 
 **exec 함수 (thunk 함수)** : 네이티브 함수 핸들러입니다. 블루프린트, 네트워크 RPC에서 C++ 함수를 실행할 때 사용됩니다. 
 
-execApplyBuff 함수 (파라미터 값들 읽어서 함수 호출)
+`execApplyBuff` 함수 (파라미터 값들 읽어서 함수 호출)
 
 ```cpp
 DEFINE_FUNCTION(UDSStatComponent::execApplyBuff)
