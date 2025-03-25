@@ -99,7 +99,9 @@ GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스�
 
 ---
 
-### LoadModule() 과정
+<details>
+<summary>LoadModule() 과정</summary>
+<div markdown="1">
 
 `FModuleManager::LoadModuleWithFailureReason()`
 
@@ -112,3 +114,6 @@ GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스�
 `ModuleInfo->Module->StartupModule();` 
 
 `ModulesChangedEvent.Broadcast(InModuleName, EModuleChangeReason::ModuleLoaded);`
+
+</div>
+</details> 
