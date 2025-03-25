@@ -12,8 +12,8 @@ permalink: /unrealengine/reflection/
 toc: true
 toc_sticky: true
 
-date: 2025-03-25 20:00:00
-last_modified_at: 2025-03-25
+date: 2025-03-20 20:00:00
+last_modified_at: 2025-03-20
 ---
 <br>
 
@@ -1039,10 +1039,9 @@ void UDSStatComponent::StaticRegisterNativesUDSStatComponent()
 <summary>CoreUObject부터 등록합니다. (밑에 읽고 읽는 것을 추천합니다)</summary>
 <div markdown="1">
     
-우선, `FEngineLoop::AppInit()`에서 `FCoreDelegates::OnInit.Broadcast()` 해서 CoreUObject부터 등록한다.
+`FCoreUObjectModule`의 `StartupModule()` 에서 `void UClassRegisterAllCompiledInClasses()` → `InnerRegister(Registrant)`가 호출된 후 `FCoreDelegates::OnInit.AddStatic(InitUObject);` 델리게이트 등록하고,    
     
-`FCoreUObjectModule`의 `StartupModule()` 에서 `void UClassRegisterAllCompiledInClasses()` → `InnerRegister(Registrant)`가 호출된 후 `FCoreDelegates::OnInit.AddStatic(InitUObject);`
-    
+`FEngineLoop::AppInit()`에서 `FCoreDelegates::OnInit.Broadcast()` 해서 CoreUObject부터 등록합니다.  
 `InitUObject()`->`StaticUObjectInit()`→ `UObjectBaseInit()` → `UObjectProcessRegistrants()`
 
 <br>
