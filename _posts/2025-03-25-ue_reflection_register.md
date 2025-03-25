@@ -819,7 +819,6 @@ AddResult AddRegistration(TType* (*InOuterRegister)(), TType* (*InInnerRegister)
 <br>
 
 결과 :
-
 - “Registrations”에 리플렉션 등록에 필요한 정보들(등록 함수 포인터, 클래스 info 등)이 등록됩니다.
 
 ---
@@ -1029,7 +1028,6 @@ void UDSStatComponent::StaticRegisterNativesUDSStatComponent()
 <br>
 
 결과 : 
-
 - C++ Native 함수 포인터(exec 함수)를 `NativeFunctionLookupTable`에 등록
 - `TMap<UObjectBase*, FPendingRegistrantInfo>& PendingRegistrants` 에 클래스 등록에 필요한 정보 등록
 
@@ -1200,7 +1198,6 @@ NotifyRegistrationEvent(PackageName, ClassName, ENotifyRegistrationType::NRT_Cla
 <br>
 
 결과 :
-
 - UClass, UFunction, UProperty 정적 객체 등록 및 생성 끝
 - CDO 생성
 
