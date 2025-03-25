@@ -78,9 +78,11 @@ Unreal Header Tool이 컴파일 전에 .h 파일 내 UCLASS(), UPROPERTY(), UFUN
 
 파일 안에는 런타임에 정적 객체를 생성하기 위한 데이터들이 생성됩니다.
 
+<br>
+
 ### **UFUNCTION :**
 
-#### `struct Z_Construct_UFunction_클래스이름_멤버함수이름_Statics`
+#### <u>struct Z_Construct_UFunction_클래스이름_멤버함수이름_Statics</u>
 
 UFUNCTION 멤버 함수당 한 개씩입니다. 함수에 대한 정보를 가지고 있습니다. **모든 데이터가 static const이고 초기화**됩니다.
 
@@ -161,7 +163,7 @@ UCLASS당 한 개씩입니다. 클래스에 대한 정보를 가지고 있습니
     ```
 <br>
 
-### `Z_Construct_UClass_클래스이름()`
+#### `Z_Construct_UClass_클래스이름()`
 
 ```cpp
 UClass* Z_Construct_UClass_클래스이름()
@@ -178,7 +180,7 @@ UClass 정적 객체를 생성하는 함수입니다.
 
 <br>
 
-### `DECLARE_CLASS`
+#### `DECLARE_CLASS`
 
 그 외에도 `DECLARE_CLASS` 매크로를 사용해서 다양한 UCLASS 메타데이터를 생성합니다.
 
