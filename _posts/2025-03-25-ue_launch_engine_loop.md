@@ -1,6 +1,6 @@
 ﻿---
 title: "UE5 Main Loop (작성 중)"
-excerpt: "언리얼엔진의 main()은 어딜까"
+excerpt: "언리얼 엔진의 main()은 어딜까"
 
 categories:
   - UnrealEngine
