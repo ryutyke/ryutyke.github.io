@@ -167,11 +167,11 @@ struct FClassParams
 ```cpp
 UClass* Z_Construct_UClass_클래스이름()
 {
-	if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
-	{
-		UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
-	}
-	return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
+  if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
+  {
+    UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
+  }
+  return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
 }
 ```
 
@@ -420,7 +420,7 @@ enum EClassCastFlags : uint64
 /** Returns a UClass object representing this class at runtime */ \
 inline static UClass* StaticClass() \
 { \
-	return GetPrivateStaticClass(); \
+  return GetPrivateStaticClass(); \
 } \
 ```
 
