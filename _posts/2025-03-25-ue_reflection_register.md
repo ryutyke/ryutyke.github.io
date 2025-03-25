@@ -167,11 +167,11 @@ struct FClassParams
 ```cpp
 UClass* Z_Construct_UClass_클래스이름()
 {
-   if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
-   {
-      UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
-   }
-   return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
+    if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
+    {
+        UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
+    }
+    return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
 }
 ```
 
@@ -1101,11 +1101,11 @@ Struct Registrations, Enum Registrations에 있는 것들을 등록합니다.
 ```cpp
 UClass* Z_Construct_UClass_클래스이름()
 {
-   if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
-   {
-      UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
-   }
-   return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
+    if (!Z_Registration_Info_UClass_클래스이름.OuterSingleton)
+    {
+        UECodeGen_Private::ConstructUClass(Z_Registration_Info_UClass_클래스이름.OuterSingleton, Z_Construct_UClass_클래스이름_Statics::ClassParams);
+    }
+    return Z_Registration_Info_UClass_클래스이름.OuterSingleton;
 }
 ```
 
