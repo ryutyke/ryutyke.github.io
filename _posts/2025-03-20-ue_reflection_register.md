@@ -1,6 +1,6 @@
 ﻿---
 title: "UE5 리플렉션"
-excerpt: "UCLASS 리플렉션 등록 과정 등"
+excerpt: "엔진 코드를 뜯어보자"
 
 categories:
   - UnrealEngine
