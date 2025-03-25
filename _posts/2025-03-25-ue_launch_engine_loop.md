@@ -24,7 +24,7 @@ WinMain() ⇒ LaunchWindowsStartup() ⇒ GuardedMain()
 [Launch.cpp]  
 GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스는 LaunchEngineLoop.h 파일에 있고, PreInit(), Init(), Tick() 등 엔진 게임 루프가 정의되어 있습니다.
 
-### GuardedMain()
+## GuardedMain()
 
 - FCoreDelegates::GetPreMainInitDelegate().Broadcast();
 - PreInit
@@ -91,7 +91,7 @@ GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스�
 
 <br>
 
-### Init
+## Init
 
 // 이어서 작성
 
