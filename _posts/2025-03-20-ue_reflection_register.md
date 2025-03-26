@@ -1351,13 +1351,14 @@ else : dll dynamic load 라면
 
 ### 어디서 CDO 생성이 되는가?
 
-UObject는 void InitUObject()에서  
-
 ```cpp
 FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
 ```
 
-OnProcessLoadedObjectsCallback에 ProcessNewlyLoadedUObjects()를 bind합니다. 따라서 Broadcast 됐을 때 여기서 시스템에 등록되고, CDO가 생성되며 끝!
+CoreUObject에서 FCoreDelegates::OnInit에 void InitUObject() 바인드 
+AppInit()에서 호출되는 FCoreDelegates::OnInit.Broadcast()
+
+InitUObject()에서 **OnProcessLoadedObjectsCallback에 ProcessNewlyLoadedUObjects()를 bind합니다. 따라서 Broadcast 됐을 때 여기서 시스템에 등록되고, CDO가 생성되며 끝!**
 
 dll Load 때 ProcessLoadedObjectsCallback.Broadcast 두 번 하는 이유는 첫 번째는 안정성을 위해 이 모듈 로드하기 전에 다른 모든 UObject 등록하기 위해서이고, 두 번째는 로드된 해당 모듈 UObject 등록하기 위해서입니다.
 
