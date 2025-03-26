@@ -1307,11 +1307,13 @@ LoadModule()로 로드합니다.
 IModuleInterface* FModuleManager::LoadModule(const FName InModuleName, ELoadModuleFlags InLoadModuleFlags)
 ```
 
-MainThread 아니면 이미 로드된 모듈이면 모듈을 return, 로드되지 않았으면 nullptr 리턴. 
+MainThread가 아니면 이미 로드된 모듈이면 모듈을 return 하고, 로드되지 않았으면 nullptr 리턴합니다.
 
-로드는 MainThread에서만.
+로드는 MainThread에서만 가능합니다.
 
-### FModuleManager::LoadModuleWithFailureReason
+<br>
+
+#### <u>FModuleManager::LoadModuleWithFailureReason</u>
 
 LoadModuleWithFailureReason()이 호출됩니다.
 
