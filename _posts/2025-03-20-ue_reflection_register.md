@@ -1321,31 +1321,35 @@ FModuleManager::AddModule() 호출됩니다.
 
 모든 모듈을 등록하는 HashMap에 Modules에 추가됩니다.
 
-ModulesChangedEvent.Broadcast()
+ModulesChangedEvent.Broadcast()이 호출됩니다.
 
 그 후,
 
 if : static load 라면
 
-`ModuleInitializer.Execute()`
+```
+ModuleInitializer.Execute()
 
-`ProcessLoadedObjectsCallback.Broadcast()`
+ProcessLoadedObjectsCallback.Broadcast()
 
-`StartupModule()`
+StartupModule()
 
-`ModulesChangedEvent.Broadcast()`
+ModulesChangedEvent.Broadcast()
+```
 
-else : dll dynamic load 라면
+#### **else : dll dynamic load 라면**
 
-`ProcessLoadedObjectsCallback.Broadcast(NAME_None, bCanProcessNewlyLoadedObjects);`
+```
+ProcessLoadedObjectsCallback.Broadcast(NAME_None, bCanProcessNewlyLoadedObjects);
 
-`ProcessLoadedObjectsCallback.Broadcast(InModuleName, bCanProcessNewlyLoadedObjects);`
+ProcessLoadedObjectsCallback.Broadcast(InModuleName, bCanProcessNewlyLoadedObjects);
 
-`InitializeModuleFunctionPtr()`
+InitializeModuleFunctionPtr()
 
-`StartupModule()`
+StartupModule()
 
-`ModulesChangedEvent.Broadcast(InModuleName, EModuleChangeReason::ModuleLoaded);`
+ModulesChangedEvent.Broadcast(InModuleName, EModuleChangeReason::ModuleLoaded);
+```
 
 <br>
 
