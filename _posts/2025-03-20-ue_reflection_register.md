@@ -1297,6 +1297,8 @@ void UDSStatComponent::ApplyBuff(EDSStatType InStatType, EOperationType InOperat
 
 <br>
 
+---
+
 ## 동적 로드하는 DLL에 있는 UCLASS 등록은 언제?
 
 LoadModule()로 로드합니다. 
@@ -1311,13 +1313,15 @@ MainThread 아니면 이미 로드된 모듈이면 모듈을 return, 로드되�
 
 ### FModuleManager::LoadModuleWithFailureReason
 
-FModuleManager::AddModule() 호출
+LoadModuleWithFailureReason()이 호출됩니다.
 
-모든 모듈을 등록하는 HashMap에 Modules에 추가
+FModuleManager::AddModule() 호출됩니다.
+
+모든 모듈을 등록하는 HashMap에 Modules에 추가됩니다.
 
 ModulesChangedEvent.Broadcast()
 
-그리고,
+그 후,
 
 if : static load 라면
 
@@ -1341,14 +1345,18 @@ else : dll dynamic load 라면
 
 `ModulesChangedEvent.Broadcast(InModuleName, EModuleChangeReason::ModuleLoaded);`
 
+<br>
+
 ### 어디서 CDO 생성이 되는가?
 
-만약 UObject가 있으면 void InitUObject()에서  
+UObject는 void InitUObject()에서  
 
 ```cpp
 FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
 ```
 
-OnProcessLoadedObjectsCallback에 ProcessNewlyLoadedUObjects()가 bind됩니다. 여기서 CDO 생성! 리플렉션 등록 끝!
+OnProcessLoadedObjectsCallback에 ProcessNewlyLoadedUObjects()를 bind합니다. 따라서 Broadcast 됐을 때 여기서 시스템에 등록되고, CDO가 생성되며 끝!
 
-dll Load 때 ProcessLoadedObjectsCallback.Broadcast 두 번 하는 이유가, 첫 번째는 안정성을 위해 이 모듈 로드하기 전에 다른 모든 UObject 등록하려고. 두 번째는 로드된 해당 모듈 UObject 등록하려고. 입니다.
+dll Load 때 ProcessLoadedObjectsCallback.Broadcast 두 번 하는 이유는 첫 번째는 안정성을 위해 이 모듈 로드하기 전에 다른 모든 UObject 등록하기 위해서이고, 두 번째는 로드된 해당 모듈 UObject 등록하기 위해서입니다.
+
+<br>
