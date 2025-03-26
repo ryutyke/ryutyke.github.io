@@ -1090,7 +1090,7 @@ while (GFirstPendingRegistrant ||
 `UObjectProcessRegistrants()`는 PendingRegistrants에 있는 FPendingRegistrant들을 FPendingRegistrant* GFirstPendingRegistrant에 next 포인터(linked list)로 연결합니다.
 
 `DeferredRegister()`는 UObject의 `ClassPrivate`에 UClassStaticClass를 넣고, GUObjectArray에 등록하고 ClassMap에 등록합니다.  
-GUObjectArray에 등록할 때, 가비지 콜렉션 대상에서 제외합니다.
+CDO는 GUObjectArray에 등록할 때, 가비지 콜렉션 대상에서 제외합니다. 또한 RootSet Flag를 가지고 있어도 RootSet으로 포함되지 않습니다.
 
 
 <br>
