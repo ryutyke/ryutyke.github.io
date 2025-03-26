@@ -1059,7 +1059,7 @@ void UDSStatComponent::StaticRegisterNativesUDSStatComponent()
 
 `FEngineLoop::PreInitPostStartupScreen()` → `ProcessNewlyLoadedUObjects()`에서 `void UClassRegisterAllCompiledInClasses()` 가 끝나고
 
-PendingRegistrants가 모두 없어질 때까지 해당 과정을 통해 리플렉션에 모두 등록합니다.
+해당 과정을 통해, PendingRegistrants가 모두 없어질 때까지 리플렉션에 모두 등록합니다.
 
 ```cpp
 bool bNewUObjects = false;
@@ -1087,7 +1087,7 @@ while (GFirstPendingRegistrant ||
 
 `UObjectProcessRegistrants()` → `UObjectForceRegistration()` → `DeferredRegister()`
 
-`UObjectProcessRegistrants()`는 FPendingRegistrant* GFirstPendingRegistrant에 next 포인터로 연결되어 있는 FPendingRegistrant들을 등록합니다.
+`UObjectProcessRegistrants()`는 PendingRegistrants에 있는 FPendingRegistrant들을 FPendingRegistrant* GFirstPendingRegistrant에 next 포인터(linked list)로 연결합니다.
 
 `DeferredRegister()`는 UObject의 `ClassPrivate`에 UClassStaticClass를 넣고, GUObjectArray에 등록하고 ClassMap에 등록합니다.  
 
