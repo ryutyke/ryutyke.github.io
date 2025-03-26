@@ -20,6 +20,7 @@ last_modified_at: 2025-03-20
 ## 다음 내용들을 다룹니다.
 - 언리얼 엔진 리플렉션 개념
 - UCLASS의 리플렉션 등록 과정
+- 동적 로드하는 DLL에 있는 UCLASS 등록은 언제?
 
 <br>
 
@@ -1295,3 +1296,59 @@ void UDSStatComponent::ApplyBuff(EDSStatType InStatType, EOperationType InOperat
 </details> 
 
 <br>
+
+## 동적 로드하는 DLL에 있는 UCLASS 등록은 언제?
+
+LoadModule()로 로드합니다. 
+
+```cpp
+IModuleInterface* FModuleManager::LoadModule(const FName InModuleName, ELoadModuleFlags InLoadModuleFlags)
+```
+
+MainThread 아니면 이미 로드된 모듈이면 모듈을 return, 로드되지 않았으면 nullptr 리턴. 
+
+로드는 MainThread에서만.
+
+### FModuleManager::LoadModuleWithFailureReason
+
+FModuleManager::AddModule() 호출
+
+모든 모듈을 등록하는 HashMap에 Modules에 추가
+
+ModulesChangedEvent.Broadcast()
+
+그리고,
+
+if : static load 라면
+
+`ModuleInitializer.Execute()`
+
+`ProcessLoadedObjectsCallback.Broadcast()`
+
+`StartupModule()`
+
+`ModulesChangedEvent.Broadcast()`
+
+else : dll dynamic load 라면
+
+`ProcessLoadedObjectsCallback.Broadcast(NAME_None, bCanProcessNewlyLoadedObjects);`
+
+`ProcessLoadedObjectsCallback.Broadcast(InModuleName, bCanProcessNewlyLoadedObjects);`
+
+`InitializeModuleFunctionPtr()`
+
+`StartupModule()`
+
+`ModulesChangedEvent.Broadcast(InModuleName, EModuleChangeReason::ModuleLoaded);`
+
+### 어디서 CDO 생성이 되는가?
+
+만약 UObject가 있으면 void InitUObject()에서  
+
+```cpp
+FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+```
+
+OnProcessLoadedObjectsCallback에 ProcessNewlyLoadedUObjects()가 bind됩니다. 여기서 CDO 생성! 리플렉션 등록 끝!
+
+dll Load 때 ProcessLoadedObjectsCallback.Broadcast 두 번 하는 이유가, 첫 번째는 안정성을 위해 이 모듈 로드하기 전에 다른 모든 UObject 등록하려고. 두 번째는 로드된 해당 모듈 UObject 등록하려고. 입니다.
