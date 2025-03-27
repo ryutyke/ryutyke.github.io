@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[C/C++] 메모리 구조"
 excerpt: "Memory structure"
@@ -13,6 +11,8 @@ permalink: /c-cpp/memory_structure/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-02 17:20:00
 last_modified_at: 2024-02-02

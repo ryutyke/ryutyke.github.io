@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[C/C++] inline 함수"
 excerpt: "함수 호출 대신 함수의 내용을 호출한 부분에 직접 삽입하여 실행하도록 컴파일러에게 제안"
@@ -13,6 +11,8 @@ permalink: /c-cpp/inline/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-01-25 15:12:00
 last_modified_at: 2024-01-25

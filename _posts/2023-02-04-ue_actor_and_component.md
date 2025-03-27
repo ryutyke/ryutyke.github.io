@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[UnrealEngine] Actor and Component"
 excerpt: "언리얼 엔진이 게임 제작을 위해 제공하는 프레임워크"
@@ -13,6 +11,8 @@ permalink: /unrealengine/actor_and_component/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-04 18:05:00
 last_modified_at: 2024-02-04

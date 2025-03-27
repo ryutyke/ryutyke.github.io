@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[UnrealEngine] C++ Framework"
 excerpt: "[임시]언리얼 엔진이 제공하는 C++ 프레임워크"
@@ -13,6 +11,8 @@ permalink: /unrealengine/cpp_framework/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-05 00:10:00
 last_modified_at: 2024-02-05

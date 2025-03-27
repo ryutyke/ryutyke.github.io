@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[Algorithm] Behavior Tree"
 excerpt: "게임 알고리즘"
@@ -13,6 +11,8 @@ permalink: /algorithm/behavior_tree/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-04 03:00:00
 last_modified_at: 2024-02-04

@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[C/C++] C++ 언어 특징"
 excerpt: "Features of C++"
@@ -13,6 +11,8 @@ permalink: /c-cpp/features_of_cpp/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-02 16:00:00
 last_modified_at: 2024-02-02

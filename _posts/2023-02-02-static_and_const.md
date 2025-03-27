@@ -1,5 +1,3 @@
-비공개
-
 ---
 title: "[C/C++] Static과 Const"
 excerpt: "코드 실행 결과로 알아보는 Static과 Const"
@@ -13,6 +11,8 @@ permalink: /c-cpp/static_and_const/
 
 toc: true
 toc_sticky: true
+
+published : false
 
 date: 2024-02-02 17:30:00
 last_modified_at: 2024-02-02
