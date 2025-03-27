@@ -108,7 +108,7 @@ Numerical한 방법들은 계산이 복잡하고 느리기 때문에 대충 잘 
 체인의 끝점 바로 전 관절에서 체인의 시작 관절 방향으로 관절들을 순차적으로 돌면서, 그 관절과 끝점을 잇는 선과 그 관절과 목표 끝점 지점을 잇는 선 사이 각도만큼 관절을 회전합니다. 그리고 원하는 결과를 얻을 때까지 이 전체 과정을 반복합니다.  
 
 <div>
-    <img src="/assets/images/ik/image4.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
+    <img src="/assets/images/ik/image4.png" alt="matrix" width="75%" min-width="500px" itemprop="image">
 </div>
 
 (a)가 처음 모습이고, (b)는 p3 관절과 p4사이 직선과, p3관절과 목표 끝점 위치 t 사이 직선 사이 각도인 θ만큼 회전하는 것입니다.  
@@ -130,7 +130,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 이 방법은 오로지 관절들을 한 바퀴만 돌면 되기 때문에 CCD보다 빠릅니다. 근데 이 방법은 원하는 위치가 있는 관절이 오직 끝점 한 개인 문제에만 적용할 수 있습니다. 왜냐하면 체인의 시작 관절에 대해 계산하고 나면 나머지 bone들은 일직선이 되어 버리기 때문입니다. 즉, 뼈가 2개를 넘어가는 순간부터 끝점 위치는 맞지만 아래 사진처럼 돼서 게임에 사용하기엔 부자연스럽습니다.  
 
 <div>
-    <img src="/assets/images/ik/image6.png" alt="matrix" width="25%" min-width="100px" itemprop="image">
+    <img src="/assets/images/ik/image6.png" alt="matrix" width="17%" min-width="50px" itemprop="image">
 </div>
 
 <br>
@@ -138,7 +138,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 - **FABRIK (Forward and Backward Reaching Inverse Kinematics)**
 
 <div>
-    <img src="/assets/images/ik/image7.png" alt="matrix" width="40%" min-width="100px" itemprop="image">
+    <img src="/assets/images/ik/image7.png" alt="matrix" width="35%" min-width="70px" itemprop="image">
 </div>
 
 1. joint들 사이 거리를 계산해 구한 bone들의 길이의 합과 첫 관절에서 끝점 사이 거리를 비교해서 도달 가능한지 확인합니다.
@@ -147,7 +147,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 
 <br>
 
-- <u>**Forward 단계**</u>
+#### <u>Forward 단계</u>
 <div>
     <img src="/assets/images/ik/image8.png" alt="matrix" width="80%" min-width="500px" itemprop="image">
 </div>
@@ -158,7 +158,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 
 <br> 
 
-- <u>**Backward 단계**</u>
+#### <u>Backward 단계</u>
 Forward 단계를 진행하면 체인의 시작 관절 위치가 변경됩니다. 이 관절 위치를 다시 맞춰주기 위해 해당 단계를 진행합니다.  
 
 Backward 단계는 체인의 시작 관절 → 끝점 순서대로 Forward 단계와 동일한 방식을 진행하는 것입니다.  
