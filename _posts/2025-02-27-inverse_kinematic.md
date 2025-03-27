@@ -130,7 +130,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 이 방법은 오로지 관절들을 한 바퀴만 돌면 되기 때문에 CCD보다 빠릅니다. 근데 이 방법은 원하는 위치가 있는 관절이 오직 끝점 한 개인 문제에만 적용할 수 있습니다. 왜냐하면 체인의 시작 관절에 대해 계산하고 나면 나머지 bone들은 일직선이 되어 버리기 때문입니다. 즉, 뼈가 2개를 넘어가는 순간부터 끝점 위치는 맞지만 아래 사진처럼 돼서 게임에 사용하기엔 부자연스럽습니다.  
 
 <div>
-    <img src="/assets/images/ik/image6.png" alt="matrix" width="65%" min-width="200px" itemprop="image">
+    <img src="/assets/images/ik/image6.png" alt="matrix" width="25%" min-width="100px" itemprop="image">
 </div>
 
 <br>
@@ -138,7 +138,7 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 - **FABRIK (Forward and Backward Reaching Inverse Kinematics)**
 
 <div>
-    <img src="/assets/images/ik/image7.png" alt="matrix" width="65%" min-width="350px" itemprop="image">
+    <img src="/assets/images/ik/image7.png" alt="matrix" width="40%" min-width="100px" itemprop="image">
 </div>
 
 1. joint들 사이 거리를 계산해 구한 bone들의 길이의 합과 첫 관절에서 끝점 사이 거리를 비교해서 도달 가능한지 확인합니다.
@@ -147,16 +147,18 @@ $c^2=a^2+b^2−2ab⋅cos(C)$
 
 <br>
 
-- **Forward 단계**
+- <u>**Forward 단계**</u>
 <div>
-    <img src="/assets/images/ik/image8.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
+    <img src="/assets/images/ik/image8.png" alt="matrix" width="80%" min-width="500px" itemprop="image">
 </div>
 
 1. 끝점(p4)을 원하는 끝점 위치(p’4)로 옮깁니다. 
 2. 끝점 바로 전 관절(p3)에서 끝점을 잇는 직선 상에서 끝점에서 뼈길이(d3)만큼 떨어진 위치로 전 관절(p3)을 옮깁니다. 
 3. 2번 과정을 이전 관절들에 대해 진행해서 체인의 시작 관절 (p1)까지 순차적으로 진행합니다.
 
-- **Backward 단계**
+<br> 
+
+- <u>**Backward 단계**</u>
 Forward 단계를 진행하면 체인의 시작 관절 위치가 변경됩니다. 이 관절 위치를 다시 맞춰주기 위해 해당 단계를 진행합니다.  
 
 Backward 단계는 체인의 시작 관절 → 끝점 순서대로 Forward 단계와 동일한 방식을 진행하는 것입니다.  
@@ -192,7 +194,7 @@ Two-Bone IK가 게임에서 많이 사용됩니다. 그 이유는,
 $c^2=a^2+b^2−2ab⋅cos(C)$
 
 <div>
-    <img src="/assets/images/ik/image9.png" alt="matrix" width="65%" min-width="500px" itemprop="image">
+    <img src="/assets/images/ik/image9.png" alt="matrix" width="55%" min-width="100px" itemprop="image">
 </div>
 
 두 bone으로 이루어진 체인의 시작점에 연결된 bone1의 길이 l1과 끝점에 연결된 bone2의 길이 l2와 체인의 시작 관절부터 원하는 끝점 위치 사이의 거리 d를 사용합니다. 제2코사인법칙을 사용해서 회전해야 하는 각도 θ1과 θ2를 구합니다 (아크코사인 활용).  
