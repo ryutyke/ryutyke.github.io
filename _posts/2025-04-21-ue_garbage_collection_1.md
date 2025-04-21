@@ -294,9 +294,7 @@ else if (IsIncrementalReachabilityAnalysisPending())
 ```
 
 프레임당 GC는 1회만 실행되게 합니다.  
-
 만약 이미 해당 프레임에서 GC가 실행됐는데 또 실행 됐을 때, time limit으로 reachability analysis가 중단됐었다면 `PerformReachabilityAnalysisAndConditionallyPurgeGarbage()` 를 실행합니다.  
-
 (`IsIncrementalReachabilityAnalysisPending()`는 기본적으로 false인데, reachability analysis가 time limit으로 중단됐을 때 true가 됩니다.)  
 
 ```cpp
@@ -313,7 +311,7 @@ else if (IsIncrementalReachabilityAnalysisPending())
 #endif
 ```
 
-GC 스트레스 테스트 및 디버깅 용입니다.
+GC 스트레스 테스트 및 디버깅 용입니다.  
 • `CVarStressTestGCWhileStreaming`: **비동기 로딩 중 매 프레임 GC 시도**
 • `CVarForceCollectGarbageEveryFrame`: **매 프레임 GC 강제 실행**
 
@@ -326,7 +324,6 @@ if (ForceTriggerPurge != EGarbageCollectionType::None)
 ```
 
 ShouldForceGarbageCollection()은 기본적으로는 `EGarbageCollectionType::None` 을 리턴합니다. 필요하면 오버라이드해서 구현하면 됩니다. 여기서 `bFullPurgeTriggered` 값이 결정됩니다.  
-
 (메모리 부족하거나, 레벨 로딩 시간이나, 이럴 때 사용하면 될 거 같습니다.)  
 
 ```cpp
@@ -346,8 +343,7 @@ if (bFullPurgeTriggered)
 ```
 
 만약 `bFullPurgeTriggered` 이 true면, `TryCollectGarbage()`로 GC 가능할 시, 모든 UWolrd 객체를 순회하며 `CleanupActors()`를 호출합니다.  
-
-`bFullPurgeTriggered`가 false면,
+`bFullPurgeTriggered`가 false면,  
 
 ```cpp
 else
@@ -380,13 +376,10 @@ else
 	}
 ```
 
-UWorld 객체를 순회하며,
-
+UWorld 객체를 순회하며,  
 - BeginPlay를 한 UWorld가 하나라도 있는가
 - 데디케이티드 서버이거나, 데디케이티드 서버가 아니라면 월드에 접속한 클라이언트가 있는가
-
 를 조사합니다.  
-
 두 조건이 모두 참이 된다면, 더 이상 조사할 필요가 없기 때문에 객체 순회를 멈춥니다.  
 
 그 후, BeginPlay를 한 월드가 있다면  
@@ -462,9 +455,7 @@ const float TimeBetweenPurgingPendingKillObjects = GetTimeBetweenGarbageCollecti
 TimeSinceLastPendingKillPurge에 DeltaTime을 더해줍니다.  
 
 TimeBetweenPurgingPendingKillObjects : PendingKillObjects를 Purging하는 주기  
-
 이는 기본적으로 60초이고, 데디케이티드 서버의 경우 커넥트된 플레이어가 없으면 10을 곱해줍니다.  
-
 그리고, 만약 메모리가 부족하면(low memory threshold보다 적으면) 빨리 메모리 비워야 하니깐 30초로 설정합니다.  
 
 ```cpp
@@ -476,7 +467,6 @@ if (bShouldDelayGarbageCollect)
 ```
 
 만약 GC를 다음 프레임으로 미뤄야 할 경우에, 미룹니다.  
-
 (UEngine::DelayGarbageCollection()을 통해 미룰 수 있습니다.)  
 
 ```cpp
@@ -490,7 +480,6 @@ else if (IsIncrementalReachabilityAnalysisPending())
 Incremental Reachability Analysis은 **도달 가능성 분석을 한 번에 모두 처리하는 대신 작은 단위로 나눠서 점진적으로 수행하는 것**입니다. 이는 프레임 드랍을 막기 위해서이며, 매 프레임 제한된 시간동안만 작업을 수행하게 해서 성능을 예측 및 보장할 수 있습니다.  
 
 `IsIncrementalReachabilityAnalysisPending()` (GIsIncrementalReachabilityPending 값 반환)는 기본적으로 false인데, reachability analysis가 time limit을 초과하는(bIsSuspended) 등의 이유로 중단되면 true가 됩니다.  
-
 Incremental ReachabilityAnalysis의 Time Limit은 기본적으로 0.005초입니다.  
 
 `PerformIncrementalReachabilityAnalysis()`은
@@ -508,9 +497,7 @@ void PerformIncrementalReachabilityAnalysis(double TimeLimit)
 ```
 
 Time Limit 계산을 위해 시작 시간을 설정하고,  
-
 GCLock()을 얻은 후,  
-
 `PerformReachabilityAnalysisAndConditionallyPurgeGarbage()` 을 호출합니다.  
 
 ---
@@ -552,7 +539,6 @@ void GCLock()
 ```
 
 SetGCIsWaiting() : GCWantsToRunCounter++으로 Waiting to run으로 상태를 변경해 줍니다. 다른 thread들한테 GC 하려고 기다리고 있다고 알리는 것입니다.  
-
 GCWantsToRunCounter는 아토믹 변수입니다.  
 
 <details>
@@ -717,16 +703,13 @@ int main()
 atomic 연산의 횟수를 고려하는 것이 중요하다.  
 
 예를 들어,  
-
 n += 5 는 한 번의 atomic 연산이다.  
-
 n = n + 5 는 두 번의 atomic 연산이다. load(), store()  
 
 ### is_lock_free
 
 사실 atomic을 하드웨어적으로 지원해 주지 않는다면, 내부적으로 mutex나 다른 lock 알고리즘을 사용한다. C++에서 정의하는 유일한 Lock Free 타입은 std::atomic_flag이다. 그 외는 하드웨어, 컴파일러에 따라 다르게 동작할 수 있다.  
-
-Lock free가 가능한지 알아보는 방법은 is_lock_free 함수를 사용하는 것이다.
+Lock free가 가능한지 알아보는 방법은 is_lock_free 함수를 사용하는 것이다.  
 
 ```cpp
 #include <iostream>
@@ -742,7 +725,7 @@ int main()
 }
 ```
 
-is_always_lock_free 함수는 컴파일 타임에 이를 확인할 수 있게 한다.
+is_always_lock_free 함수는 컴파일 타임에 이를 확인할 수 있게 한다.  
 
 <br>
 
@@ -758,14 +741,11 @@ is_always_lock_free 함수는 컴파일 타임에 이를 확인할 수 있게 �
 
 Unreal engine은 TAtomic에서 std::atomic으로 넘어가는 것 같습니다.  
 
-
 (비동기 로딩 중에 IsTimeLimitExceeded() 함수에서 IsGarbageCollectionWaiting()으로 이를 확인합니다. 시간 초과를 하지 않았더라도 가비지 컬렉션이 대기 중인 경우 시간 초과로 처리합니다.)  
 
 
 FPlatformProcess::ConditionalSleep()을 통해 AsyncCounter가 0이 될 때까지 Sleep 합니다.  
-
 (non-game thread에서 스코프 내에서 GC를 막을 때 FGCScopeGuard를 사용하는데, Scope Lock시 AsyncCounter가 올라가고, Unlock시 내려갑니다.  
-
 GC를 막는 예시로는, 비동기 로딩 중인 UObject가 참조 추적이 잘못 되어 삭제되는 것을 막기 위해 GC 중에는 비동기 로딩을, 비동기 로딩 중에는 GC를 하지 않습니다.  
 
 ```cpp
@@ -786,7 +766,6 @@ void FGenericPlatformProcess::ConditionalSleep(TFunctionRef<bool()> Condition, f
 ```
 
 ConditionalSleep은 함수 파라미터로 검사할 람다 함수와 SleepTime(기본값 0.0f)을 받습니다. 현재 GC 코드에서는 SleepTime이 기본 값으로 0.0f 입니다.  
-
 SleepNoStats(SleepTime)를 통해 프로세서 양보를 시도하면서 spin lock을 합니다. (100% busy waiting은 아닌 것)  
 
 ```cpp
@@ -804,8 +783,7 @@ void FWindowsPlatformProcess::SleepNoStats(float Seconds)
 }
 ```
 
-Sleep()과 SwitchToThread()는 운영체제가 지원하는 함수입니다. 만약 SleepTime이 0이라면 SwitchToThread()를, 아니라면 Sleep을 호출합니다.
-
+Sleep()과 SwitchToThread()는 운영체제가 지원하는 함수입니다. 만약 SleepTime이 0이라면 SwitchToThread()를, 아니라면 Sleep을 호출합니다.  
 - Sleep()은 스레드를 Waiting 상태로 전환하고 매개변수로 준 SleepTime 후 Ready 상태로 전환합니다.
 - SwitchToThread()는 현재 프로세서에서 실행할 준비가 되어 있는 다른 스레드에 실행 명령을 내립니다.
 - Sleep(0.0f)와 SwitchToThread()은 둘 다 양보를 하는 함수지만, 차이점은 Sleep은 자기와 같거나 자기보다 높은 우선순위를 가진 스레드가 없다면 Context Switch를 하지 않는다는 것이고, SwitchToThread()는 **우선순위와 무관하게** Context Switch를 시도한다는 것입니다.
