@@ -1,5 +1,5 @@
 ﻿---
-title: "UE5 Main Loop (작성 중)"
+title: "UE5 Main Loop"
 excerpt: "언리얼 엔진의 main()은 어딜까"
 
 categories:
@@ -93,9 +93,14 @@ GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스�
 
 ## Init
 
-// 이어서 작성
 
 
+## Tick
+
+- FEngineLoop::Tick()  
+    - UGameEngine::Tick()
+        - UWorld.Tick() 
+            - GEngine->ConditionalCollectGarbage()
 
 ---
 ### 임시
