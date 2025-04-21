@@ -1,6 +1,6 @@
 ﻿---
 title: "UE5 가비지 컬렉션 (1)"
-excerpt: "엔진 코드를 뜯어보자"
+excerpt: "오브젝트 풀링 구현 후 결과 분석 중 시작... 정돈되지 않은 글"
 
 categories:
   - UnrealEngine
@@ -122,6 +122,10 @@ void UWorld::Tick( ELevelTick TickType, float DeltaSeconds )
 <details>
 <summary> 전체 코드 [ ConditionalCollectGarbage() ] </summary>
 <div markdown="1">
+
+펼침 시작
+
+<br>
 
 ```cpp
 void UEngine::ConditionalCollectGarbage()
@@ -256,6 +260,12 @@ void UEngine::ConditionalCollectGarbage()
 }
 ```
 
+<br>
+
+펼침 끝
+
+<br>
+
 </div>
 </details> 
 
@@ -385,6 +395,10 @@ UWorld 객체를 순회하며,
 <summary> 전체 코드 [ ConditionalCollectGarbage() 후반부 ] </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 ```cpp
 	if (bHasAWorldBegunPlay)
 	{
@@ -429,6 +443,12 @@ UWorld 객체를 순회하며,
 		}
 	}
 ```
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details> 
@@ -538,6 +558,10 @@ GCWantsToRunCounter는 아토믹 변수입니다.
 <details>
 <summary> Atomic에 대한 간단한 개념 </summary>
 <div markdown="1">
+
+펼침 시작
+
+<br>
 
 # atomic
 
@@ -720,6 +744,12 @@ int main()
 
 is_always_lock_free 함수는 컴파일 타임에 이를 확인할 수 있게 한다.
 
+<br>
+
+펼침 끝
+
+<br>
+
 </div>
 </details>
 
@@ -827,6 +857,10 @@ GC가 실행 중인(running) 상태를 나타내는 카운터(GCCounterValue)를
 <details>
 <summary> 전체 코드 [ PerformReachabilityAnalysisAndConditionallyPurgeGarbage() ] </summary>
 <div markdown="1">
+
+펼침 시작
+
+<br>
 
 ```cpp
 void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
@@ -963,6 +997,12 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	}
 }
 ```
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details> 
@@ -1115,6 +1155,10 @@ EGCOptions GetReferenceCollectorOptions(bool bPerformFullPurge)
 <summary> 전체 코드 [ PerformReachabilityAnalysis() ] </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 ```cpp
 	/**
 	 * Performs reachability analysis.
@@ -1165,6 +1209,12 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	}
 ```
 
+<br>
+
+펼침 끝
+
+<br>
+
 </div>
 </details> 
 
@@ -1198,6 +1248,10 @@ StartReachabilityAnalysis() : 각종 값들 초기화 (InitialReferences, Initia
 <summary> 전체 코드 [ MarkObjectsAsUnreachable() ] </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
@@ -1221,6 +1275,12 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 ```
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details> 
@@ -1326,6 +1386,10 @@ do
 <summary> 전체 코드 [ PerformReachabilityAnalysisPass() ] </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
 {
@@ -1392,6 +1456,12 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	}
 }
 ```
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details> 
@@ -1539,6 +1609,10 @@ FastReferenceCollector(Processor).ProcessObjectArray(Context)를 수행합니다
 <summary> ProcessAsync() [ GarbageCollection.cpp ] </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 ```cpp
 TArrayView<FWorkerContext*> Contexts = InitializeAsyncProcessingContexts(InContext);
 TSharedRef<FWorkCoordinator> WorkCoordinator = MakeShared<FWorkCoordinator>(Contexts, FTaskGraphInterface::Get().GetNumWorkerThreads());
@@ -1622,6 +1696,12 @@ if (!GReachabilityState.CheckIfAnyContextIsSuspended())
 
 Context의 InitialObjects를 비우고, 아직 Task를 시작하지 못 한 Context들에 대해서 TimeLimit 초과 여부(bIsSuspended) 값을 설정합니다. (ProcessObjectArray() 함수 맨 처음에 bDidWork를 true로 합니다.) 모든 Context가 TimeLimit을 초과하지 않았다면, 모든 Async Context들을 Reset합니다.
 
+<br>
+
+펼침 끝
+
+<br>
+
 </div>
 </details> 
 
@@ -1630,6 +1710,10 @@ Context의 InitialObjects를 비우고, 아직 Task를 시작하지 못 한 Cont
 <details>
 <summary> 전체 코드 [ ProcessObjectArray() ] </summary>
 <div markdown="1">
+
+펼침 시작
+
+<br>
 
 ```cpp
 	void ProcessObjectArray(FWorkerContext& Context)
@@ -1709,6 +1793,12 @@ StoleARO:
 		Processor.LogDetailedStatsSummary();
 	}
 ```
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details> 
@@ -1802,6 +1892,10 @@ Context의 ReferencingObject 값을 넣어줍니다.
 <summary> FGCObject, GGCObjectReferencer </summary>
 <div markdown="1">
 
+펼침 시작
+
+<br>
+
 FGCObject는 생성자에서부터 RegisterGCObject()가 호출됩니다.  
 FGCObject의 RegisterGCObject() 사용 시 **Root 객체인 GGCObjectReferencer**에 해당 오브젝트가 추가됩니다. (Object의 EFlags::AddStableNativeReferencesOnly에 따라 true면 InitialReferencedObjects 또는 false면 RemainingReferencedObjects 배열에 추가됩니다.)  
 
@@ -1815,6 +1909,12 @@ GGCObjectReferencer의 AddReferencedObjects()가 호출되면 InitialReferencedO
 
 따라서 AddToRoot() 대신 사용하면 안전하게 사용할 수 있습니다!  
 
+<br>
+
+펼침 끝
+
+<br>
+
 </div>
 </details> 
 
@@ -1823,6 +1923,10 @@ GGCObjectReferencer의 AddReferencedObjects()가 호출되면 InitialReferencedO
 <details>
 <summary> TStrongObjectPtr </summary>
 <div markdown="1">
+
+펼침 시작
+
+<br>
 
 FGCObject와 관련된 TStrongObjectPtr에 대해 적어보면,  
 우선, TStrongObjectPtr은 UObject(포인터, 참조)만 보관할 수 있습니다.  
@@ -1836,6 +1940,12 @@ TStrongObjectPtr의 멤버 변수인 TUniquePtr<TInternalReferenceCollector> Ref
 
 ReferenceCollector는 **FGCObject**를 상속 받은 클래스이고, AddReferencedObjects()를 멤버변수인 Object를 GC에 등록하도록 오버라이드했습니다.  
 즉, TStrongObjectPtr은 UObject를 GC에 등록해 주는 포인터입니다.  
+
+<br>
+
+펼침 끝
+
+<br>
 
 </div>
 </details>
