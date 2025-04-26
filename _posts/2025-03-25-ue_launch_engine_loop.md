@@ -100,6 +100,7 @@ GEngineLoop는 FEngineLoop 클래스의 객체입니다. FEngineLoop 클래스�
 - FEngineLoop::Tick()  
     - UGameEngine::Tick()
         - UWorld.Tick() 
+            - BroadcastTickFlush()
             - GEngine->ConditionalCollectGarbage()
 
 ---
