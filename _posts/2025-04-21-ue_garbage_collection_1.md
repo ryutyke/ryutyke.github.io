@@ -1343,7 +1343,45 @@ MarkRootObjectsAsReachable() 코드 일부를 보면,
 Root Object 배열을 가져오고, `MarkRootsState.Start(Options, RootsArray.Num())`를 통해 병렬로 나눌 스레드 개수를 정하고, 각 스레드가 처리할 Root Object 배열의 시작 인덱스와 끝 인덱스를 나눕니다.  
 그 후, MarkRootsState.NumWorkerThreads() 만큼 스레드를 나눠서 Root Object Mark 작업을 처리합니다. (만약 1개라면 ForceSingleThread)  
 
+
+```cpp
+// This is super slow as we need to look through all existing UObjects and access their memory to check EObjectFlags
+if (KeepFlags != RF_NoFlags)
+{
+	MarkObjectsState.Start(Options, GUObjectArray.GetObjectArrayNum(), GUObjectArray.GetFirstGCIndex());
+
+	FMarkObjectsState::FThreadIterators& ThreadIterators = MarkObjectsState.GetThreadIterators();
+	ParallelFor(TEXT("GC.SlowMarkObjectAsReachable"), MarkObjectsState.NumWorkerThreads(), 1, [&ThreadIterators, &KeepFlags](int32 ThreadIndex)
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(MarkClusteredObjectsAsReachableTask);
+		FMarkObjectsState::FIterator& ThreadState = ThreadIterators[ThreadIndex];
+		const bool bWithGarbageElimination = UObject::IsGarbageEliminationEnabled();
+
+		while (ThreadState.Index <= ThreadState.LastIndex)
+		{
+			FUObjectItem* ObjectItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ThreadState.Index++];
+			UObject* Object = static_cast<UObject*>(ObjectItem->Object);
+			if (Object &&
+				!ObjectItem->HasAnyFlags(EInternalObjectFlags_RootFlags) && // It may be counter intuitive to reject roots but these are tracked with GRoots and have already been marked and added
+				!(bWithGarbageElimination && ObjectItem->IsGarbage()) && Object->HasAnyFlags(KeepFlags)) // Garbage elimination works regardless of KeepFlags
+			{
+				// IsValidLowLevel is extremely slow in this loop so only do it in debug
+				checkSlow(Object->IsValidLowLevel());
+
+				ObjectItem->FastMarkAsReachableInterlocked_ForGC();
+				ThreadState.Payload.Add(Object);
+			}
+		}
+	}, (MarkObjectsState.NumWorkerThreads() == 1) ? EParallelForFlags::ForceSingleThread : EParallelForFlags::None);
+}
+```
+
 그리고, MarkRootObjectsAsReachable()는 Editor 환경에서는 GUObjectArray에 속한 모든 UObject를 검사합니다. Root Object가 아니고, 제거될 가비지(bWithGarbageElimination && IsGarbage)가 아니면서 , EObjectFlags에 RF_Standalone이 있을 경우 Reachable Mark합니다. **즉, 에디터 환경에서는 이 과정에서 모든 UObject를 순회하기 때문에 GC가 훨 느립니다**.  
+
+KeepFlags는 Editor 환경에서 실행했을 경우, RF_Standalone입니다.
+```cpp
+#define GARBAGE_COLLECTION_KEEPFLAGS	(GIsEditor ? RF_Standalone : RF_NoFlags)
+```
 
 ---
 
