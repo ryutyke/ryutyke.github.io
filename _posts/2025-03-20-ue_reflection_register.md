@@ -68,7 +68,7 @@ last_modified_at: 2025-03-20
 
 ### Unreal Header Tool(UHT)
 
-Unreal Header Tool이 컴파일 전에 .h 파일 내 UCLASS(), UPROPERTY(), UFUNCTION() 등의 매크로를 분석해서 리플렉션에 필요한 메타데이터(.generated.h, .gen.cpp 파일)를 생성합니다.
+프로젝트 빌드를 하면, Unreal Header Tool이 컴파일하기 전에 .h 파일 내 UCLASS(), UPROPERTY(), UFUNCTION() 등의 매크로를 분석해서 리플렉션에 필요한 메타데이터(.generated.h, .gen.cpp 파일)를 생성합니다.
 
 (UhtHeaderCodeGeneratorHFile.cs, UhtHeaderCodeGeneratorCppFile.cs)
 
