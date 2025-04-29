@@ -1905,7 +1905,7 @@ Context의 ReferencingObject 값을 넣어줍니다.
 ### **FGCObject,** GGCObjectReferencer
 
 <details>
-<summary> FGCObject, GGCObjectReferencer </summary>
+<summary> FGCObject, GGCObjectReferencer에 대해서. 펼치기/접기 </summary>
 <div markdown="1">
 
 펼침 시작
@@ -1916,6 +1916,7 @@ FGCObject는 생성자에서부터 RegisterGCObject()가 호출됩니다.
 FGCObject의 RegisterGCObject() 사용 시 **Root 객체인 GGCObjectReferencer**에 해당 오브젝트가 추가됩니다. (Object의 EFlags::AddStableNativeReferencesOnly에 따라 true면 InitialReferencedObjects 또는 false면 RemainingReferencedObjects 배열에 추가됩니다.)  
 
 GGCObjectReferencer의 AddReferencedObjects()가 호출되면 InitialReferencedObjects와 RemainingReferencedObjects 배열에 있는 오브젝트들의 AddReferencedObjects()를 호출합니다.  
+주의할 점은, **FGCObject를 상속 받았다고 그 객체가 참조 추적이 되는 것이 아닙니다**. FGCObject를 상속 받은 객체의 AddReferencedObjects()가 호출될 뿐.
 
 따라서 FGCObject를 상속 받아서 AddReferencedObjects() 가상함수를 오버라이드해서 UObject* 멤버 변수를 FReferenceCollector에 추가하면 해당 멤버 변수를 GC에 등록할 수 있습니다.  
 
@@ -1923,7 +1924,7 @@ GGCObjectReferencer의 AddReferencedObjects()가 호출되면 InitialReferencedO
 
 소멸자에서 UnregisterGCObject로 GGCObjectReferencer에서 제거합니다.  
 
-따라서 AddToRoot() 대신 사용하면 안전하게 사용할 수 있습니다!  
+따라서 일반 C++ Object안에 있는 UObject를 AddToRoot() 대신 사용하면 안전하게 사용할 수 있습니다!  
 
 <br>
 
@@ -1937,7 +1938,7 @@ GGCObjectReferencer의 AddReferencedObjects()가 호출되면 InitialReferencedO
 ### TStrongObjectPtr
 
 <details>
-<summary> TStrongObjectPtr </summary>
+<summary> TStrongObjectPtr에 대해서. 펼치기/접기 </summary>
 <div markdown="1">
 
 펼침 시작
@@ -1965,6 +1966,8 @@ ReferenceCollector는 **FGCObject**를 상속 받은 클래스이고, AddReferen
 
 </div>
 </details>
+
+<br>
 
 ```cpp
 for (UObject** InitialReference : Context.InitialNativeReferences)
