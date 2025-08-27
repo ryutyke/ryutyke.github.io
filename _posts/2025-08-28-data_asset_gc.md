@@ -20,7 +20,7 @@ last_modified_at: 2025-08-28
 
 # 로드한 에셋을 GC에 Reachable 등록을 해 줘야 하는가?
 
-데이터 서브시스템을 구현하다가 궁금해졌던 내용이고, 엔진 코드를 읽어 알아냈습니다.
+데이터 서브시스템을 구현하다가 궁금해졌던 내용이고, 엔진 코드를 읽어 알아냈습니다.  
 (이전에 엔진 GC 코드를 공부한 경험이 있어서, 쉽게 알아낼 수 있었습니다. 약간의 스포가 되겠지만, FStreamableManager가 FGCObject를 상속 받는 것을 보고 AddReferencedObjects 함수를 들어갔습니다.)
 
 해당 게시글입니다. 밑에 나올 TStrongObjectPtr에 대해서도 알 수 있습니다.
@@ -28,7 +28,7 @@ last_modified_at: 2025-08-28
 
 ## 상황 설명
 
-일단 상황을 쉽게 설명드리면,
+일단 상황을 쉽게 설명드리면,  
 (앞선 게시물을 보면 구조를 더 잘 이해할 수 있습니다.)
 [https://ryutyke.github.io/unrealengine/data_subsystem/](https://ryutyke.github.io/unrealengine/data_subsystem/)
 
@@ -98,6 +98,8 @@ Load된 에셋은 FStreamable 객체의 Target 변수에 보관되고 이 FStrea
 </div>
 
 따라서 TStrongObjectPtr을 사용하지 않아도 됩니다.
+
+<br>
 
 ### SoftObjectPtr.LoadSynchronous()
 

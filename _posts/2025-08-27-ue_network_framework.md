@@ -33,13 +33,15 @@ last_modified_at: 2025-08-27
 - 클라이언트는 서버한테 Network 통해서 초기 값들(컨트롤러) 전송 받아서 초기화 함(NetInit). 이때 PostInitializeComponents도 함
 - NetInit이 끝나면, 즉 PostNetInit 까지 끝나면. 그 이후 로직. StartPlay 한 상태면 클라도 BeginPlay 하고 등등
 
+<br>
+
 ### NetMode, NetDriver
 
 `InternalGetNetMode()`를 통해 NetMode 확인이 가능하다
 
-NetDriver가 가지고 있는
-ServerConnection은 클라이언트가 가지고 있는 연결된 커넥션에 대한 정보. 서버에 대한 정보가 아니라 커넥션에 대한 정보이다. 오직 1개이다.
-ClientConnection은 서버가 가지고 있는 연결된 커넥션에 대한 정보. 여러 개 가능.
+NetDriver가 가지고 있는  
+ServerConnection은 클라이언트가 가지고 있는 연결된 커넥션에 대한 정보. 서버에 대한 정보가 아니라 커넥션에 대한 정보이다. 오직 1개이다.  
+ClientConnection은 서버가 가지고 있는 연결된 커넥션에 대한 정보. 여러 개 가능.  
 
 ### 용어
 
@@ -75,6 +77,8 @@ ClientConnection은 서버가 가지고 있는 연결된 커넥션에 대한 정
 
 즉, 맨 처음에는 서버에서 빙의한 후 그 정보가 처음 복제된 NetInit이 끝나는 시점인 PostNetInit 이후에 OnRep_Owner가 실행되어 Owner가 설정된다.
 
+<br>
+
 ### NetRole
 
 LocalRole과 RemoteRole이 있다.
@@ -97,11 +101,15 @@ AActor::HasAuthority : Authority를 가졌는지 확인 가능
 
 AController::IsLocalController, APawn::IsLocallyControlled : 입력 관련 로직 수행 가능한지 확인 가능 (Authority이거나 Autonomous Proxy)
 
+<br>
+
 ### NetDriver
 
 용도에 따라 패킷을 처리하는 다양한 NetDriver 클래스를 제공함.
 
 그 중 하나는 GameNetDriver. 게임 데이터를 처리하는데 사용하는 네트워크 드라이버이다.
+
+<br>
 
 ### Channel
 
@@ -143,6 +151,8 @@ void AABFountain::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 그래서 콜백 함수를 사용.
 
+<br>
+
 ### OnReq_
 
 프로퍼티 값이 변경(복제)될 때 콜백 함수를 호출하는 방법
@@ -170,6 +180,8 @@ void AABFountain::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 }  
 ```
 
+<br>
+
 ### 빈도 (Frequency)
 
 NetUpdateFrequency : 1초당 몇 번 리플리케이션을 할지. 기본값은 100.
@@ -177,6 +189,8 @@ NetUpdateFrequency : 1초당 몇 번 리플리케이션을 할지. 기본값은 
 이를 통해 리플리케이션 빈도의 최대치를 설정할 수 있다. 이는 최대치일뿐 보장되지는 않는다. 서버의 성능에 따라 서버의 Tick Rate가 달라지고, 이에 따라 리플리케이션 빈도가 달라질 수 있다. 
 
 적응형 네트워크 업데이트(Adaptive Network Update) : 언리얼이 제공하는 기능이다. 언리얼엔진이 값이 변화하는 주기를 스스로 판단해서 빈도값을 조절해 주는 것이다. 이를 사용하기 위해서는 DefaultEngine.ini에서 [SystemSettings] net.UseAdaptiveNetUpdateFrequency = 1을 하고, 리플리케이션 빈도의 최소치를 설정해 줘야 한다(MinNetUpdateFrequency).
+
+<br>
 
 ### 연관성(Relevancy)
 
@@ -213,6 +227,8 @@ bool AABFountain::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewT
 }
 ```
 
+<br>
+
 ### 우선권(NetPriority)
 
 대역폭은 한정되어 있음. 그래서 우선권을 통해 중요한 것을 먼저 보낼 수 있음.
@@ -220,6 +236,8 @@ bool AABFountain::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewT
 기본값으로 Actor는 1.0, Pawn은 3.0, PlayerController는 3.0
 
 최종 우선권은 GetNetPriority() 가상 함수를 사용해서 계산한다. 이 함수는 업데이트를 받지 못하는 경우를 피하기 위해 NetPriority에 지난번 리플리케이션 이후 경과시간을 곱한다. 또한, 액터와 관찰자 사이의 거리와 상대적 위치도 고려해서 가중치를 곱하여 값을 조절한다.
+
+<br>
 
 ### 휴면 상태(NetDormancy)
 
@@ -237,6 +255,8 @@ bool AABFountain::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewT
 - `SetNetDormancy(ENetDormancy NewDormancy)`: 액터의 Dormancy 상태를 설정합니다.
 - `ForceNetUpdate()`: 액터의 복제를 강제로 트리거합니다.
 
+<br>
+
 ### 조건식 프로퍼티 리플리케이션
 
 조건에 따라 프로퍼티를 리플리케이션에 등록하는 방법이다.
@@ -251,6 +271,8 @@ void AActor::GetLifetimeReplicatedProps( TArray< FLifetimeProperty > & OutLifeti
 	DOREPLIFETIME_CONDITION( AActor, ReplicatedMovement, COND_SimulatedOnly );
 }
 ```
+
+<br>
 
 ### 액터 리플리케이션 과정
 
@@ -292,6 +314,8 @@ UNetDriver::ServerReplicateActors 안에서 일어난다. 서버는 매 틱 마�
 - 사운드 재생, 파티클 스폰 등 액터의 핵심적인 기능과는 무관한 일시적 효과와 같은 작업을 하는 이벤트 사용을 위한 것임
 - 오너십 작동 방식을 이해하는 것이 중요. 이것이 RPC 실행 장소를 결정함.
 
+<br>
+
 ### 키워드
 
 함수를 RPC로 선언하려면 UFUNCTION 선언에 Client, Server, NetMulticast 키워드를 붙여주면 된다.
@@ -304,12 +328,16 @@ UNetDriver::ServerReplicateActors 안에서 일어난다. 서버는 매 틱 마�
 
 함수 접두사로 어떤 키워드인지 알려주는 것이 좋음
 
+<br>
+
 ### RPC 호출 조건
 
 - Actor에서 호출되어야 한다.
 - Actor는 반드시 replicated여야 한다.
 - Client RPC는 해당 Actor를 가지고 있는 Client에서만 함수가 실행된다.
 - Server RPC는 클라이언트는 RPC가 호출되는 Actor를 소유해야 이를 호출할 수 있다.
+
+<br>
 
 ### 인증 (Validation) 함수
 
@@ -333,6 +361,8 @@ void SomeRPCFunction_Implementation(int32 AddHealth)
 }
 ```
 
+<br>
+
 ### Client RPC
 
 - 서버가 특정 클라이언트에 명령을 보낼 수 있음
@@ -351,6 +381,8 @@ void SomeRPCFunction_Implementation(int32 AddHealth)
 - 프로퍼티 리플리케이션과 유사하게 **연관성 기반**으로 동작함 (커넥션을 **소유하지 않아도 동작**)
 - 용도는 프로퍼티 리플리케이션과 다름.
 - 클라이언트에서 호출하면 호출한 클라이언트에서만 실행된다. (서버에서 호출해야 함)
+
+<br>
 
 ### 오너쉽(소유권) 제공
 
@@ -383,6 +415,8 @@ for (APlayerController* PlayerController : TActorRange<APlayerController>(GetWor
 
 오너쉽 정보는 서버가 관리한다. 서버가 아닌 클라이언트가 설정한 오너쉽은 무시된다. 클라이언트에서 변경한 소유권 정보는 서버에 복제되지 않기 때문이다.
 
+<br>
+
 ### Reliable, Unreliable
 
 아무래도 Reliable 과도하게 사용하면 queue 특성상 패킷 손실이 일어날 수 있다. 따라서 프레임 단위로 호출되는 함수는 Unreliable, 그리고 “총 쏘기”는 Reliable 할 필요가 있지만, 플레이어 입력에 바인딩되는 경우 입력 빈도에 제한을 둬서 조절해야 한다.
@@ -393,9 +427,13 @@ for (APlayerController* PlayerController : TActorRange<APlayerController>(GetWor
 - 해당 액터가 움직여야 하는 경우, Replicates Movement를 true로
 - 해당 액터를 스폰 또는 소멸할 때는 반드시 서버에서 하기
 
+<br>
+
 ### 그 외
 
 - 리슨 서버의 경우는 서버가 플레이어로 참여하기 때문에 서버에서도 ServerRPC도 사용 가능.
+
+<br>
 
 ### Property Replication vs NetMulticastRPC
 
@@ -403,11 +441,15 @@ for (APlayerController* PlayerController : TActorRange<APlayerController>(GetWor
 
 그래서 프로퍼티 리플리케이션은 게임에 영향을 미치는 데이터에 사용하고, NetMulticastRPC는 게임과 무관한 휘발성 데이터(효과)에 사용한다.
 
+<br>
+
 ### 액터 컴포넌트 리플리케이션
 
 컴포넌트의 생성자에 `SetIsReplicated(true)`으로 리플리케이션을 지정하면, 컴포넌트 준비 단계인 InitializeComponent가 끝나고 리플리케이션을 준비합니다. 준비가 완료되면 `ReadyForReplication` 를 호출합니다. 그 후 `BeginPlay()`가 진행됩니다.
 
 정리 : InitializeComponent() → ReadyForReplication() → (액터와 액터 컴포넌트 모두)BeginPlay()
+
+<br>
 
 ### 최적화
 
@@ -450,6 +492,8 @@ SimulatedProxy의 경우 서버에서 MulticastRPC를 사용하는 것보다 모
 3. bUpdatePosition = true로 만든다.  
 4. 이후 ControlledCharacterMove() 함수 호출 전에 bUpdatePosition가 true면 false로 바꾸고, 서버RPC 보낸 그 이후의 움직임들에 대한 기록(SavedMoves)을 이용해서 MoveAutonomous()로 새로운 최종 위치로 움직임.
 
+<br>
+
 **SimulatedProxy**
 
 서버에게 받은 움직임 정보를 부드럽게 시각적으로 표현
@@ -457,6 +501,8 @@ SimulatedProxy의 경우 서버에서 MulticastRPC를 사용하는 것보다 모
 SimulateMovement() : 이런저런 처리들을 하고, SimulatedProxy 캐릭터의 위치, 회전, 속도 값을 저장한다. SimulatedTick()과 OnRep_ReplicateMovement에 의해 호출된다.
 
 SmoothClientPosition() : SimulateMovement()에서 캐릭터 캡슐의 속성값을 결정하고, SmoothClientPosition()에서는 프레임 레이트에 맞게 메시를 보간해서 움직임.
+
+<br>
 
 ### 플레이어 무브먼트 리플리케이션 디버깅
 
@@ -473,6 +519,8 @@ SmoothClientPosition() : SimulateMovement()에서 캐릭터 캡슐의 속성값�
 - 서버가 수정해준 위치를 녹색으로
 - 수정은 발생했지만 서버와 클라이언트 위치가 거의 동일한 경우에는 노란색으로
 
+<br>
+
 ### 액터 움직임 리플리케이션
 
 RPC를 사용하지 않고, 프로퍼티 리플리케이션을 사용한다. 
@@ -487,6 +535,8 @@ FRepMovement에는 물리값도 다루는지 여부를 알려주는 bool 값 bRe
 
 FRepMovement::FillFrom()를 통해 현재 FRigidBodyState의 정보를 ReplicatedMovement에 저장하고,  FRepMovement::CopyTo()를 통해 복제 받은 ReplicatedMovement 정보를 FRigidBodyState로 옮긴다.
 
+<br>
+
 GatherCurrentMovement()
 
 - 현재 액터의 움직임을 ReplicatedMovement 속성으로 변환해 설정하는 함수다.
@@ -498,6 +548,8 @@ GatherCurrentMovement()
 - 이렇게 ReplicatedMovement가 변경되면 OnRep_ReplicatedMovement()가 호출되는 것이다.
 - 액터의 움직임 리플리케이션 옵션(bReplicateMovement)을 활성화해줘야 동작한다.
 
+<br>
+
 OnRep_ReplicatedMovement()
 
 - 액터의 일반 움직임과 물리 움직임을 구분해 각각 처리한다.
@@ -505,12 +557,16 @@ OnRep_ReplicatedMovement()
 - 물리 움직임에 대한 처리 : FRepMovement::CopyTo()를 통해 ReplicatedMovement의 정보를 현재 컴포넌트의 물리 상태로 옮긴다.
 - SetRigidBodyReplicatedTarget()으로 물리 씬에서 현재 컴포넌트와 일치하는 타켓(FReplicatedPhysicsTarget)을 찾아서 업데이트 한다.
 
+<br>
+
 ApplyRigidBodyState()
 
 - FPhysicsReplication의 Tick()에서 호출되는 동기화 함수, 즉, 리플리케이션 될 때마다 하는 게 아니라 Tick() 마다!!
 - Extrapolation해서 예측된 값을 사용해서 interpolation.
 - 만약 실제 서버에서 온 값과 차이가 있으면 통신에 걸린 시간인 DeltaTime을 사용해서 에러 시간을 누적
 - 에러 시간이 설정값을 넘으면 강제 조정 (HardSnap)
+
+<br>
 
 Static Mesh Replicate Movement 옵션 : 스태틱 메시 무브먼트 리플리케이션
 
@@ -522,6 +578,8 @@ Static Mesh Replicate Movement 옵션 : 스태틱 메시 무브먼트 리플리�
 2. 서버가 처리하고, 클라이언트에게 결과를 알려줌 : 지연시간 문제, 텔레포트가 아닌 Smooth한 이동이 될 수 있음.
 3. 클라이언트에서 실행하고, 서버RPC도 실행해서 보정 : 클라이언트와 서버 사이에 다르게 동작할 수 있다. 왜? 만약에 텔레포트 이전 시점에서 보정이 일어난 경우, 서버는 텔레포트가 진행된 상태에서 이동 대기 목록(SavedMoves)의 것들을 실행을 한 결과물일 것이고, 클라이언트(Autonomous)는 텔레포트가 SavedMoves에 기록되는 것이 아니기 때문에, 보정이 일어난 시점의 위치로 돌아간 후 텔레포트는 하지 않고 이동 대기 목록의 것들을 실행한 결과물이 보여질 것이다.
 4. CharacterMovementComponent 확장 : 텔레포트를 SavedMoves에 기록하기 때문에 보정이 일어나더라도 텔레포트가 없어지지 않는 보정이 일어난다.
+
+<br>
 
 ### CharacterMovementComponent 확장
 
