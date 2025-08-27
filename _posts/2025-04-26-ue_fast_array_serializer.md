@@ -20,9 +20,14 @@ last_modified_at: 2025-04-26
 # FFastArraySerializer
 
 **NetDeltaSerialize**는 TArray 같은 동적 프로퍼티의 **변경된 원소만 전송**하기 위해 베이스 상태(Base State)와 현재 상태를 비교하여 직렬화하는 메커니즘입니다.  
+
 일반적으로 Delta Replication은 직렬화된 Base State와 Current State의 메모리 값을 비교(memcmp)해서 차이를 확인할 것입니다. 만약 바뀐 부분이 있다면 전체를 보내거나, 모든 원소를 순회하며 내용을 비교하고, 바뀐 부분을 찾아서 보낼 것입니다.  
 
-**Fast TArray Serializer**는 NetDeltaSerialize의 **특수화된 형태**이며, **FastArrayDeltaSerialize를 사용**합니다. FastArrayDeltaSerialize는 각 Element의 고유한 키 값인 ReplicationID는 ReplicationKey 값과 매핑되어 있습니다. Element 값을 추가하거나 변경할 때 MarkItemDirty() 함수를 직접 호출해서 ReplicationKey 값을 증가시킵니다. 이 값을 사용해서 **변경된 Element를 쉽게** 찾을 수 있습니다. 또한 **배열이 변경됐는지 쉽게** 확인할 수 있는 ArrayReplicationKey도 있습니다. MarkArrayDirty() 호출 시 값이 증가합니다. Element 변경 시 직접 호출하는 MarkItemDirty() 안에 MarkArrayDirty()가 있습니다. 그리고, Element 삭제 시 이를 직접 호출해 줘야 합니다. 만약 이 값이 변경되지 않았다면 Serialize를 하지 않습니다.  
+**Fast TArray Serializer**는 NetDeltaSerialize의 **특수화된 형태**이며, **FastArrayDeltaSerialize를 사용**합니다.  
+FastArrayDeltaSerialize는 각 Element의 고유한 키 값인 ReplicationID는 ReplicationKey 값과 매핑되어 있습니다.  
+Element 값을 추가하거나 변경할 때 MarkItemDirty() 함수를 직접 호출해서 ReplicationKey 값을 증가시킵니다. 이 값을 사용해서 **변경된 Element를 쉽게** 찾을 수 있습니다.  
+또한 **배열이 변경됐는지 쉽게** 확인할 수 있는 ArrayReplicationKey도 있습니다. MarkArrayDirty() 호출 시 값이 증가합니다.  
+Element 변경 시 직접 호출하는 MarkItemDirty() 안에 MarkArrayDirty()가 있습니다. 그리고, Element 삭제 시 이를 직접 호출해 줘야 합니다. 만약 이 값이 변경되지 않았다면 Serialize를 하지 않습니다.  
 
 USTRUCT에 `WithNetDeltaSerializer = true`을 하면 NetDeltaSerialize()가 호출됩니다. FFastArraySerializer 구조체의 경우 NetDeltaSerialize에서 FastArrayDeltaSerialize()가 호출하게 구현하면 됩니다.  
 
@@ -69,9 +74,9 @@ virtual bool NetDeltaSerialize(FNetDeltaSerializeInfo & DeltaParms, void *Data) 
 
 ### 원하는 프로퍼티만 직렬화
 
-StatType, OperationType, BuffID, BuffValue 중 StatType, OperationType만 동기화가 필요하다고 해서 이 두 개만 직렬화해서 더욱 최적화하고 싶었다.  
+StatType, OperationType, BuffID, BuffValue 중 StatType, OperationType만 동기화가 필요하다고 해서 이 두 개만 직렬화해서 더욱 최적화하고 싶었습니다.  
 
-아래와 같은 방법으로 할 수 있었다.  
+아래와 같은 방법으로 할 수 있었습니다.  
 
 ```cpp
 USTRUCT(BlueprintType)
@@ -140,22 +145,25 @@ virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSucces
 
 ### FFastArraySerializer
 
-Fast TArray Replication할 TArray를 랩핑하는 구조체이다.  
+Fast TArray Replication할 TArray를 랩핑하는 구조체입니다.  
 
 - TMap<int32, int32> ItemMap : Item의 ReplicationID to Array Index 매핑
-- int32 IDCounter : 0으로 초기화, 새로운 Item이 생길 때마다 1씩 증가하며, Item의 ReplicationID 값 줄 때 쓴다.
+- int32 IDCounter : 0으로 초기화, 새로운 Item이 생길 때마다 1씩 증가하며, Item의 ReplicationID 값 줄 때 씁니다.
 
 ### FFastArraySerializerItem
 
 Fast TArray Replication할 TArray의 Item의 Base Class  
 
-int32 ReplicationID : Item을 고유하게 식별하는 ID. 한 번 할당되면 변경되지 않는다.  
-int32 ReplicationKey : Item이 수정될 때마다 증가시킨다. Item이 변경되었는지 비교하는 데 사용된다.  
-int32 MostRecentArrayReplicationKey : 가장 최신 업데이트 했을 때의 FastArrayReplicationKey를 기록하기 위해 클라이언트 측에서만 사용한다. ACK이 누락된 데이터를 동기화하는 데 사용된다.  
+int32 ReplicationID : Item을 고유하게 식별하는 ID. 한 번 할당되면 변경되지 않습니다.  
+
+int32 ReplicationKey : Item이 수정될 때마다 증가시킨다. Item이 변경되었는지 비교하는 데 사용됩니다.  
+
+int32 MostRecentArrayReplicationKey : 가장 최신 업데이트 했을 때의 FastArrayReplicationKey를 기록하기 위해 클라이언트 측에서만 사용한다. ACK이 누락된 데이터를 동기화하는 데 사용됩니다.  
+
 
 ### FNetFastTArrayBaseState
 
-**State 데이터를 저장**하는 데 사용된다. 
+**State 데이터를 저장**하는 데 사용됩니다. 
 
 int32 ArrayReplicationKey : State의 ArrayReplicationKey  
 
@@ -191,8 +199,11 @@ IsStateEqual() : 현재 객체의 IDToCLMap에 있는 Key-Value 쌍과 동일한
 Fast Array를 직렬화할 때 write/read 되는 헤더 데이터를 가지고 있는 구조체  
 
 int32 ArrayReplicationKey;  
+
 int32 BaseReplicationKey; : old state의 ArrayReplicationKey  
+
 int32 NumChanged;  
+
 TArray<int32, TInlineAllocator<8>> DeletedIndices;  
 
 ---
@@ -233,7 +244,9 @@ if (!Parms.bInternalAck)
 Header.BaseReplicationKey < Item.MostRecentArrayReplicationKey < Header.ArrayReplicationKey  
 
 ArrayReplicationKey : 현재에 해당하는 전송 시퀀스 번호이다. 직렬화가 호출될 때마다 1씩 늘어난다.  
+
 BaseReplicationKey : 클라이언트가 마지막으로 ACK 응답을 보낸, 즉, 성공적으로 수신을 확인한 ArrayReplicationKey 값이다.  
+
 MostRecentArrayReplicationKey : 각 아이템이 추가 또는 변경될 때, 그 때의 ArrayReplicationKey로 갱신된다.  
 
 즉 이 조건은, 서버가 지난 ACK 이후에 새로운 값을 전송 했으나, 그 이후의 새로운 전송 때까지 수신을 확인(ACK)하지 못 했다는 뜻이다. 따라서 누락된 값을 없애서 서버와 동기화해 준다.  
