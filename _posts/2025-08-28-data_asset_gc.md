@@ -104,7 +104,9 @@ Load된 에셋은 FStreamable 객체의 Target 변수에 보관되고 이 FStrea
 ### SoftObjectPtr.LoadSynchronous()
 
 AssetManager나 FStreamableManager를 쓰지 않고 오직 단순히 직접 Load 한다고 생각하면 됩니다.
+
 따라서 SoftObjectPtr을 LoadSynchronous()해서 얻은 UObject는 따로 관리되지 않습니다.
+
 필요 시, 직접 GC Reachable하게 처리해 줘야 합니다.
 
 
