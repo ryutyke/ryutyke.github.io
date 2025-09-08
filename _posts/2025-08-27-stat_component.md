@@ -130,10 +130,10 @@ float UDSStatComponent::GetFinalStat(EDSStatType StatType) const
 
 ### 네트워크 최적화
 
-해당 내용을 공부해서,  
+엔진 코드를 통해 NetSerialize와 FastArrayDeltaSerialize에 대해 공부해서,  
 [https://ryutyke.github.io/unrealengine/fast_array_serialize/](https://ryutyke.github.io/unrealengine/fast_array_serialize/)
 
-NetSerialize를 통해 다른 플레이어에게 버프 상태를 UI로 보여주기 위해 **필요한 정보만 직렬화**하게 했고,  
+NetSerializer를 통해 다른 플레이어에게 버프 상태를 UI로 보여주기 위해 **필요한 정보만 직렬화**하게 했고,  
 
 ```cpp
 bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
@@ -144,7 +144,7 @@ bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
 	}
 ```
 
-FastArrayDeltaSerialize를 통해 MarkArrayDirty로 버프 Array가 변경된 것을 표시하고, 이 경우에만 직렬화하게 했습니다.
+FastArrayDeltaSerializer를 통해 MarkArrayDirty로 버프 Array가 변경된 것을 표시하고, 이 경우에만 직렬화하게 했습니다.
 
 ```cpp
 bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParms)
