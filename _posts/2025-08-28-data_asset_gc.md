@@ -24,13 +24,13 @@ last_modified_at: 2025-08-28
 (이전에 엔진 GC 코드를 공부한 경험이 있어서, 쉽게 알아낼 수 있었습니다. 약간의 스포가 되겠지만, FStreamableManager가 FGCObject를 상속 받는 것을 보고 AddReferencedObjects 함수를 들어갔습니다.)
 
 해당 게시글입니다. 밑에 나올 TStrongObjectPtr에 대해서도 알 수 있습니다.
-[https://ryutyke.github.io/unrealengine/garbage_collection/](https://ryutyke.github.io/unrealengine/garbage_collection/)
+[https://ryutyke.github.io/unrealengine/garbage_collection/](https://ryutyke.github.io/unrealengine/garbage_collection/){:target="_blank"}
 
 ## 상황 설명
 
 일단 상황을 쉽게 설명드리면,  
 (앞선 게시물을 보면 구조를 더 잘 이해할 수 있습니다.)
-[https://ryutyke.github.io/unrealengine/data_subsystem/](https://ryutyke.github.io/unrealengine/data_subsystem/)
+[https://ryutyke.github.io/unrealengine/data_subsystem/](https://ryutyke.github.io/unrealengine/data_subsystem/){:target="_blank"}
 
 데이터 테이블을 보관하는 데이터 에셋은 TSoftObjectPtr을 LoadSynchronous()로 로드합니다.
 

@@ -22,7 +22,7 @@ last_modified_at: 2024-06-17
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gqOXQiGKsC0?si=njdxzaoAIREO2OB4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- 구현 영상 : [https://youtu.be/gqOXQiGKsC0?si=Lpg0p_-lMH9n96Aj](https://youtu.be/gqOXQiGKsC0?si=Lpg0p_-lMH9n96Aj)
+- 구현 영상 : [https://youtu.be/gqOXQiGKsC0?si=Lpg0p_-lMH9n96Aj](https://youtu.be/gqOXQiGKsC0?si=Lpg0p_-lMH9n96Aj){:target="_blank"}
 
 ## 주제
 Implement AI Agents of Various Gameplay Styles using RL

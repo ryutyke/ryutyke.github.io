@@ -19,7 +19,7 @@ last_modified_at: 2024-02-04
 ---
 <br>
 
-[https://docs.unrealengine.com/5.3/ko/gameplay-framework-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/gameplay-framework-in-unreal-engine/)
+[https://docs.unrealengine.com/5.3/ko/gameplay-framework-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/gameplay-framework-in-unreal-engine/){:target="_blank"}
 
 ## 게임플레이 프레임워크
 

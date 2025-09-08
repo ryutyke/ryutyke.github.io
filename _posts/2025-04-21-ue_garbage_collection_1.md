@@ -792,8 +792,8 @@ Sleep()과 SwitchToThread()는 운영체제가 지원하는 함수입니다. 만
     <img src="/assets/images/posts_img/garbagecollection/image1.png" alt="threadstate" width="75%" min-width="100px" itemprop="image">
 </div>
 
-절전 모드 함수 : [https://learn.microsoft.com/ko-kr/windows/win32/api/synchapi/nf-synchapi-sleep?redirectedfrom=MSDN](https://learn.microsoft.com/ko-kr/windows/win32/api/synchapi/nf-synchapi-sleep?redirectedfrom=MSDN)  
-SwitchToThread 함수 : [https://learn.microsoft.com/ko-kr/windows/win32/api/processthreadsapi/nf-processthreadsapi-switchtothread?redirectedfrom=MSDN](https://learn.microsoft.com/ko-kr/windows/win32/api/processthreadsapi/nf-processthreadsapi-switchtothread?redirectedfrom=MSDN)
+절전 모드 함수 : [https://learn.microsoft.com/ko-kr/windows/win32/api/synchapi/nf-synchapi-sleep?redirectedfrom=MSDN](https://learn.microsoft.com/ko-kr/windows/win32/api/synchapi/nf-synchapi-sleep?redirectedfrom=MSDN){:target="_blank"}  
+SwitchToThread 함수 : [https://learn.microsoft.com/ko-kr/windows/win32/api/processthreadsapi/nf-processthreadsapi-switchtothread?redirectedfrom=MSDN](https://learn.microsoft.com/ko-kr/windows/win32/api/processthreadsapi/nf-processthreadsapi-switchtothread?redirectedfrom=MSDN){:target="_blank"}
 
 <br>
 

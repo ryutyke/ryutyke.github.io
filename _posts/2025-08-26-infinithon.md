@@ -20,8 +20,8 @@ last_modified_at: 2025-08-26
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BZMotZ6Xuo0?si=pqQJsE8uHdTlGII5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- 영상 : [https://youtu.be/BZMotZ6Xuo0?si=kpoZ-AZSWlzLtPAb](https://youtu.be/BZMotZ6Xuo0?si=kpoZ-AZSWlzLtPAb)
-- github 링크 : [https://github.com/ryutyke/AttentionPopup](https://github.com/ryutyke/AttentionPopup) 
+- 영상 : [https://youtu.be/BZMotZ6Xuo0?si=kpoZ-AZSWlzLtPAb](https://youtu.be/BZMotZ6Xuo0?si=kpoZ-AZSWlzLtPAb){:target="_blank"}
+- github 링크 : [https://github.com/ryutyke/AttentionPopup](https://github.com/ryutyke/AttentionPopup){:target="_blank"} 
  
 <br>
 

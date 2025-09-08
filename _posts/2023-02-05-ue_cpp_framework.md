@@ -125,4 +125,4 @@ ConstructorHelpers::ObjectFinder
 <br>
 
 ---
-[https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/](https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/)
+[https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/](https://docs.unrealengine.com/4.26/ko/ProductionPipelines/DevelopmentSetup/CodingStandard/){:target="_blank"}

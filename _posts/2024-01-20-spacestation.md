@@ -26,12 +26,12 @@ last_modified_at: 2024-01-20
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/vEbmR1M-XIA?si=VdZ34_Grih7Rrb8O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- 게임 영상 : [https://www.youtube.com/watch?v=vEbmR1M-XIA](https://www.youtube.com/watch?v=vEbmR1M-XIA)
-- github 링크 : [https://github.com/ryutyke/SpaceStation](https://github.com/ryutyke/SpaceStation)
+- 게임 영상 : [https://www.youtube.com/watch?v=vEbmR1M-XIA](https://www.youtube.com/watch?v=vEbmR1M-XIA){:target="_blank"}
+- github 링크 : [https://github.com/ryutyke/SpaceStation](https://github.com/ryutyke/SpaceStation){:target="_blank"}
 
 <br>
 
-[(관련 포스팅) Real-time Voronoi Fracturing](https://ryutyke.github.io/Portfolio/Real-time_Voronoi_Fracturing/)
+[(관련 포스팅) Real-time Voronoi Fracturing](https://ryutyke.github.io/Portfolio/Real-time_Voronoi_Fracturing/){:target="_blank"}
 
 총알 충돌 지점 근처 점들을 사용한 Real-time Voronoi Fracturing 기술을 사용하여 만든 게임 Space Station입니다.
 

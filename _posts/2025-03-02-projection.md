@@ -256,7 +256,7 @@ Reverse-Z Projection을 하지 않으면
 
 > If we do the math, we can see that out of the total range between 0.0 and 1.0, only approximately **0.79%** of all representable values are between 0.5 and 1.0, with a staggering **99.21%** between 0.0 and 0.5. I always knew there was more precision near 0, but I don’t think I’d fully appreciated by quite how much. 
 
-출처 : [https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html](https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html)
+출처 : [https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html](https://tomhultonharrop.com/mathematics/graphics/2023/08/06/reverse-z.html){:target="_blank"}
 
 
 이로 인해 Z-Fighting 문제가 더 많이 발생할 가능성이 큽니다.

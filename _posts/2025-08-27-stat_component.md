@@ -23,8 +23,8 @@ last_modified_at: 2025-08-27
 팀프로젝트에서 스탯, 버프를 관리하는 스탯 컴포넌트를 만들게 됐습니다.  
 
 코드 (깃허브)  
-[헤더 파일 (DSStatComponent.h)](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.h)  
-[소스 파일 (DSStatComponent.cpp)](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.cpp)
+- [헤더 파일 (DSStatComponent.h)](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.h){:target="_blank"}  
+- [소스 파일 (DSStatComponent.cpp)](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.cpp){:target="_blank"}
 
 <br>
 
@@ -131,7 +131,7 @@ float UDSStatComponent::GetFinalStat(EDSStatType StatType) const
 ### 네트워크 최적화
 
 엔진 코드를 통해 NetSerialize와 FastArrayDeltaSerialize에 대해 공부해서,  
-[https://ryutyke.github.io/unrealengine/fast_array_serialize/](https://ryutyke.github.io/unrealengine/fast_array_serialize/)
+[https://ryutyke.github.io/unrealengine/fast_array_serialize/](https://ryutyke.github.io/unrealengine/fast_array_serialize/){:target="_blank"}
 
 NetSerializer를 통해 다른 플레이어에게 버프 상태를 UI로 보여주기 위해 **필요한 정보만 직렬화**하게 했고,  
 

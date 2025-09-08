@@ -158,7 +158,7 @@ int main()
 
 dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위해 RTTI를 사용합니다.  
 
-[Microsoft Learn : RTTI](https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170)
+[Microsoft Learn : RTTI](https://learn.microsoft.com/ko-kr/cpp/cpp/run-time-type-information?view=msvc-170){:target="_blank"}
 
 **RTTI(Run-Time Type Information)** : 프로그램 실행 중에 객체의 타입이 결정될 수 있도록 하는 메커니즘입니다. 가상 함수 테이블에 있는 type_info 객체에 대한 포인터를 사용합니다.  
 - typeid 연산자 : 객체의 정확한 타입을 식별하는 데 사용됩니다.  
@@ -178,7 +178,7 @@ dynamic_cast는 런타임에 실제 객체의 타입 정보를 확인하기 위�
 
 ### type_info 클래스
 
-[Microsoft Learn : type_info 클래스](https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170)
+[Microsoft Learn : type_info 클래스](https://learn.microsoft.com/ko-kr/cpp/cpp/type-info-class?view=msvc-170){:target="_blank"}
 
 type_info는 typeid로 얻어온 데이터 타입을 보관하는 클래스입니다.  
 

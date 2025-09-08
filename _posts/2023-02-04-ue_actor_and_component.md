@@ -80,5 +80,5 @@ UStaticMeshComponent<br>
 
 <br>
 
-[https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/)
-[https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/)
+[https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/actors-in-unreal-engine/){:target="_blank"}
+[https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/](https://docs.unrealengine.com/5.3/ko/components-in-unreal-engine/){:target="_blank"}

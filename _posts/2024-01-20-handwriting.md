@@ -26,8 +26,8 @@ last_modified_at: 2024-01-20
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/soscmdZPXn4?si=6pp4G52cAmAX-gRg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- 게임 영상 : [https://www.youtube.com/watch?v=soscmdZPXn4](https://www.youtube.com/watch?v=soscmdZPXn4)
-- github 링크 : [https://github.com/ryutyke/Handwriting-practice](https://github.com/ryutyke/Handwriting-practice)
+- 게임 영상 : [https://www.youtube.com/watch?v=soscmdZPXn4](https://www.youtube.com/watch?v=soscmdZPXn4){:target="_blank"}
+- github 링크 : [https://github.com/ryutyke/Handwriting-practice](https://github.com/ryutyke/Handwriting-practice){:target="_blank"}
 
 <br>
 

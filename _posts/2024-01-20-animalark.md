@@ -26,8 +26,8 @@ last_modified_at: 2024-01-20
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GkHoIK5gWyE?si=qGdIoDoJt4-CrECx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-- 게임 영상 : [https://www.youtube.com/watch?v=GkHoIK5gWyE](https://www.youtube.com/watch?v=GkHoIK5gWyE)
-- github 링크 : [https://github.com/ryutyke/Animal_Ark](https://github.com/ryutyke/Animal_Ark)
+- 게임 영상 : [https://www.youtube.com/watch?v=GkHoIK5gWyE](https://www.youtube.com/watch?v=GkHoIK5gWyE){:target="_blank"}
+- github 링크 : [https://github.com/ryutyke/Animal_Ark](https://github.com/ryutyke/Animal_Ark){:target="_blank"}
 
 ## 게임 설명
 싱글 플레이

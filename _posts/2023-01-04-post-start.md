@@ -67,14 +67,14 @@ Unity를 사용하면서 오오~ 했던 내용들이나 개발 일지를 적을 
 ### 1. 만든 게임
 
 만든 게임들을 소개합니다.<br>
-**예) [SpaceStation](https://www.youtube.com/watch?v=MsZts6FvNiY&t=34s), [AnimalArk](https://youtu.be/GkHoIK5gWyE?si=GX8CNbFlBPQ_835m), [SewerMom](https://youtu.be/Q9zSz7pk3g0?si=CZ8suRomCqyooEiH), [LeapZombie](https://youtu.be/QjRFuAHs78c?si=j2idxAJ3mBpPfR44)**
+**예) [SpaceStation](https://www.youtube.com/watch?v=MsZts6FvNiY&t=34s){:target="_blank"}, [AnimalArk](https://youtu.be/GkHoIK5gWyE?si=GX8CNbFlBPQ_835m){:target="_blank"}, [SewerMom](https://youtu.be/Q9zSz7pk3g0?si=CZ8suRomCqyooEiH){:target="_blank"}, [LeapZombie](https://youtu.be/QjRFuAHs78c?si=j2idxAJ3mBpPfR44){:target="_blank"}**
 
 <br>
 
 ### 2. 기술
 
 논문 참고해서 구현한 기술들을 소개합니다.<br>
-**예) [Real-time Voronoi Fracturing](https://youtu.be/DU3mkiz4B9g?si=b4jfCm_XX3ullIMi), [Learning to Get Up](https://youtu.be/sk4Bt2QC1OI?si=QYK9blqZLkJ6O88k)**
+**예) [Real-time Voronoi Fracturing](https://youtu.be/DU3mkiz4B9g?si=b4jfCm_XX3ullIMi){:target="_blank"}, [Learning to Get Up](https://youtu.be/sk4Bt2QC1OI?si=QYK9blqZLkJ6O88k){:target="_blank"}**
 
 <br>
 
