@@ -22,6 +22,10 @@ last_modified_at: 2025-08-27
 
 팀프로젝트에서 데이터 기반 프로그래밍을 하기 위해 데이터 테이블과 데이터 에셋을 관리하는 데이터 서브시스템을 만들게 됐습니다.  
 
+코드 :  
+[https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/System/DSGameDataSubsystem.h](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/System/DSGameDataSubsystem.h)
+[https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/System/DSGameDataSubsystem.cpp](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/System/DSGameDataSubsystem.cpp)
+
 <br>
 
 ## Data Table
