@@ -19,6 +19,8 @@ last_modified_at: 2025-04-26
 
 # FFastArraySerializer
 
+### 원하는 원소만 직렬화
+
 **NetDeltaSerialize**는 TArray 같은 동적 프로퍼티의 **변경된 원소만 전송**하기 위해 베이스 상태(Base State)와 현재 상태를 비교하여 직렬화하는 메커니즘입니다.  
 
 일반적으로 Delta Replication은 직렬화된 Base State와 Current State의 메모리 값을 비교(memcmp)해서 차이를 확인할 것입니다. 만약 바뀐 부분이 있다면 전체를 보내거나, 모든 원소를 순회하며 내용을 비교하고, 바뀐 부분을 찾아서 보낼 것입니다.  
@@ -71,6 +73,8 @@ virtual bool NetDeltaSerialize(FNetDeltaSerializeInfo & DeltaParms, void *Data) 
 	}
 }
 ```
+
+<br>
 
 ### 원하는 프로퍼티만 직렬화
 
