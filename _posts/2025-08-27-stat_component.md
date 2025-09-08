@@ -22,9 +22,9 @@ last_modified_at: 2025-08-27
 
 팀프로젝트에서 스탯, 버프를 관리하는 스탯 컴포넌트를 만들게 됐습니다.  
 
-코드 :  
-[https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.h](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.h)
-[https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.cpp](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.cpp)
+코드 (깃허브) :  
+[헤더 파일](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.h)
+[소스 파일](https://github.com/ryutyke/Project25L/blob/main/Source/Project25L/Components/DSStatComponent.cpp)
 
 <br>
 
