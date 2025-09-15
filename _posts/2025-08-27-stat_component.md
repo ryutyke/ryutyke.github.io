@@ -152,3 +152,14 @@ bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParms)
 		return FFastArraySerializer::FastArrayDeltaSerialize<FBuffEntry, FBuffArray>(Entries, DeltaParms, *this);
 	}
 ```
+
+<br>
+
+### Cheat Manager
+
+CheatManager를 사용해서, 특정 기능을 쉽게 테스트할 수 있게 했습니다.
+
+<div>
+    <img src="/assets/images/posts_img/statcomponent/image0.png" alt="cheatmanager" width="100%" min-width="700px" itemprop="image">
+</div>
+
