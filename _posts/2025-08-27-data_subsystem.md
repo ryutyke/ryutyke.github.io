@@ -185,6 +185,10 @@ Load한 에셋들을 보관할 TMap을 프로퍼티로 선언하지 않아도, �
     <img src="/assets/images/posts_img/DataSubsystem/image7.png" alt="dataasset" width="100%" min-width="100px" itemprop="image">
 </div>
 
+### Load한 에셋은 GC에 수거되는가?
+
+[https://ryutyke.github.io/unrealengine/data_asset_gc/](https://ryutyke.github.io/unrealengine/data_asset_gc/){:target="_blank"}  
+
 <br>
 
 ---
