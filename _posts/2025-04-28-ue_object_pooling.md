@@ -31,7 +31,7 @@ Incremental Destroy, 그리고 5.4부터 가능한 Incremental Reachability Anal
 그러나,  
 GC에 걸리는 총 시간이 늘어나기 때문에 더 많은 프레임에 GC를 하게 되고, GC하는 동안에는 안 할 때보다 **UWorld_Tick 시간**이 늘어난다. 따라서 대체로 **한 프레임 프레임마다 시간**이 늘어난다.  
 
-즉, Incremental Reachability Analysis에서 히치가 발생하기도 하고, 발생하지 않는다고 하더라도 UWorld_Tick 시간이 늘어나는 GC가 길어지므로, 객체를 자주 생성하고 삭제하는 로직이라면 풀링을 하자. (Pool에서 꺼낼 때 뭔가 처리를 많이 해 줘야 한다면 그것도 고려해서 결정)  
+즉, Incremental Reachability Analysis에서 히치가 발생하기도 하고, 발생하지 않는다고 하더라도 **UWorld_Tick 시간이 늘어나는 GC가 길어지므로**, 객체를 자주 생성하고 삭제하는 로직이라면 풀링을 하자. (Pool에서 꺼낼 때 뭔가 처리를 많이 해 줘야 한다면 그것도 고려해서 결정)  
 
 (추가로, 첫 GC 때 유독 오래 걸린다. 아마 그 이후부터는 캐시 등을 사용하는 것 같다.)
 
@@ -124,7 +124,7 @@ gc.IncrementalReachabilityTimeLimit=0.002  ; 프레임당 최대 2ms로 시간 �
     <img src="/assets/images/posts_img/objectpooling/image9.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
 </div>
 
-전체 GC가 567ms로 길어졌다 ( 50ms → 567ms )  
+**전체 GC가 567ms로 길어졌다 ( 50ms → 567ms )**  
 
 <div>
     <img src="/assets/images/posts_img/objectpooling/image10.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
@@ -164,7 +164,7 @@ Incremental Begin Destroy가 되어 있어서, 여러 프레임에 걸쳐서 진
 
 ### 분석
 
-분석 종합 : 풀링을 안 했을 때 GC에서 프레임이 낮게 나온다. 그리고 GC 첫 프레임 ConditionalCollectGarbage가 시간이 오래 걸린다. 풀링 안 했을 때 결과에서 점진적 도달 가능성 분석은 나오지 않았다. 그냥 빨리 끝나버렸다. 큰 히치가 생기지는 않았다.  
+분석 종합 : 전체 GC에 걸리는 시간이 거의 10배로 길어졌다. 그리고 GC 첫 프레임 ConditionalCollectGarbage가 시간이 오래 걸린다. 큰 히치가 생기지는 않았다.  
 
 ---
 
@@ -223,7 +223,7 @@ Incremental Begin Destroy가 되어 있어서, 여러 프레임에 걸쳐서 진
 
 ### 분석
 
-풀링 안 했을 때 결과에서 **점진적** 도달 가능성 분석이 나왔다. 그러나 TimeLimit 설정한 2ms의 4배인 8ms로 길게 잘렸다. 그래서 히치가 발생했다.  
+점진적 도달 가능성 분석이 TimeLimit 설정한 2ms의 4배인 8ms로 길게 걸렸다. 그래서 히치가 발생했다.  
 
 ## 5.4 Incremental 안 썼을 때
 
