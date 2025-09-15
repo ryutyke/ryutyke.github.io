@@ -33,7 +33,7 @@ UDSStatComponent::InitializeStats() 함수를 PossessedBy 에서 호출해 서�
 
 DataSubsystem에서 캐릭터 스탯 정보를 가지고 있는 테이블에서 해당 캐릭터에 해당하는 TableRow를 가져와서 초기화했습니다.
 
-리슨 서버이기 때문에 호스트 플레이어의 경우 스탯과 관련된 OnRep 함수를 직접 호출해 줬습니다.
+서버에서 클라이언트로 복제되는 구조이기에, 서버에서는 OnRep 함수를 직접 호출해 줬습니다.  
 
 
 ### 버프
