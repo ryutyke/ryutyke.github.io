@@ -23,12 +23,17 @@ last_modified_at: 2025-04-28
 
 오브젝트 풀링하면, UObject 개수가 줄어서 메모리 최대 사용량이 적고, 사용 메모리 양을 어느정도 예측 가능하다는 장점이 있었다.  
 
-Incremental Destroy, 그리고 5.4부터 가능한 Incremental Reachability Analysis, Incremental Gather Unreachable Objects 덕분에 오브젝트 풀링을 안 해도 GC를 한 프레임에 끝내지 않아서 히치는 잘 발생하지 않는다. (그래도 풀링 안 했을 때 결과에서 Incremental Reachability Analysis가 정해 둔 Limit Time 안에 끝나지 않아서 히치가 발생했음.)  
-그래도 Incremental Reachability Analysis, Incremental Gather Unreachable Objects을 쓰니 히치 정도가 작아졌다.  
+오브젝트 풀링을 안 하면, 오브젝트 수가 늘어나서 도달 분석이나 Destroy 등 **전체 GC에 걸리는 시간**이 늘어난다.  
 
-그리고 히치가 발생하지 않는다고 해도, GC하는 동안에는 안 할 때보다 **UWorld_Tick 시간**이 늘어남. 따라서 한 프레임 **프레임마다 시간**이 늘어난다. 근데 오브젝트 풀링을 안 하면 오브젝트 수가 늘어나서 도달 분석이나 Destroy 등 **전체 GC에 걸리는 시간**이 늘어난다.  
+그러나,  
+Incremental Destroy, 그리고 5.4부터 가능한 Incremental Reachability Analysis, Incremental Gather Unreachable Objects 덕분에 오브젝트 풀링을 안 해도 GC를 한 프레임에 끝내지 않아서 히치는 잘 발생하지 않는다. (그래도 풀링 안 했을 때 결과에서 Incremental Reachability Analysis가 정해 둔 Limit Time 안에 끝나지 않아서 히치가 발생하는 경우가 있었다.)  
+
+그러나,  
+GC에 걸리는 총 시간이 늘어나기 때문에 더 많은 프레임에 GC를 하게 되고, GC하는 동안에는 안 할 때보다 **UWorld_Tick 시간**이 늘어난다. 따라서 대체로 **한 프레임 프레임마다 시간**이 늘어난다.  
 
 즉, Incremental Reachability Analysis에서 히치가 발생하기도 하고, 발생하지 않는다고 하더라도 UWorld_Tick 시간이 늘어나는 GC가 길어지므로, 객체를 자주 생성하고 삭제하는 로직이라면 풀링을 하자. (Pool에서 꺼낼 때 뭔가 처리를 많이 해 줘야 한다면 그것도 고려해서 결정)  
+
+(추가로, 첫 GC 때 유독 오래 걸린다. 아마 그 이후부터는 캐시 등을 사용하는 것 같다.)
 
 <br>
 
