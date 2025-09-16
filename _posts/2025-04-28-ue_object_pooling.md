@@ -21,19 +21,21 @@ last_modified_at: 2025-04-28
 
 ## 미리 보는 결론
 
-오브젝트 풀링하면, UObject 개수가 줄어서 메모리 최대 사용량이 적고, 사용 메모리 양을 어느정도 예측 가능하다는 장점이 있었다.  
+1. 오브젝트 풀링을 안 해도 Unreal engine이 제공하는 Incremental Destroy, Incremental Reachability Analysis, Incremental Gather Unreachable Objects 등으로 GC를 여러 프레임에 나눠서 해 **히치가 발생하는 것은 막을 수 있다.**  
 
-오브젝트 풀링을 안 하면, 오브젝트 수가 늘어나서 도달 분석이나 Destroy 등 **전체 GC에 걸리는 시간**이 늘어난다.  
+2. **GC를 하는 동안에는 World_Tick 시간이 늘어난다.**  
 
-그러나,  
-Incremental Destroy, 그리고 5.4부터 가능한 Incremental Reachability Analysis, Incremental Gather Unreachable Objects 덕분에 오브젝트 풀링을 안 해도 GC를 한 프레임에 끝내지 않아서 히치는 잘 발생하지 않는다. (그래도 풀링 안 했을 때 결과에서 Incremental Reachability Analysis가 정해 둔 Limit Time 안에 끝나지 않아서 히치가 발생하는 경우가 있었다.)  
+3. 오브젝트 풀링을 안 하면, UObject 개수가 늘어서 **GC에 걸리는 총 시간이 늘어난다.**  
 
-그러나,  
-GC에 걸리는 총 시간이 늘어나기 때문에 더 많은 프레임에 GC를 하게 되고, GC하는 동안에는 안 할 때보다 **UWorld_Tick 시간**이 늘어난다. 따라서 대체로 **한 프레임 프레임마다 시간**이 늘어난다.  
+4. Incremental로 여러 프레임에 나눠서 하더라도 **GC를 하는 프레임이 증가한다.**  
 
-즉, Incremental Reachability Analysis에서 히치가 발생하기도 하고, 발생하지 않는다고 하더라도 **UWorld_Tick 시간이 늘어나는 GC가 길어지므로**, 객체를 자주 생성하고 삭제하는 로직이라면 풀링을 하자. (Pool에서 꺼낼 때 뭔가 처리를 많이 해 줘야 한다면 그것도 고려해서 결정)  
+5. 또한, 오브젝트 풀링을 안 하면 Pending Kill 상태인 UObject들이 있어서 최대 메모리 사용량이 더 커질 수 있다. 그 반대로, 오브젝트 풀링을 하면 최대 메모리 사용량을 어느정도 예측이 가능하다.  
 
-(추가로, 첫 GC 때 유독 오래 걸린다. 아마 그 이후부터는 캐시 등을 사용하는 것 같다.)
+즉, 히치가 발생하지 않는다고 하더라도 **UWorld_Tick 시간이 늘어나는 GC가 길어지므로**, 객체를 자주 생성하고 삭제하는 로직이라면 풀링을 하자. (Pool에서 꺼낼 때 뭔가 처리를 많이 해 줘야 한다면 그것도 고려해서 결정)  
+
+(추가로, 첫 GC 때 유독 오래 걸린다. 첫 GC 때 캐시 작업, 클러스터링 등을 하기 때문인 것 같다. 이는 아직 제대로 확인 안 해 봤다.)   
+
+(그리고, 풀링 안 했을 때 Incremental Reachability Analysis가 정해 둔 Limit Time 안에 끝나지 않아서 히치가 발생하는 경우가 있었다.)  
 
 <br>
 
@@ -48,7 +50,7 @@ Unseen 프로젝트(5.2버전)에서 총알을 오브젝트 풀링으로 구현�
 Incremental Reachability Analysis : 참조 연결된 UObject Mark하는 과정  
 Incremental Gather Unreachable Objects : GUObjectArray에 있는 Object 중 Mark 안 된 애 모으는 과정  
 
-DefaultEngine.ini에서  
+DefaultEngine.ini에서 설정해 줬다.  
 
 ```cpp
 [ConsoleVariables]
@@ -56,6 +58,8 @@ gc.AllowIncrementalReachability=1      ; Incremental Reachability Analysis 활�
 gc.AllowIncrementalGather=1           ; Incremental Gather Unreachable Objects 활성화
 gc.IncrementalReachabilityTimeLimit=0.002  ; 프레임당 최대 2ms로 시간 제한 설정
 ```
+
+<br>
 
 세 가지 조건에서,  
 
@@ -72,15 +76,18 @@ gc.IncrementalReachabilityTimeLimit=0.002  ; 프레임당 최대 2ms로 시간 �
 
 하늘로 발사. (Lifespan될 때까지 나두기 위해)  
 
+<!--
 <div>
     <img src="/assets/images/posts_img/objectpooling/image1.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
 </div>
+-->
 
-에서, 5.4 버전 (Incremental Reachability Analysis, Incremental Gather Unreachable Objects 적용)은 메모리까지 추적해 보기로 했다.  
 
 <div>
     <img src="/assets/images/posts_img/objectpooling/image2.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
 </div>
+
+5.4 버전 (Incremental Reachability Analysis, Incremental Gather Unreachable Objects 적용)은 메모리까지 추적해 보기로 했다.  
 
 ---
 
@@ -94,6 +101,8 @@ gc.IncrementalReachabilityTimeLimit=0.002  ; 프레임당 최대 2ms로 시간 �
 
 이후에 나올 no 풀링 데이터랑 비교하면, UObject 메모리가 조금 차이나는 정도? (풀링했을 때는 40 * 3.5, 풀링 안 했을 때는 PendingKill 상태까지 해서 더 많아서?).  
 풀링 했을 때는 메모리 최대 사용량이 적고, 어느정도 예측 가능하다는 장점.  
+
+<br>
 
 <div>
     <img src="/assets/images/posts_img/objectpooling/image4.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
@@ -281,6 +290,8 @@ Incremental Begin Destroy가 되어 있어서, 여러 프레임에 걸쳐서 진
 ### 추가적으로 궁금한 거
 
 왜 첫 GC때 오래 걸리고, 그 이후 GC는 적게 걸리는지 궁금하다. 엔진 더 뜯어보면 정답을 찾을 수 있을 것 같다.  
+
+아마, 캐시 작업. 그리고 Create Garbage Collector UObject Clusters 최적화 옵션이 있는데 Clusters를 만드는 것? 이런 게 아닐까 싶다.  
 
 가끔 GC외의 이유로 히치가 났는데, GameThreadWaitForTask였다.  
 
