@@ -44,6 +44,11 @@ Game Thread는 왜 올라가지?
 
 **Stat SceneRendering** 했더니  
 스킬 쓸 때 파편들이 많아서 그런지 drawcall이 엄청나게 많이 일어난다.  
+
+<div>
+    <img src="/assets/images/posts_img/optimizeunseen/image14.png" alt="optimize" width="100%" min-width="100px" itemprop="image">
+</div>
+
 **그리고 스킬 1→2→3 갈수록 Game이 늘어남.**  
 **gpu time은 스킬 파편 쳐다보면 일어남.**  
 
@@ -124,10 +129,6 @@ Niagara의
 </div>
 
 NE_Smoke 빼보자 : 반투명이라 GPU 많이 사용한다.  
-
-<div>
-    <img src="/assets/images/posts_img/optimizeunseen/image14.png" alt="optimize" width="100%" min-width="100px" itemprop="image">
-</div>
 
 다른 건 안 없어지고,  
 
