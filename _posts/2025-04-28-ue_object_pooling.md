@@ -253,6 +253,7 @@ Incremental Begin Destroy가 되어 있어서, 여러 프레임에 걸쳐서 진
     <img src="/assets/images/posts_img/objectpooling/image31.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
 </div>
 
+<!--
 ## 5.2 (그냥 결과만)
 
 ### 5.2 Yes Pool
@@ -274,6 +275,8 @@ Incremental Begin Destroy가 되어 있어서, 여러 프레임에 걸쳐서 진
 <div>
     <img src="/assets/images/posts_img/objectpooling/image35.png" alt="objectpool" width="100%" min-width="100px" itemprop="image">
 </div>
+
+-->
 
 ### 추가적으로 궁금한 거
 
