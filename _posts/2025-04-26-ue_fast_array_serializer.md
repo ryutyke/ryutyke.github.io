@@ -21,15 +21,19 @@ last_modified_at: 2025-04-26
 
 ### 원하는 원소만 직렬화
 
-**NetDeltaSerialize**는 TArray 같은 동적 프로퍼티의 **변경된 원소만 전송**하기 위해 베이스 상태(Base State)와 현재 상태를 비교하여 직렬화하는 메커니즘입니다.  
+일반적으로 배열의 Replication은 직렬화된 Base State와 Current State의 메모리 값을 비교(memcmp)해서 차이를 확인할 것입니다. 그리고 바뀐 부분이 있다면 배열 전체를 보낼 것입니다.  
 
-일반적으로 Delta Replication은 직렬화된 Base State와 Current State의 메모리 값을 비교(memcmp)해서 차이를 확인할 것입니다. 만약 바뀐 부분이 있다면 전체를 보내거나, 모든 원소를 순회하며 내용을 비교하고, 바뀐 부분을 찾아서 보낼 것입니다.  
+**NetDeltaSerialize**는 struct 정보 등을 가지는 FNetDeltaSerializeInfo를 함수 인자로 제공합니다. 이를 사용해서 배열의 Replication 로직을 커스터마이즈할 수 있습니다.  
 
-**Fast TArray Serializer**는 NetDeltaSerialize의 **특수화된 형태**이며, **FastArrayDeltaSerialize를 사용**합니다.  
-FastArrayDeltaSerialize는 각 Element의 고유한 키 값인 ReplicationID는 ReplicationKey 값과 매핑되어 있습니다.  
+**FastArrayDeltaSerialize**는 언리얼 엔진이 제공하는 NetDeltaSerialize의 커스텀 형태입니다.  
+
+배열의 변경된 원소를 개발자가 직접 Dirty 처리하게 하여, 메모리 비교 없이 제거/추가/수정된 원소를 알 수 있고, 그 원소들만 전송하여 데이터 전송을 최소화합니다.  
+
+
+FastArrayDeltaSerialize는 각 Element의 고유한 키 값인 ReplicationID가 ReplicationKey 값과 매핑되어 있습니다.  
 Element 값을 추가하거나 변경할 때 MarkItemDirty() 함수를 직접 호출해서 ReplicationKey 값을 증가시킵니다. 이 값을 사용해서 **변경된 Element를 쉽게** 찾을 수 있습니다.  
 또한 **배열이 변경됐는지 쉽게** 확인할 수 있는 ArrayReplicationKey도 있습니다. MarkArrayDirty() 호출 시 값이 증가합니다.  
-Element 변경 시 직접 호출하는 MarkItemDirty() 안에 MarkArrayDirty()가 있습니다. 그리고, Element 삭제 시 이를 직접 호출해 줘야 합니다. 만약 이 값이 변경되지 않았다면 Serialize를 하지 않습니다.  
+Element 변경 시 직접 호출하는 MarkItemDirty() 안에 MarkArrayDirty()가 있습니다. 만약 ArrayReplicationKey 값이 변경되지 않았다면 Serialize를 하지 않습니다.  
 
 USTRUCT에 `WithNetDeltaSerializer = true`을 하면 NetDeltaSerialize()가 호출됩니다. FFastArraySerializer 구조체의 경우 NetDeltaSerialize에서 FastArrayDeltaSerialize()가 호출하게 구현하면 됩니다.  
 
