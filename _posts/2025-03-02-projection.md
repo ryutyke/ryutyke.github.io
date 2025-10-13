@@ -262,3 +262,27 @@ Reverse-Z Projection을 하지 않으면
 이로 인해 Z-Fighting 문제가 더 많이 발생할 가능성이 큽니다.
 
 Reverse-Z Projection을 사용하면 멀리 있는 더 많은 객체를 깊이값의 변화를 크게 줄 수 있고, 더 작은 값을 가지게 해서 부동소수점 정밀도를 높여 이 문제를 해결할 수 있습니다.
+
+<br>
+
+### 언리얼 엔진 적용
+
+UE5 기준, 기본적으로 Reverse-Z Projection이 적용되어 있었습니다.  
+
+```cpp
+enum class ERHIZBuffer
+{
+	// Before changing this, make sure all math & shader assumptions are correct! Also wrap your C++ assumptions with
+	//		static_assert(ERHIZBuffer::IsInvertedZBuffer(), ...);
+	// Shader-wise, make sure to update Definitions.usf, HAS_INVERTED_Z_BUFFER
+	FarPlane = 0,
+	NearPlane = 1,
+
+	// 'bool' for knowing if the API is using Inverted Z buffer
+	IsInverted = (int32)((int32)ERHIZBuffer::FarPlane < (int32)ERHIZBuffer::NearPlane),
+};
+```
+
+ERIZBuffer::IsInverted가 기본적으로 true이죠. 이 값을 여러 렌더러 코드에서 사용합니다.  
+
+(참고로 언리얼 엔진 코드를 수정하려면 github에서 엔진 코드를 설치해야 합니다. 크게 어렵지 않습니다.)  
