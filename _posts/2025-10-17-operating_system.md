@@ -13,10 +13,12 @@ permalink: /etc/os
 toc: true
 toc_sticky: true
 
-date: 2025-10-16 20:00:00
-last_modified_at: 2025-10-16
+date: 2025-10-17 00:00:00
+last_modified_at: 2025-10-17
 ---
 <br>
+
+## main memory
 
 폰 노이만 구조 : 
 
@@ -32,6 +34,8 @@ OS한테 파라미터 넘기는 방법 :
 - stack은 stack memory에 push하고 꺼내쓰는 방식.
 
 main memory는 바이트마다 address가 있다.
+
+### process
 
 <div>
     <img src="/assets/images/posts_img/os/image2.png" alt="os" width="50%" min-width="50px" itemprop="image">
@@ -64,6 +68,8 @@ Context Switch : cpu가 어떤 process 처리하다가 다른 process 불러오�
 프로세스의 Parent - Children 관계 : Process가 Process를 만들면 Parent-Children. (리소스를 일부 또는 전부 공유하거나 안 할 수 있음)  
 Children이 exit() 하는데 이걸 받아주는 Waiting Parent가 없으면 Children은 Zombie process가 됨.  
 Parent가 Children 보다 먼저 종료되면, Children은 Orphan process가 됨.
+
+### thread
 
 Thread : 일반적으로 하나의 코어에서 실행될 수 있는 단위  
 여러 Thread를 실행하는 걸 Multithread라고 함. (싱글 코어든 멀티 코어든 여러 thread 동시에면.)
@@ -269,14 +275,14 @@ Address binding : process에 physical memory를 할당해 주는 것.
     <img src="/assets/images/posts_img/os/image18.png" alt="os" width="50%" min-width="50px" itemprop="image">
 </div>
 
-### Memory management methods
+## Memory management methods
 
 1. Contiguous allocation
 2. Paging
 
 <br>
 
-1. Contiguous allocation
+### Contiguous allocation
 
 logical address + relocation register값 = physical address
 
