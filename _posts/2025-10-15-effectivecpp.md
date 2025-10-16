@@ -499,13 +499,12 @@ last_modified_at: 2025-10-15
 
 - 항목 30 : 인라인 함수는 미주알고주알 따져서 이해해 두자.
     - inline을 쓰면 코드의 크기가 커질 수도 있고, 작아질 수도 있다.
-    - inline은 컴파일러에 요청하는 것이지 명령이 아니다. (GCC inline 코드 분석한 거 블로그에 있습니다.)
+    - inline은 컴파일러에 요청하는 것이지 명령이 아니다. (이거 관련 GCC inline 코드 분석한 글 : [https://ryutyke.github.io/c-cpp/inline/](https://ryutyke.github.io/c-cpp/inline/){:target="_blank"})
     - C++에서 함수 인라인은 컴파일 타임에 진행된다.
     - 함수 템플릿이 인라인될 이유가 없다면 인라인 함수로 선언하지 않아도 된다.
     - 생성자, 소멸자는 인라인하기에 좋은 함수가 아니다.
     - 라이브러리 설계할 때, 인라인 함수를 쓰면 그 함수를 사용한 모든 소스를 재 컴파일 해야 한다는 점을 기억하자. 인라인이 아니라면 얘만 따로 컴파일 하면 된다.
     - 우선 아무것도 인라인 하지 말고, 정말 필요한 위치에 인라인 함수를 놓도록 하자.
-inline 관련 내 블로그 글 : [https://ryutyke.github.io/c-cpp/inline/](https://ryutyke.github.io/c-cpp/inline/){:target="_blank"}
 
 - 항목 31 : 파일 사이의 컴파일 의존성을 최대로 줄이자
     - #include 문은 컴파일 의존성을 만든다. 파일 하나 수정 시, 의존성이 생긴 파일들을 모두 재 컴파일해야 한다는 말이다.
