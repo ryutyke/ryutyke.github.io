@@ -616,3 +616,36 @@ last_modified_at: 2025-10-15
     S->draw(); // Rectangle::draw() 호출되지만 매개변수 기본 값은 Red이다.
     ```
 
+- 항목 39 : private 상속은 심사숙고해서 구사하자
+    - 클래스 사이의 상속 관계가 private이면 컴파일러는 일반적으로 파생 클래스 객체를 기본 클래스 객체로 변환하지 않습니다. (파생 클래스 외부에서)
+    - 기본 클래스로부터 물려받은 멤버는 파생 클래스에서 모조리 private 멤버가 된다.
+    - private 상속의 의미는 is-implemented-in-terms-of이다. private 상속을 통해 파생시키는 것은 기본 클래스의 기능을 활용할 목적으로 하는 것이지, 객체 사이에 어떤 개념적 관계가 있어서 하는 것이 아니다. 다른 말로, private 상속은 구현만 물려받고 인터페이스는 물려받지 않는다.
+    - is-implemented-in-terms-of로 객체 합성과 같다. 할 수 있으면 가능한 객체 합성을 사용하고, 꼭 해야 하면 private 상속을 쓰라고 한다. 꼭 해야 하는 경우는 주로 비공개 멤버를 접근할 때 혹은 가상 함수를 재정의할 경우이다. private 상속을 public 상속에 객체 합성 조합으로 풀어보려고 시도하자. 이는 컴파일 의존성을 줄일 수 있다. (또한 가상 함수 재정의를 막을 수 있다고 쓰여 있는데 이제는 final 키워드를 쓰면 된다.)
+    - Widget 클래스에서 Tick()을 제공하는 Timer의 Tick() 가상 함수를 재정의해야 하는 상황이라면 재정의하기 위해 상속을 받아야 한다. 그러나 is-a 관계가 아니므로, public 상속은 맞지 않다.
+    - 공백 기본 클래스 최적화(EBO)에서 private 상속이 쓰인다. C++에는 독립 구조의 객체는 반드시 크기가 0을 넘어야 한다는 금기사항이 있다. 그래서 공백 클래스에 대해 private 상속을 쓰는 공백 기본 클래스 최적화(EBO) 방법이 있다.
+    
+    ```cpp
+    class Empty {};
+    
+    class HoldAnInt {
+    private:
+    	int x;
+    	Empty e;
+    }
+    
+    // 이 경우 sizeof(HoldsAnInt) > sizeof(int) 가 나온다.
+    // Empty의 사이즈가 1이기 때문 (바이트패딩 고려x)
+    
+    ---
+    
+    class HoldsAnInt : private Empty {
+    private:
+    	int x;
+    }
+    
+    // 이렇게 하면 sizeof(HoldsAnInt) == sizeof(int)
+    
+    ```
+    
+    - 공백 클래스는 위 예시처럼 텅 빈 것만이 아니다. typedef 혹은 enum, 정적 데이터 멤버, 비가상 함수까지 갖는 경우도 있다. STL에서 unary_function과 binary_function이 그 예이다. 사용자 정의 함수 객체를 만들 때 상속시킬 기본 클래스로 자주 사용되는 클래스이다.
+
