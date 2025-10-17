@@ -594,3 +594,25 @@ last_modified_at: 2025-10-15
     - 같은 객체가 부모 포인터에 있든 그 객체의 포인터에 있든 기본 클래스의 멤버 함수를 호출했을 때 결과가 같아야 할 것이다.
     - 비가상 함수는 정적 바인딩이기 때문에 만약 파생 클래스에서 재정의했을 경우엔 위의 상황에서 결과가 달라질 수 있다. 이런 경우라면
     - 이건 항목 34의 내용을 리마인드해 준 느낌. 비가상 함수는 의도가 변하지 않는 동작을 주는 건데, 이를 바꿨다면 is-a가 깨지는 것. 가상 함수였으면 변경해도 is-a가 안 깨지는 경우를 생각한 의도였을 테니 괜찮겠지만.
+
+- 항목 37 : 어떤 함수에 대해서도 상속받은 기본 매개변수 값은 절대로 재정의하지 말자
+    - 기본 매개변수 값을 가진 가상 함수를 상속하는 경우, 가상 함수는 동적으로 바인딩되지만, 기본 매개변수 값은 정적으로 바인딩된다. 주의하자.
+    
+    ```cpp
+    class Shape {
+    public:
+    	enum ShapeColor { Red, Green, Blue };
+    
+    	virtual void draw(ShapeColor color = Red) const = 0;
+    
+    };
+    
+    class Rectangle : public Shape {
+    public:
+    	virtual void draw(ShapeColor color = Green) const;
+    };
+    
+    Shape* S = new Rectangle();
+    S->draw(); // Rectangle::draw() 호출되지만 매개변수 기본 값은 Red이다.
+    ```
+
