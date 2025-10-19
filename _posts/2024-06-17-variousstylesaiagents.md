@@ -5,6 +5,7 @@ excerpt: "2024년에 Unity 위에서 구현한 강화학습입니다."
 categories:
   - Portfolio
   - pfunity
+  - pfncsoft
 tags:
   - [Portfolio, ReinforcementLearning, Unity]
 

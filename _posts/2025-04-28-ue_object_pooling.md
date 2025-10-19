@@ -4,6 +4,7 @@ excerpt: "Unreal Insights로 분석, Incremental GC인데 풀링이 필요할까
 
 categories:
   - UnrealEngine
+  - pfncsoft
 tags:
   - [UnrealEngine, Object, Pooling]
 

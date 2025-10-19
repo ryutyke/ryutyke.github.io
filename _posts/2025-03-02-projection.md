@@ -4,6 +4,7 @@ excerpt: "Projection 과정과 Reverse-Z Projection에 대해"
 
 categories:
   - etc
+  - pfncsoft
 tags:
   - [Graphics, Projection, ReverseZ]
 use_math: true

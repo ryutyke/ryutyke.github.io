@@ -1,9 +1,10 @@
 ﻿---
-title: "UE5 가비지 컬렉션 (1)"
+title: "UE5 가비지 컬렉션"
 excerpt: "오브젝트 풀링 구현 후 결과 분석 중 시작..."
 
 categories:
   - UnrealEngine
+  - pfncsoft
 tags:
   - [UnrealEngine, Garbage, Collection]
 

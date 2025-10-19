@@ -4,6 +4,7 @@ excerpt: "엔진 코드로 검증"
 
 categories:
   - UnrealEngine
+  - pfncsoft
 tags:
   - [UnrealEngine, DataAsset, GC]
 
