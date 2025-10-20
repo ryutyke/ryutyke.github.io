@@ -228,4 +228,4 @@ Enum을 사용해야 한다는 제약이 생기는 것도 문제고, 데이터 �
 
 ## 메모리 누수 검사
 
-memreport (full), stat memory 등
+memreport (full) 비교, stat memory 등
