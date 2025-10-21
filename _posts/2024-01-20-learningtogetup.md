@@ -6,6 +6,7 @@ categories:
   - Portfolio
   - pfunrealengine
   - pfncsoft
+  - pfncsoftai
 tags:
   - [Portfolio, ReinforceLearning, UnrealEngine]
 

@@ -6,6 +6,7 @@ categories:
   - Portfolio
   - pfunity
   - pfncsoft
+  - pfncsoftai
 tags:
   - [Portfolio, ReinforcementLearning, Unity]
 
