@@ -4,6 +4,7 @@ excerpt: "일단 노션 링크로..."
 
 categories:
   - Algorithm
+  - pfncsoft
 tags:
   - [C++, Algorithm]
 
