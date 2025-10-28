@@ -1,6 +1,6 @@
 ---
-title: "알고리즘 공부하면서 적어둔 내용들"
-excerpt: "일단 노션 링크로..."
+title: "알고리즘 종합"
+excerpt: "공부하면서 적어뒀던 내용들"
 
 categories:
   - Algorithm
