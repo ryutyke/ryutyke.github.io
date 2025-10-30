@@ -498,7 +498,7 @@ last_modified_at: 2025-10-15
     class Base {
     public:
     	virtual void Func() { ... }
-    }
+    };
     
     class Derived : public Base {
     public:
@@ -507,7 +507,7 @@ last_modified_at: 2025-10-15
     		
     		// Base::Func() 로 사용하자.
     	}
-    }
+    };
     ```
     
 
@@ -577,7 +577,7 @@ last_modified_at: 2025-10-15
     public:
     	virtual void mf1();
     	void mf3();
-    }
+    };
     
     ---
     
@@ -601,7 +601,7 @@ last_modified_at: 2025-10-15
     
     	virtual void mf1();
     	void mf3();
-    }
+    };
     ```
     
     - 일부만 가져오고 싶다면 맨 처음 예제처럼 하되, 이는 public 상속이 아니라, 다른 상속을 쓰면 된다.
@@ -671,7 +671,7 @@ last_modified_at: 2025-10-15
     private:
     	int x;
     	Empty e;
-    }
+    };
     
     // 이 경우 sizeof(HoldsAnInt) > sizeof(int) 가 나온다.
     // Empty의 사이즈가 1이기 때문 (바이트패딩 고려x)
@@ -681,7 +681,7 @@ last_modified_at: 2025-10-15
     class HoldsAnInt : private Empty {
     private:
     	int x;
-    }
+    };
     
     // 이렇게 하면 sizeof(HoldsAnInt) == sizeof(int)
     
@@ -716,7 +716,7 @@ last_modified_at: 2025-10-15
         	explicit Derived(int x)
         	: Base<T>::Nested(x) // 쓰면 안됨
         	{}
-        }
+        };
         ```
         
     - 현업 코드에서 많이 쓰이는 예제
@@ -760,6 +760,7 @@ last_modified_at: 2025-10-15
         		this->sendClear(info); // 방법 1
         		MsgSender<Company>::sendClear(info); // 방법 3. 정적바인딩임.
         	}
+        };
         ```
         
     - 특수화는 특정 템플릿 매개변수에 대해 따로 정의를 해 주는 것이다. 완전 템플릿 특수화는 템플릿 매개변수들을 하나도 빠짐없이 구체적인 타입으로 정해 정의해 주는 것이다. template<>처럼 괄호 안에 아무것도 없으면 완전 템플릿 특수화인 것이다.
@@ -768,8 +769,42 @@ last_modified_at: 2025-10-15
         template<>
         class MsgSender<CompanyZ> {
         	// CompanyZ 라는 타입에 대해 완전 템플릿 특수화
-        }
+        };
         ```
+
+- 항목 44 : 매개변수에 독립적인 코드는 템플릿으로부터 분리시키자
+    - 템플릿 코드에서는 코드 중복이 암시적이기 때문에, 템플릿은 코드 비대화를 초래할 수 있으니 주의해야 한다. 예를 들어, 비타입 매개변수로 사이즈를 받는 정방행렬 클래스를 보자. 이 경우 invert( )의 동작은 사이즈랑 상관없이 다 똑같더라도 size마다 invert( ) 함수가 인스턴스화된다.
+        
+        ```cpp
+        template<typename T, std::size_t n>
+        class SquareMatrix {
+        public:
+        	void invert();
+        };
+        
+        ======================================================
+        // 해결
+        template<typename T>
+        class SquareMatrixBase {
+        protected:
+        	void invert(std::size_t matrixsize);
+        };
+        
+        template<typename T, std::size_t n>
+        class SquareMatrix : private SquareMatrixBase<T> {
+        private:
+        	using SquareMatrixBase<T>::invert;
+        
+        public:
+        	void invert() { this->invert(n) }; // 인라인화 돼서 호출 추가 비용 없음.
+        };
+        ```
+        
+    - 첫 번째 방법처럼 행렬 크기가 미리 녹아든 상태로 별도의 invert 버전이 만들어지는 것도 장점이 있다. 행렬 크기가 컴파일 시점에 투입되는 상수이기 때문에 상수 전파 등의 최적화가 가능하다. 생성되는 기계어에 대해 이 크기 값이 즉시 피연산자로 들어가는 것도 이러한 최적화 중 하나이다.
+    - 반면 두 번째 방법은 코드 크기가 줄어든다. **실행 코드가 작아지면 메모리를 적게 쓰는 것뿐만 아니라** 프로그램의 작업 세트(working set, 주 메모리에 올리는 페이지 양) 크기가 줄어들면서 **효율적인 캐시 사용**으로 참조 지역성에 의해 **성능도 좋아진다**. (시간적 지역성 : 지금 참조된 메모리는 또 참조될 가능성이 높다. 공간적 지역성 : 지금 참조된 메모리와 가까운 곳에 있는 메모리가 참조될 가능성이 높다.)
+    - 성능 비교는 두 방법 전부 적용해 보고 결과를 관찰하는 수밖에 없다.
+    - 그리고  두 번째 방법에 행렬 배열 데이터 등의 멤버 데이터로 인해 생기는 단점들이 좀 더 있다. 그래서 코드 중복을 조금 허용하는 편이 괜찮을 수도 있다고 얘기한다.
+    - 타입 제약이 엄격한 포인터(T*)를 써서 동작하는 멤버 함수를 구현할 때 그 안에서 타입미정 포인터(void*)로 동작하는 버전을 호출하는 식으로 코드 비대화를 줄이는 방법도 있다.
 
 - 항목 49 : new 처리자의 동작 원리를 제대로 이해하자
     - 메모리 할당 요청인 operator new가 할당할 메모리가 없을 때는 예외를 던진다.
@@ -824,7 +859,7 @@ last_modified_at: 2025-10-15
         	static void* operator new(std::size_t, std::ostream& logStream) throw(std::bad_alloc)
         	
         	static void operator delete(void *pMemory, std::ostream& logStream) throw();
-        }
+        };
         ```
         
     - 이렇게 위치지정 new에 쌍으로 맞춰준 delete는 해당 new 호출 때 메모리 할당은 성공했으나 생성자에서 예외가 발생할 때뿐이다. 직접 delete를 호출해 주면, 기본형의 operator delete가 호출된다.
