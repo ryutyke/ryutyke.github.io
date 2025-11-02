@@ -344,7 +344,7 @@ last_modified_at: 2025-10-15
         - 정말로 꼭 필요한 타입인가?
 
 - 항목 20 : ‘값에 의한 전달’보다는 ‘상수객체 참조자에 의한 전달’ 방식을 택하는 편이 대게 낫다.
-    - 값 전달 시 복사손실문제(slicing problem) 발생 가능
+    - 값 전달 시 복사손실문제(slicing problem)가 발생할 수 있다. 이는 파생 클래스 객체가 기본 클래스 객체로서 전달될 때, 값으로 전달되면 기본 클래스의 복사 생성자가 호출되면서 파생 클래스 객체 내용들이 손실되는 것을 말한다.
     - 타입 크기만으로 판단하지 마라. 복사 생성자 호출 비용은 이와 별개이다(깊은 복사, 생성자 및 소멸자 호출). 또한, 진짜 double은 레지스터에 넣어 주지만, double 하나로만 만들어진 사용자 정의 타입의 객체는 레지스터에 넣지 않는다.
     - ‘값에 의한 전달’이 저비용이라고 가정해도 괜찮은 유일한 타입은 기본제공 타입, STL 반복자, 함수 객체 타입, 이렇게 세 가지뿐이다.
 
@@ -825,6 +825,145 @@ last_modified_at: 2025-10-15
         
     - 복사 대입 연산자도 일반화 가능하다. tr1::shared_ptr은 호환되는 기본 제공 포인터, shared_ptr, auto_ptr, weak_ptr 객체들로부터 생성자 호출이 가능하고, weak_ptr을 제외한 나머지를 대입 연산에 쓸 수 있게 만들어져 있다.
     - 멤버 함수 템플릿으로 복사 생성자, 복사 대입 연산자를 일반화시켰더라도, 기본 복사 생성자, 복사 대입 연산자를 선언하지 않았다면 같은 타입 객체가 들어왔을 때 컴파일러가 만들어서 쓴다. 따라서 기본 복사 생성자, 복사 대입 연산자를 직접 선언해 줘야 한다.
+
+- 항목 46 : 타입 변환이 바람직할 경우에는 비멤버 함수를 클래스 템플릿 안에 정의해 두자
+    - 항목 24에서 나온 ‘모든 매개변수에 대해 암시적 타입 변환이 되도록 만들기 위해서는 비멤버 함수를 써야 한다’는 내용의 템플릿 버전이다.
+    - 이 예제는 컴파일 되지 않는다. 그 이유는 함수 템플릿의 템플릿 인자 추론 과정에서는 암시적 타입 변환이 고려되지 않기 때문이다.
+    
+    ```cpp
+    template<typename T>
+    const Rational<T> operator*(const Rational<T>& lhs, const Rational<T>& rhs)
+    
+    Rational<int> oneHalf(1, 2);
+    Rational<int> result = oneHalf * 2; // 2의 암시적 타입 변환이 되지 않아 컴파일 오류
+    ```
+    
+    - 프렌드 함수를 사용해서 해결이 가능하다. oneHalf 객체가 Rational<int> 타입으로 선언되면 Rational<int> 클래스가 인스턴스화 되면서 해당 프렌드 함수도 자동으로 선언된다. 주의할 점은 클래스 밖 비멤버 함수는 인스턴스화 되지 않기 때문에 클래스 내부 프렌드 함수를 정의해 줘야 한다. 그렇지 않으면 링크가 안 된다.
+    
+    ```cpp
+    // 링크 오류. 선언은 되지만, 정의는 안 됨.
+    template<typename T>
+    class Rational {
+    public:
+    friend const Rational operator* (const Rational& lhs, const Rational& rhs);
+    };
+    
+    template<typename T>
+    const Rational<T> operator*(const Rational<T>& lhs, const Rational<T>& rhs)
+    {
+    	return Rational( lhs.numerator() * rhs.numerator(), 
+    									 lhs.denominator() * rhs.denominator() );
+    }
+    
+    =================================================
+    
+    // 문제 해결
+    template<typename T>
+    class Rational {
+    public:
+    friend const Rational operator* (const Rational& lhs, const Rational& rhs)
+    {
+    	return Rational( lhs.numerator() * rhs.numerator(), 
+    									 lhs.denominator() * rhs.denominator() );
+    }
+    };
+    ```
+    
+    - 클래스 템플릿 내부에서는 <>를 떼고 쓸 수 있다. 다시 말해, Rational<T> 안에서는 Rational이라고만 써도 Rational<T>로 처리가 되는 것이다.
+    - 프렌드 함수를 쓰는 이유는 클래스 안에 비멤버 함수를 선언하는 유일한 방법이기 때문이다.
+    - 클래스 안에 정의된 함수는 암시적으로 인라인된다. 클래스의 바깥에서 정의된 도우미 함수만 호출하는 식으로 구현하면 이러한 암시적 인라인 선언의 영향을 최소화할 수 있다.
+
+- 항목 47 : 타입에 대한 정보가 필요하다면 특성정보 클래스를 사용하자
+    - 주 내용에 앞서서, 아래 예시에 쓰이는 STL 반복자에 대해서. STL 반복자는 여러 종류가 있다. 반복자가 지원하는 연산에 따라 다섯 개의 범주로 나뉜다.
+        - 입력 반복자 : 전진만 가능, 한 번에 한 칸씩만 이동, 읽기만 가능, 읽을 수 있는 횟수가 한 번뿐이다. istream_iterator가 대표적인 입력 반복자이다. (한 번뿐이라는 게, stream 한 번 읽으면 데이터 사라지는 것처럼)
+        - 출력 반복자 : 쓰기만 가능하다는 것 제외하곤 입력 반복자와 동일하다. ostream_iterator.
+        - 순방향 반복자는 전진만 가능, 한 번에 한 칸씩만 이동, 읽기 쓰기 둘 다 가능. 여러 번 가능. (단일 연결 리스트에서 사용하기 적합)
+        - 양방향 반복자는 순방향 반복자에 후진 기능을 추가한 것이다. STL의 list, set, multiset, map, multimap 컨테이너에서 사용.
+        - 임의 접근 반복자는 양방향 반복자에 반복자 산술 연산 수행 기능을 추가한 것으로, 쉽게 말해 반복자를 임의의 거리만큼 앞뒤로 이동시키는 일을 상수 시간 안에 할 수 있다는 것이다. STL의 vector, deque, string 컨테이너에서 사용.
+    - 특성정보란 컴파일 도중에 어떤 주어진 타입의 정보를 얻을 수 있게 하는 객체이다. 항상 구조체로 구현하는 것으로 굳어져 있으며, 특성정보를 구현하는 데 사용한 구조체를 가리켜 특성정보 클래스라고 부른다.
+    - 특성정보는 C++에 미리 정의된 문법구조나 키워드가 아니라, 구현 기법이며, 관례를 따른다. 관례 중 하나는 특성정보가 사용자 정의 타입뿐만 아니라 포인터 등의 기본제공 타입에 대해서도 적용할 수 있어야 한다는 것이다. 예를 들어, 어떤 객체의 특성정보를 얻을 수 있을 때 그 객체 포인터에 대해서도 얻을 수 있어야 한다.
+    - 대략적으로 설명하면, 정보를 나타내는 구조체를 만들고, 특성정보 클래스를 활용해서 어떤 객체의 특성정보에 접근하면 그 구조체 타입을 제공하는 것이다.
+    
+    ```cpp
+    // 1. 정보를 나타내는 구조체
+    struct input_iterator_tag {};
+    struct output_iterator_tag {};
+    struct forward_iterator_tag : public input_iterator_tag {};
+    struct bidirectional_iterator_tag : public forward_iterator_tag {};
+    struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+    
+    // 2. 특성정보 접근을 돕는 구조체 (특성정보 클래스)
+    template<typename IterT>
+    struct iterator_traits {
+    	typedef typename IterT::iterator_category itertator_category;
+    	// ...
+    };
+    
+    // 2-1. 포인터에 대해서도 적용 가능하게 부분 템플릿 특수화
+    template<typename IterT>
+    struct iterator_traits<IterT*> {
+    	typedef random_access_iterator_tag iterator_category;
+    	// ...
+    };
+    
+    // 3. 특성정보를 가지는 클래스
+    class deque {
+    public:
+    	class iterator {
+    	public:
+    		typedef random_access_iterator_tag iterator_category;
+    	};
+    };
+    ```
+    
+    - 이런 구조로 특성정보를 만드는 것의 장점은 컴파일 타임에 특성정보 확인이 가능하다는 것이다. typeid를 사용해서 특성정보를 활용할 수도 있겠지만, 이는 컴파일 타임에 확인이 가능하다는 장점을 살리지 못한다. 컴파일 타임에 활용하는 방법은 오버로딩이다.
+    
+    ```cpp
+    // 이는 런타임 확인
+    template<typename IterT, typename DistT>
+    void advance(IterT& iter, DistT d)
+    {
+    	if (typeid(typename std::iterator_iterator_traits<IterT>::iterator_category)
+    			== typeid(std::random_access_iterator_tag))
+    	{  
+    		// ...
+    	}
+    }
+    
+    ===========================
+    // 오버로딩을 활용한 컴파일 타임 확인 (임의접근 반복자 예시)
+    template<typename IterT, typename DistT>
+    void doAdvance(IterT& iter, DistT d, std::random_access_iterator_tag)
+    {
+    	iter += d;
+    }
+    
+    // ... 다른 반복자들에 대해 오버로딩 ...
+    
+    // 컴파일타임 확인
+    template<typename IterT, typename DistT>
+    void advance(IterT& iter, DistT d)
+    {
+    	doAdvance(
+    		iter, d, typename std::iterator_traits<IterT>::iterator_category()
+    	);
+    }
+    ```
+    
+    - TR1이 도입되면서 타입 관련 정보를 제공하는 특성정보 클래스가 상당수 추가되었다. 예를 들면,
+        - is_fundamental<T> : T가 기본제공 타입인지 알려준다.
+        - is_array<T> : T가 배열 타입인지 알려준다.
+        - is_base_of<T1, T2> : T1이 T2와 같거나 T2의 기본 클래스인지 알려준다.
+
+- 항목 48 : 템플릿 메타프로그래밍, 하지 않겠는가?
+    - 템플릿 메타프로그래밍(TMP)은 컴파일 도중에 실행되는 템플릿 기반의 프로그램을 작성하는 일을 말한다. 템플릿 메타프로그램은 컴파일러가 실행시키는 프로그램이다. TMP로 나온 결과물(템플릿이 인스턴스화된 코드)가 다시 보통의 컴파일 과정을 거치는 것이다.
+    - TMP의 강점은 다른 방법으로는 까다롭거나 불가능한 일을 굉장히 쉽게 할 수 있다는 것과 작업을 컴파일 타임에 할 수 있다는 것이다.
+    - 런타임 오류를 컴파일 타임에 미리 발견할 수 있게 만들 수 있다.
+    - 컴파일 타임이 길어지지만, 실행 코드가 작아지고 실행 시간도 짧아지며 메모리도 적게 잡아먹는다.
+    - 활용 분야
+        - 치수 단위(dimensional unit)의 정확성 확인 : 단위가 똑바로 조합되었는지 컴파일 타임에 확인. 런타임에 오류를 줄일 수 있다는 것의 한 예제. 분수식 지수 표현이 가능(약분 가능).
+        - 행렬 연산 최적화 : TMP 기술인 표현식 템플릿(expression template)을 통해 큰 임시 객체를 없애고 루프까지 합칠 수 있다. 메모리도 적게 먹으면서 속도도 빠른 소프트웨어 결과물을 만들 수 있다.
+        - 맞춤식 디자인 패턴 구현 : TMP 기술인 정책 기반 설계(policy-based design)라는 것을 사용하면 따로따로 마련된 설계상의 선택(정책)을 나타내는 템플릿을 만들고, 조합해 다양한 동작을 만들 수 있다. 이것이 생성식 프로그래밍(generative programming)의 기초.
 
 - 항목 49 : new 처리자의 동작 원리를 제대로 이해하자
     - 메모리 할당 요청인 operator new가 할당할 메모리가 없을 때는 예외를 던진다.
