@@ -62,13 +62,13 @@ last_modified_at: 2025-10-28
         const int cx = x;
         const int& rx = x;
         
-        f(x);       // T는 int, param의 형식은 int&
+        f(x);     // T는 int, param의 형식은 int&
         
-        f(cx);      // T는 const int,
-        				  	// param의 형식은 const int&
+        f(cx);    // T는 const int,
+                  // param의 형식은 const int&
         							
-        f(rx);      // T는 const int,
-        		  			// param의 형식은 const int&
+        f(rx);    // T는 const int,
+                  // param의 형식은 const int&
         ```
         
         - const 객체를 참조 매개변수에 전달하는 호출자는 그 객체가 수정되지 않을 것이라고 기대한다. 따라서, 객체의 const성은 T에 대해 연역된 형식에 반영되게 설계됐다.
@@ -83,11 +83,11 @@ last_modified_at: 2025-10-28
             const int cx = x;
             const int& rx = x;
             
-            f(x);       // T는 int, param의 형식은 const int&
+            f(x);     // T는 int, param의 형식은 const int&
             
-            f(cx);      // T는 int, param의 형식은 const int&
+            f(cx);    // T는 int, param의 형식은 const int&
             							
-            f(rx);      // T는 int, param의 형식은 const int&
+            f(rx);    // T는 int, param의 형식은 const int&
             ```
             
     - [경우 2] : ParamType이 보편 참조인 경우
@@ -103,17 +103,17 @@ last_modified_at: 2025-10-28
         const int cx = x;
         const int& rx = x;
         
-        f(x);       // x는 좌측값, 따라서 T는 int&
-        						//param의 형식 역시 int&
+        f(x);     // x는 좌측값, 따라서 T는 int&
+                  // param의 형식 역시 int&
         
-        f(cx);      // cx는 좌측값, 따라서 T는 const int&
-        						// param의 형식 역시 const int&
+        f(cx);    // cx는 좌측값, 따라서 T는 const int&
+                  // param의 형식 역시 const int&
         							
-        f(rx);      // rx는 좌측값, 따라서 T는 const int&
-        						// param의 형식 역시 const int&
+        f(rx);    // rx는 좌측값, 따라서 T는 const int&
+                  // param의 형식 역시 const int&
         
-        f(27);      // 27은 우측값, 따라서 T는 int
-        						// param의 형식은 int&&
+        f(27);    // 27은 우측값, 따라서 T는 int
+                  // param의 형식은 int&&
         ```
         
     - [경우 3] : ParamType이 참조가 아닌 경우, 다른 말로 값 전달 (포인터 포함)
@@ -127,11 +127,11 @@ last_modified_at: 2025-10-28
             const int cx = x;
             const int& rx = x;
             
-            f(x);       // T는 int, param의 형식은 int
+            f(x);     // T는 int, param의 형식은 int
             
-            f(cx);      // T는 int, param의 형식은 int
+            f(cx);    // T는 int, param의 형식은 int
             							
-            f(rx);      // T는 int, param의 형식은 int
+            f(rx);    // T는 int, param의 형식은 int
             ```
             
         - 포인터에 대해서도 똑같은데, const에 대해 한 가지 주의할 점이 있다. 포인터 오른쪽에 있는 const는 포인터 자체에 대한 const이고 왼쪽에 있는 const는 포인터가 가리키는 것이 const라는 뜻인데, 이때 포인터 자체에 대한 우측 const는 무시되며 포인터가 가리키는 것에 대한 좌측 const는 적용된다.
@@ -142,7 +142,7 @@ last_modified_at: 2025-10-28
             
             const char* const ptr = "hi";
             
-            f(ptr);      // T, param의 형식은 const char*
+            f(ptr);     // T, param의 형식은 const char*
             ```
             
     - 배열에 대한 이야기다. 배열은 배열의 첫 원소를 가리키는 포인터로 붕괴된다.
@@ -194,7 +194,7 @@ last_modified_at: 2025-10-28
         template<typename T>
         void f2(T& param);
         
-        f1(someFunc);    // param의 형식은 void (*)(int, double). 함수 포인터
+        f1(someFunc);   // param의 형식은 void (*)(int, double). 함수 포인터
         
-        f2(someFunc);    // param의 형식은 void (&)(int, double). 함수 참조
+        f2(someFunc);   // param의 형식은 void (&)(int, double). 함수 참조
         ```
