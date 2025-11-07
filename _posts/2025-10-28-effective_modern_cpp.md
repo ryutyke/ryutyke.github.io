@@ -198,3 +198,108 @@ last_modified_at: 2025-10-28
         
         f2(someFunc);   // param의 형식은 void (&)(int, double). 함수 참조
         ```
+
+- 항목 2 : auto의 형식 연역 규칙을 숙지하라
+    - auto를 이용해서 변수를 선언할 때는 auto는 템플릿의 T와 동일한 역할을 하며, 변수의 형식 지정자는 ParamType과 동일한 역할을 한다.
+        
+        ```cpp
+        auto x = 27; // 형식 지정자는 auto
+        
+        const auto cx = x; // 형식 지정자는 const auto
+        
+        const auto& rx = x; // 형식 지정자는 const auto&
+        ```
+        
+    - 위 예제에 대해, 컴파일러는 auto 선언마다 템플릿 함수 하나와 해당 초기화 표현식으로 그 템플릿 함수를 호출하는 구문이 존재하는 것처럼 행동한다.
+        
+        ```cpp
+        template<typename T>
+        void func_for_x(T param);
+        
+        func_for_x(27);
+        
+        template<typename T>
+        void func_for_cx(const T param);
+        
+        func_for_cx(x);
+        
+        template<typename T>
+        void func_for_rx(const T& param);
+        
+        func_for_rx(x);
+        ```
+        
+    - 딱 한 가지만 빼고, auto에 대한 형식 연역은 위 규칙에 따라 템플릿 형식 연역과 동일하게 동작한다. 다른 한 가지는 균일 초기화이다. auto로 선언된 변수의 초기치(initializer)가 중괄호 형태면 std::initializer_list로 연역된다. 템플릿 매개변수 T는 std::initializer_list로 연역하지 못 한다.
+        
+        ```cpp
+        auto x1 = 27;     // 형식은 int, 값은 27 
+        auto x2(27);      // 형식은 int, 값은 27
+        auto x3 = { 27 }; // 형식은 std::initializer_list<int> 값은 {27}
+        auto x4{ 27 };    // 형식은 std::initializer_list<int> 값은 {27}
+        
+        auto x5 = { 1, 2, 3.0 }; // 컴파일 오류. initializer_list는 암시적 변환 안 됨.
+        
+        ====
+        
+        template<typename T>
+        void f(T param);
+        
+        f({ 11, 23, 9 }); // 컴파일 오류. T는 std::initializer_list로 연역되지 않음.
+        
+        template<typename T>
+        void f(std::initializer_list<T> param);
+        
+        f({ 11, 23, 9 }); // 연역 성공. T는 int.
+        ```
+        
+    - (2014년에 “=”가 없는 형태인 직접 초기화 구문을 이용한 auto 중괄호 초기치에 대한 해당 형식 연역 규칙을 제거하자는 제안을 C++ 표준이 받아들였다고 한다. 따라서 이를 적용한 컴파일러에서는 x4에서의 auto는 int이다.) 아래 코드를 실행해 보니, 내 컴파일러에는 적용되어 있었다.
+        
+        ```cpp
+        #include<bits/stdc++.h>
+        #include <string_view>
+        
+        template <typename T>
+        constexpr std::string_view type_name() {
+        #if defined(__clang__) || defined(__GNUC__)
+        	std::string_view p = __PRETTY_FUNCTION__;
+        	auto start = p.find("T = ") + 4;
+        	auto end = p.find(']', start);
+        	return p.substr(start, end - start);
+        #elif defined(_MSC_VER)
+        	std::string_view p = __FUNCSIG__;
+        	auto start = p.find("type_name<") + 10;
+        	auto end = p.find(">(void)");
+        	return p.substr(start, end - start);
+        #endif
+        }
+        
+        #define SHOW(expr) \
+            do { using T = decltype(expr); \
+                 static_assert(sizeof(T) >= 0, ""); /* 컴파일타임 고정점 */ \
+                 puts(std::string(type_name<T>()).c_str()); } while(0)
+        
+        int main() 
+        {
+        	auto x4{ 27 }; // int
+        	// auto x4{ 27, 2 }; // 컴파일 오류
+        	// auto x4 = { 27, 2 }; // class std::initializer_list<int>
+        	
+        	SHOW(x4);
+        }
+        ```
+        
+    - C++14에서는 함수의 반환 형식을 auto로 지정해서 컴파일러가 연역하게 만들 수 있으며, 람다의 매개변수 선언에 auto를 사용하는 것도 가능하다. 그러나 auto의 그러한 용법들에는 auto 형식 연역이 아니라 템플릿 형식 연역의 규칙들이 적용된다.
+        
+        ```cpp
+        auto createInitList()
+        {
+        	return { 1, 2, 3 }; // 컴파일 오류.
+        }
+        
+        std::vector<int> v;
+        
+        auto resetV =
+        	[&v](const auto& newValue) { v = newValue; };
+        
+        resetV({ 1, 2, 3 }); // 컴파일 오류.
+        ```
