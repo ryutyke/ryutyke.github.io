@@ -4,7 +4,7 @@ excerpt: "Stat 명령어, GPU Visualizer"
 
 categories:
   - UnrealEngine
-  - pfncsoft
+  - pfselect
 tags:
   - [UnrealEngine, Stat, GPU, Visualizer]
 

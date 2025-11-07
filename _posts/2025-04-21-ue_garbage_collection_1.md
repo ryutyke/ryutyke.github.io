@@ -4,7 +4,7 @@ excerpt: "오브젝트 풀링 구현 후 결과 분석 중 시작..."
 
 categories:
   - UnrealEngine
-  - pfncsoft
+  - pfselect
 tags:
   - [UnrealEngine, Garbage, Collection]
 

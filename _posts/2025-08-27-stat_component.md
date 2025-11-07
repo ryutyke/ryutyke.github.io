@@ -4,7 +4,7 @@ excerpt: "프로젝트 이쩜오"
 
 categories:
   - UnrealEngine
-  - pfncsoft
+  - pfselect
 tags:
   - [UnrealEngine, stat, component]
 

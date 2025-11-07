@@ -4,7 +4,7 @@ excerpt: "Game에서의 IK"
 
 categories:
   - etc
-  - pfncsoft
+  - pfselect
 tags:
   - [Graphics, IK]
 use_math: true

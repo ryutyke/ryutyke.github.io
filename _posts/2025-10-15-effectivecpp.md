@@ -4,7 +4,7 @@ excerpt: "1회 완독 정리 후 반복 학습"
 
 categories:
   - C/C++
-  - pfncsoft
+  - pfselect
 tags:
   - [C, C++]
 

@@ -4,7 +4,7 @@ excerpt: "Thread, Race condition, Paging, Virtual memory, "
 
 categories:
   - etc
-  - pfncsoft
+  - pfselect
 tags:
   - [os]
 use_math: true

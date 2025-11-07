@@ -4,7 +4,7 @@ excerpt: "공부하면서 적어뒀던 내용들"
 
 categories:
   - Algorithm
-  - pfncsoft
+  - pfselect
 tags:
   - [C++, Algorithm]
 
