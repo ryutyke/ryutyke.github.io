@@ -199,7 +199,7 @@ last_modified_at: 2025-10-28
         f2(someFunc);   // param의 형식은 void (&)(int, double). 함수 참조
         ```
 
-- 항목 2 : auto의 형식 연역 규칙을 숙지하라
+- 항목 2 : auto의 형식 연역 규칙을 숙지
     - auto를 이용해서 변수를 선언할 때는 auto는 템플릿의 T와 동일한 역할을 하며, 변수의 형식 지정자는 ParamType과 동일한 역할을 한다.
         
         ```cpp
@@ -256,27 +256,6 @@ last_modified_at: 2025-10-28
         
         ```cpp
         #include<bits/stdc++.h>
-        #include <string_view>
-        
-        template <typename T>
-        constexpr std::string_view type_name() {
-        #if defined(__clang__) || defined(__GNUC__)
-        	std::string_view p = __PRETTY_FUNCTION__;
-        	auto start = p.find("T = ") + 4;
-        	auto end = p.find(']', start);
-        	return p.substr(start, end - start);
-        #elif defined(_MSC_VER)
-        	std::string_view p = __FUNCSIG__;
-        	auto start = p.find("type_name<") + 10;
-        	auto end = p.find(">(void)");
-        	return p.substr(start, end - start);
-        #endif
-        }
-        
-        #define SHOW(expr) \
-            do { using T = decltype(expr); \
-                 static_assert(sizeof(T) >= 0, ""); /* 컴파일타임 고정점 */ \
-                 puts(std::string(type_name<T>()).c_str()); } while(0)
         
         int main() 
         {
@@ -284,7 +263,7 @@ last_modified_at: 2025-10-28
         	// auto x4{ 27, 2 }; // 컴파일 오류
         	// auto x4 = { 27, 2 }; // class std::initializer_list<int>
         	
-        	SHOW(x4);
+        	std::cout << typeid(x4).name();
         }
         ```
         
@@ -302,4 +281,153 @@ last_modified_at: 2025-10-28
         	[&v](const auto& newValue) { v = newValue; };
         
         resetV({ 1, 2, 3 }); // 컴파일 오류.
+        ```
+
+- 항목 3 : decltype의 작동 방식을 숙지하라
+    - decltype(**decl**ared **type**)은 주어진 이름이나 표현식의 구체적인 형식을 알려준다.
+    - decltype은 함수의 반환 형식이 그 매개변수 형식들에 의존하는 함수 템플릿을 선언할 때 주로 쓰인다. 아래 예제에서 반환 형식에 있는 auto는 형식 연역과는 아무런 관련이 없다. C++11의 후행 반환 형식을 쓰겠다는 의미일 뿐이다. 후행 반환 형식 구문은 반환 형식을 매개변수들을 이용해서 지정할 수 있다는 장점이 있다.
+        
+        ```cpp
+        template<typename Container, typename Index>
+        auto authAndAccess(Container& c, Index i)
+        	-> decltype(c[i])
+        {
+        	authenticateUser();
+        	return c[i];
+        }
+        ```
+        
+    - auto를 사용한 반환 형식의 연역도 있긴 하다. C++11은 람다 함수가 한 문장으로 이루어져 있다면 그 반환 형식의 연역을 허용하며,  C++14는 모든 람다와 모든 함수의 반환 형식 연역을 허용한다. return문이 여러 개면 모든 return문의 형식 연역 결과가 일치해야 한다.
+        
+        ```cpp
+        template<typename Container, typename Index>
+        auto authAndAccess(Container& c, Index i)
+        {
+        	authenticateUser();
+        	return c[i];        // c[i]로부터 반환 형식 연역
+        }
+        ```
+        
+    - 근데 이렇게 했을 경우, auto는 템플릿 형식 연역과 동일하게 작동하는데, 컨테이너의 operator[ ] 연산의 반환 형식인 T&에서 참조성이 무시된다는 문제가 있다.
+        
+        ```cpp
+        authAndAccess(d, 5) = 10; // 참조성 무시로 인해 우측값에 우측값을 넣게 되어 오류
+        ```
+        
+    - **C++14에는** decltype(auto) 지정자가 있다. 여기서 auto는 형식이 연역되어야 함을 뜻하고 decltype은 그 연역 과정이 decltype 형식 연역 규칙으로 진행되어야 함을 뜻한다.
+        
+        ```cpp
+        template<typename Container, typename Index>
+        decltype(auto) authAndAccess(Container& c, Index i)
+        {
+        	authenticateUser();
+        	return c[i];        // c[i]로부터 반환 형식 연역
+        }
+        ```
+        
+    - decltype(auto) 지정자는 함수 반환 형식에만 사용할 수 있는 것은 아니다.
+        
+        ```cpp
+        Widget w;
+        const Widget& cw = w;
+        auto myWidget1 = cw;   // 형식 : Widget (참조성 무시)
+        decltype(auto) myWidget2 = cw;   // 형식 : Widget&
+        ```
+        
+    - 현재 항목의 주제와 다른 내용이지만, 위의 예제를 발전시킬 수 있다. 컨테이너 매개변수를 현재 좌측값 참조로 두었기에 우측값으로 줄 수 없다. 보편 참조를 쓰면 좌측값 우측값 모두 쓸 수 있는 매개변수를 사용할 수 있다. 그리고 반환할 때는 인자로 들어온 표준 라이브러리가 사용하는 방식을 따르도록 std::forward를 쓸 수 있다. std::forward는 인자의 값 전달 방식을 따라가는 문법이다. 좌측값이면 좌측값, 우측값이면 우측값. std::move는 무조건 우측값.
+        
+        ```cpp
+        template<typename Container, typename Index>
+        decltype(auto) authAndAccess(Container&& c, Index i) // 보편참조
+        {
+        	authenticateUser();
+        	return std::forward<Container>(c)[i]; // std::forward 사용
+        }
+        ```
+        
+    - decltype이 아주 가끔 뜻밖의 형식을 연역하기도 한다. decltype을 이름에 적용하면 그 이름에 대해 선언된 형식이 산출된다. 그런데 이름보다 복잡한 왼값 표현식에 대해서는 일반적으로 왼값 참조로 산출된다. 간단한 예를 들면, int x에 대해 decltype(x)는 int인데, decltype((x))는 int&이다.
+
+- 항목 4 : 연역된 형식을 파악하는 방법을 알아두라
+    - IDE 코드 편집기 중에 마우스 커서를 올리면 그 개체의 형식을 표시해 주는 것이 있다. 이는 IDE 안에서 C++ 컴파일러가, 적어도 앞단이 실행되기 때문이다.
+    - 형식 때문에 컴파일에 문제가 발생하게 만드는 방법도 있다. 보통 오류 메시지에는 문제를 일으킨 형식이 나온다.
+        
+        ```cpp
+        template<typename T> // 정의 없이 선언만 해둔다.
+        class TD;
+        
+        TD<decltype(x)> xType; // x 형식이 담긴 오류 메시지가 나온다. 
+        ```
+        
+    - 런타임에 typeid로 std::type_info 객체를 받아, std::type_info::name을 사용하여 로깅하는 방법도 있다. 그러나 std::type_info::name은 주어진 형식을 마치 템플릿 함수에 값 전달 매개 변수로서 전달된 것처럼 취급해야 해서 참조성 무시, const성 무시가 발생한다. boost::typeindex::type_id_with_cvr.pretty_name()은 그렇지 않다.
+        
+        ```cpp
+        std::cout << typeid(x).name();
+        
+        =======
+        
+        #include <boost/type_index.hpp>
+        
+        template<typename T>
+        void f(const T& param)
+        {
+        	using boost::typeindex::type_id_with_cvr;
+        	
+        	std::cout << type_id_with_cvr<T>().pretty_name();
+        	std::cout << type_id_with_cvr<decltype(param)>().pretty_name();
+        
+        }
+        ```
+        
+    - 정확하지 않을 수도 있으므로, 형식 연역 규칙을 제대로 이해하자!
+
+- 항목 5 : 명시적 형식 선언보다는 auto를 선호하라
+    - auto를 쓰면 변수의 초기화를 빼먹는 실수가 사라진다.
+    - 클로저를 담는 변수로 auto 대신 std::function을 쓰면 되지 않나? ⇒ 일반적으로 std::function이 auto보다 메모리와 시간을 더 많이 소비하며, 때에 따라서는 메모리 부족 예외를 유발할 수도 있다.
+    - auto를 쓰면 형식 단축(type shortcut) 문제를 피할 수 있다. v.size()의 반환 형식은 std::vector<int>::size_type인데 unsigned로 받았다. 64비트에서 std::vector<int>::size_type은 64비트이지만 unsigned는 32비트이다.
+        
+        ```cpp
+        std::vector<int> v;
+        unsigned sz = v.size();
+        ```
+        
+    - 아래 예시와 같은 실수도 피할 수 있다. 해시맵의 key는 const이다. 아래 예시처럼 const를 빼먹는 실수를 할 수 있다.
+        
+        ```cpp
+        std::unordered_map<std::string, int> m;
+        
+        for (const std::pair<std::string, int>& p : m)
+        {
+        	// ...
+        }
+        ```
+        
+    - auto를 쓰면 입력도 편하고, 리팩토링도 수월해질 수 있다. 형식을 바꿀 때 auto면 많이 안 바꿔도 된다.
+    - 그래도 auto를 사용하면 가독성 문제가 있을 수 있고, 항목 2, 6 내용도 고려해야 한다는 단점도 있다.
+
+- 항목 6 : auto가 원치 않은 형식으로 연역될 때에는 명시적 형식의 초기치를 사용하라
+    - std::vector<bool>의 operator[ ]가 돌려주는 것은 그 컨테이너의 한 요소에 대한 참조가 아니라 std::vector<bool>::reference 형식의 객체이다. (std::vector<bool> 안에 내포된 대리자 클래스) std::vector<bool>이 자신의 bool들을 1비트로 표현하도록 하는데, std::vector<T>의 operator[ ] 반환 형식이 T&지만, C++에서 비트에 대한 참조는 금지되어 있다. 따라서 마치 bool&처럼 작동하는 객체를 돌려주는 우회책을 사용하는 것이다.
+    
+    ```cpp
+    std::vector<bool> features(const Widget& w);
+    
+    Widget w;
+    bool highPriority = features(w)[5]; // 암시적 형변환
+    processWidget(w, highPriority);
+    
+    auto highPriority = features(w)[5]; // 임시 객체인 벡터의 대리자 클래스의 비트 포인터
+    processWidget(w, highPriority);     // 임시 객체 벡터 사라지면서 미정의 행동
+    ```
+    
+    - auto가 위의 예시처럼 대리자 클래스의 형식을 연역할 때는 auto가 다른 형식을 연역하도록 강제하는 방법을 쓸 수 있다. 형식을 명시적으로 지정한 초기치 관용구, 형식 명시 초기치 관용구를 사용하면 된다. auto로 선언하되, 초기화 표현식의 형식을 auto가 연역하길 원하는 형식으로 캐스팅해 주는 것이다.
+        
+        ```cpp
+        auto highPriority = static_cast<bool>(features(w)[5]);
+        ```
+        
+    - 형식 명시 초기치 관용구를 위의 예시 같은 상황에서만 쓸 수 있는 것이 아니다. 예를 들어 float의 정밀도로도 충분해서 double을 float로 넣을 때 명시하여 의도를 명확히 하는 것이 있다.
+        
+        ```cpp
+        double calcEpsilon();
+        // float ep = calcEpsilon(); // 암시적
+        auto ep = static_cast<float>(calcEpsilon()); // 명시하여 의도 명확화
         ```
