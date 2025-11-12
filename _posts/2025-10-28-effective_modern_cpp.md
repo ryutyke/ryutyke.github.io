@@ -33,6 +33,7 @@ last_modified_at: 2025-10-28
         - 이동 의미론 : move semantics
         - 생 포인터, 똑똑한 포인터 : raw pointer, smart pointer
         - dtor : destructor(소멸자) 줄인 것.
+        - 중복적재 : 오버로딩
     - 이미 알고 있는 책의 문제점들은 https://www.aristeia.com/BookErrata/emc++-errata.html 에 있다.
 
 - 항목 1 : 템플릿 형식 연역 규칙을 숙지하라
@@ -431,3 +432,57 @@ last_modified_at: 2025-10-28
         // float ep = calcEpsilon(); // 암시적
         auto ep = static_cast<float>(calcEpsilon()); // 명시하여 의도 명확화
         ```
+
+- 항목 7 : 객체 생성 시 괄호와 중괄호를 구분하라
+    - = { } 와 같이 등호와 중괄호를 같이 사용한 구분은 중괄호만 사용한 구문과 동일하게 취급한다.
+    - 중괄호 초기화는 C++11에서 균일 초기화라는 이름으로 도입됐다.
+    - 중괄호 초기화의 장점은 C++의 세 가지 초기화 표현식 방법 중 유일하게 어디서나 범용적으로 사용할 수 있다는 것, 암묵적 좁히기 변환을 방지해 준다는 점, C++의 가장 성가신 구문 해석에 자유롭다는 점이다.
+        - 좁히기 변환 : double을 int에 넣을 때 괄호나 등호를 사용한 초기화는 이를 허용함. 중괄호 초기화는 허용하지 않음.
+        - 가장 성가신 구문 해석 : `Widget w2();` 이 인수 없는 생성자를 호출하는 것이 아니라 함수 선언으로 취급된다. `Widget w3{};` 는 인수 없는 생성자로 취급된다.
+    - 단점도 있다. 특히, `std::initializer_list`를 받는 생성자 오버로딩이 있을 경우, 웬만해서 컴파일러는 그것을 사용하려 한다.
+        
+        ```cpp
+        class Widget {
+        public:
+        	Widget(int i, double d);
+        	Widget(std::initializer_list<bool> il);
+        };
+        
+        Widget w{10, 5.0}; // 오류. initializer_list 생성자 사용. 하지만 좁히기 변환 안 됨.
+        ```
+        
+    - 생성자를 설계할 때는 괄호를 사용하느냐 중괄호를 사용하느냐에 따라 서로 다른 오버로딩 버전이 선택되는 일이 없도록 하는 것이 최선이다. std::vector는 그렇게 설계하지 못 한 예시이다. std::vector는 `v1(10, 20)`과 `v2{10, 20}`의 의미가 완전히 다르다. 20의 값이 10개인 벡터 생성과 10, 20을 원소로 가진 벡터 생성. 이에 연결되는 문제는 아래 예시이다.
+        
+        ```cpp
+        // 임의의 개수의 인수들을 지정해서 임의의 형식의 객체를 생성
+        template<typename T, typename... Ts>
+        void doSomeWork(Ts&&... params)
+        {
+        	// T localObject(std::forward<Ts>(params)...);  괄호 사용
+        	// T localObject{std::forward<Ts>(params)...};  중괄호 사용
+        }
+        
+        doSomeWork<std::vector<int>>(10, 20); // doSomeWork 구현에 따라 아예 다른 결과
+        ```
+        
+    - 위의 예시에서 템플릿으로부터 만들어진 함수가 괄호를 사용할 것인지 아니면 중괄호를 사용할 것인지를 호출자가 결정할 수 있는 유연한 설계도 가능하다고 한다. 요약하면 tag를 사용하는 것이다. 이미 다른 std에서는 tag를 사용하고 있다.사이트 참고 : https://akrzemi1.wordpress.com/2013/06/05/intuitive-interface-part-i/
+        
+        ```cpp
+        namespace std{
+          constexpr struct with_size_t{} with_size{};
+          constexpr struct with_value_t{} with_value{};
+          constexpr struct with_capacity_t{} with_capacity{};
+        }
+        
+        	
+        std::vector<int> v1(std::with_size, 10, std::with_value, 6);
+        std::vector<int> v2{std::with_size, 10, std::with_value, 6};
+        ```
+        
+
+- 항목 8 : 0과 NULL보다 nullptr를 선호하라
+    - 0은 int이지 포인터가 아니다.
+    - NULL은 컴파일러에 따라 int, long 등 정수 형식으로 처리되고, 마찬가지로 포인터 형식이 아니다.
+    - nullptr은 모든 형식의 로우 포인터 형식으로 암묵적 변환이 될 수 있는 std::nullptr_t이다. 결코 정수 형식으로는 해석되지 않는다.
+    - 코드 설계 시, nullptr을 안 쓰고 0 또는 NULL을 사용하는 사람이 있을 수 있으므로, 정수 형식과 포인터 형식에 대한 중복적재를 피하라.
+
