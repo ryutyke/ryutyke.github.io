@@ -34,6 +34,7 @@ last_modified_at: 2025-10-28
         - 생 포인터, 똑똑한 포인터 : raw pointer, smart pointer
         - dtor : destructor(소멸자) 줄인 것.
         - 중복적재 : 오버로딩
+        - 연결 목록 : linked list
     - 이미 알고 있는 책의 문제점들은 https://www.aristeia.com/BookErrata/emc++-errata.html 에 있다.
 
 - 항목 1 : 템플릿 형식 연역 규칙을 숙지하라
@@ -486,3 +487,58 @@ last_modified_at: 2025-10-28
     - nullptr은 모든 형식의 로우 포인터 형식으로 암묵적 변환이 될 수 있는 std::nullptr_t이다. 결코 정수 형식으로는 해석되지 않는다.
     - 코드 설계 시, nullptr을 안 쓰고 0 또는 NULL을 사용하는 사람이 있을 수 있으므로, 정수 형식과 포인터 형식에 대한 중복적재를 피하라.
 
+- 항목 9 : typedef보다 별칭 선언(using)을 선호하라
+    - 별칭 선언은 using 구문을 뜻한다. typedef와 using이 하는 일은 정확히 동일하다. 그러나 책에서는 using이 더 좋은 두 가지 이유를 알려준다.
+    - 첫 번째는, 함수 포인터를 다룰 때 직관적이다.
+        
+        ```cpp
+        typedef void (*FP)(int, const std::string&);
+        using FP = void (*)(int, const std::string&);
+        ```
+        
+    - 두 번째는, typedef는 템플릿화할 수 없지만, using은 가능하다. 템플릿화된 별칭 선언을 별칭 템플릿(alias templates)이라고 부른다. typedef는 편법을 써야 가능하다.
+        
+        ```cpp
+        template<typename T>
+        using MyAllocList = std::list<T, MyAlloc<T>>;
+        
+        MyAllocList<Widget> lw;
+        
+        =================
+        // 템플릿화된 strcut 안에 typedef를 사용하는 편법을 써야 한다.
+        template<typename T>
+        struct MyAllocList {
+        	typedef std::list<T, MyAlloc<T>> type;
+        };
+        ```
+        
+    - 또한 중첩 의존 이름(이펙티브 C++ 항목 42 참고)에 대해 typedef는 typename 처리를 해야 하고, using은 안 한다.
+        
+        ```cpp
+        template<typename T>
+        class Widget {
+        private:
+        	MyAllocList<T> list;
+        };
+        
+        =================
+        // typename, ::type을 써야 한다.
+        template<typename T>
+        class Widget {
+        private:
+        	typename MyAllocList<T>::type list;
+        };
+        ```
+        
+    - 표준 위원회도 C++11의 모든 형식 변화에 대한 별칭 템플릿 버전들을 C++14에 포함시켰다. 예시에 있는 형식 변화 문법들은 템플릿 메타프로그래밍에서 흔히 쓰인다.
+        
+        ```cpp
+        ste::remove_const<T>::type
+        std::remove_const_t<T> // C++ 14
+        
+        ste::remove_reference<T>::type
+        std::remove_reference_t<T> // C++ 14
+        
+        std::add_lvalue_reference<T>::type
+        std::add_lvalue_reference_t<T> // C++ 14
+        ```
