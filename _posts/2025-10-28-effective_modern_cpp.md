@@ -542,3 +542,115 @@ last_modified_at: 2025-10-28
         std::add_lvalue_reference<T>::type
         std::add_lvalue_reference_t<T> // C++ 14
         ```
+
+- 항목 10 : 범위 없는 enum보다 위 있는 enum을 선호하라
+    - 범위 없는(unscoped) enum은 그냥 enum이고, 범위 있는(scoped) enum은 enum class를 말한다.
+    - 범위 없는 enum은 열거자 이름들이 자신을 정의하는 enum의 범위로 새어 나간다는 단점이 있다. namespace 오염이 생긴다.
+        
+        ```cpp
+        enum Color { black, white, red };
+        
+        auto white = false; // 오류. 이미 white가 선언되어 있음.
+        
+        =======
+        
+        enum class Color { black, white, red };
+        
+        auto white = false; // Ok.
+        ```
+        
+    - 범위 없는 enum은 암묵적 형식 변환이 일어나지만, **범위 있는 enum은 그렇지 않다**. 다른 형식으로 변환하고 싶으면 캐스팅을 하면 된다.
+        
+        ```cpp
+        enum class Color { black, white, red };
+        
+        Color c = white; // 오류. 암묵적 형식 변환 안 된다.
+        Color c = Color::white; // Ok.
+        
+        if (static_cast<double>(c) < 14.5) // 캐스팅
+        ```
+        
+    - 범위 있는 enum은 전방 선언이 가능하다. (범위 없는 enum도 가능하긴 하다.) 전방 선언을 할 수 있으려면 컴파일 타임에 쓰이기 전에도 크기를 알 수 있어야 한다. enum class는 기본 바탕 형식이 int로 정해져 있기 때문에 전방 선언이 가능하다. 범위 없는 enum은 기본 바탕 형식이 없다. 둘 다 바탕 형식을 명시적으로 지정이 가능하다. 명시적으로 지정한 경우엔 범위 없는 enum도 전방 선언이 가능하다.
+        
+        ```cpp
+        enum class Status : std::uint32_t;
+        
+        enum Color : std::uint8_t;
+        ```
+        
+    - 범위 없는 enum이 유용한 경우는 tuple과 함께 사용할 때이다. 암묵적 변환이 되므로 편한 경우이다.
+        
+        ```cpp
+        enum UserInfoFields {uiName, uiEmail, uiReputation };
+        UserInfo uInfo;
+        
+        auto val = std::get<uiEmail>(uInfo);
+        ```
+        
+    - static_cast를 쓰면 enum class도 이렇게 사용이 가능하다. 근데 캐스팅만 하면 되는 게 아니라, 바탕 형식을 맞춰서 돌려줘야 한다. 이때 std::underlying_type 형식 특질을 사용하면 된다. 이는 enum이나 enum class가 내부에서 어떤 정수 타입을 기반으로 저장되는지 추출하는 C++ 표준 타입 trait이다.
+        
+        ```cpp
+        // C++ 14 기준. auto, type_t 사용
+        template<typename E>
+        constexpr auto toUType(E enumerator) noexcept
+        {
+        	return static_cast<std::underlying_type_t<E>>(enumerator);
+        }
+        ```
+        
+    - 좀 더 코드가 길어지지만, 그래도 enum class를 쓰는 편이 좋은 것 같다.
+
+- 항목 11 : 정의되지 않은 비공개 함수보다 삭제된 함수를 선호하라
+    - 특정 함수를 호출하지 못하게 하는 가장 쉬운 방법은 그 함수를 선언하지 않는 것이다. 그러나 C++(컴파일러)이 자동으로 선언하는 경우가 있다. 그 중, 흔히 사용을 금지하려는 멤버 함수는 복사 생성자, 복사 배정 연산다이다.
+    - C++98에서는 private로 선언하고 정의를 하지 않는 방식을 사용했다. private에 선언되어 있어서 호출할 수 없고, 만약 접근 가능한 곳에서 이를 호출한다고 해도 정의가 없어서 링크가 실패한다.
+    - C++11에서는 “= delete”를 사용할 수 있다. 이때 함수를 public에 선언하는 것이 관례이다. 이는 C++이 함수의 접근성을 점검한 후에야 삭제(= delete) 여부를 확인하기 때문이다. private에 두면 함수 사용이 문제될 때, 삭제된 것이 이유가 아니라 private임이 이유가 될 수 있기 때문이다. 이는 오해의 여지를 제공한다.
+    - 함수 삭제를 이용하면 private과 달리 링크 시점이 아니라 컴파일 타임에 오류를 확인할 수 있다.
+    - private 방식은 멤버 함수에만 적용할 수 있으나, 함수 삭제는 그 어떤 함수에도 적용이 가능하다. 함수 템플릿 인스턴스 삭제도 가능하다.
+    - 아래 예제에서 double 오버로드를 삭제하면 float까지 삭제된다. 정확히는 float 값을 인자로 넣으면 이것이 int가 아니라 double로 암시적 형변환이 이뤄지고, double 버전이 삭제되었기 때문에 컴파일에 실패한다.
+        
+        ```cpp
+        bool Func(int number);
+        bool Func(char) = delete;
+        bool Func(bool) = delete;
+        bool Func(double) = delete;
+        ```
+        
+
+- 항목 12 : 재정의 함수들을 override로 선언하라
+    - 재정의가 일어나는 필수조건들이다.
+        - 기반 클래스 함수가 가상 함수이어야 한다
+        - 기반 함수와 이름이 동일해야 한다
+        - 매개변수 형식들이 동일해야 한다
+        - const성이 동일해야 한다
+        - 반환 형식과 예외 명세가 호환되어야 한다
+        - **(C++11 추가)** 참조 한정사가 동일해야 한다.
+    - 이와 같이 재정의 조건들이 많기 때문에, 실수할 수 있다. 재정의 되었다고 생각하지만 되지 않는 경우를 말하는 것이다.
+    - override로 선언하면, 재정의를 의도한 함수가 실제로는 아무것도 재정의하지 않을 때 컴파일 오류가 발생한다.
+    - 함수의 참조 한정사는 아래 예제처럼 멤버 함수가 호출되는 객체를 한정하는 것이다.
+        
+        ```cpp
+        class Widget {
+        public:
+        	void doWork() &;  // *this가 좌측값일 때만 사용
+        	void doWork() &&; // *this가 우측값일 때만 사용
+        };
+        ```
+        
+    - 임시 객체(우측값)에 대해 호출됐을 경우 복사가 아니라 이동을 하는 아래 같은 예제에서 활용할 수 있다.
+        
+        ```cpp
+        class Widget {
+        public:
+        	using DataType = std::vector<double>;
+        	
+        	DataType& data() & { return values; }
+        	DataType& data() && { return std::move(values); }
+        	
+        private:
+        	DataType values;
+        };
+        
+        auto vals1 = w.data(); // 복사 생성
+        auto vals2 = makeWidget().data(); // 이동 생성
+        ```
+
