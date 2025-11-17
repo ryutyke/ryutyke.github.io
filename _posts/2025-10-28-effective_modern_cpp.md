@@ -654,3 +654,108 @@ last_modified_at: 2025-10-28
         auto vals2 = makeWidget().data(); // 이동 생성
         ```
 
+- 항목 13 : iterator보다 const_iterator를 선호하라
+    - 가능한 한 const를 사용하라는 것은 iterator에도 적용된다.
+    - C++98에서는 비const 컨테이너로부터 const_iterator를 얻는 간단한 방법이 없었다. 또한, 삽입/삭제 위치를 iterator로만 지정할 수 있었다. const_iterator는 허용되지 않았다. 근데 const_iterator는 iterator로 변환되지 않는다.
+    - C++11에서는 const_iterator를 얻기도 쉽고 사용하기도 쉽다. 컨테이너 멤버 함수 cbegin과 cend는 const_iterator를 반환한다. 그리고 삽입/삭제 위치를 지정하는 목적으로 iterator를 사용하는 STL 멤버 함수(insert, erase)는 const_iterator를 사용한다.
+        
+        ```cpp
+        std::vector<int> values;
+        auto it = std::find(values.cbegin(), values.cend(), 1983);
+        values.insert(it, 1998);
+        ```
+        
+    - C++11에서는 비멤버 함수 begin과 end는 표준에 추가했지만, cbegin, cend, rbegin 등은 그렇지 않다. C++14에는 있다. 따라서 C++11 일 경우에는, 제너릭 라이브러리 코드를 작성할 때 cbegin이나 cend를 비멤버 함수로서 제공해야 하는 컨테이너가 있음을 고려해서 작성해야 한다. 아래 예제처럼  C++11에서도 제공하는 비멤버 begin을 사용해서 비멤버 cbegin 함수를 만들 수 있다.
+        
+        ```cpp
+        template <class C>
+        auto cbegin(const C& container)->decltype(std::begin(container)) // const 파라미터
+        {
+        	return std::begin(container); // const 컨테이너의 begin은 const_iterator
+        }
+        ```
+        
+    - 위 템플릿은 내장 배열에 대해서도 작동한다. 그런 경우 container 인자는 const 배열에 대한 참조가 될 것이다. 비멤버 begin은 내장 배열에 대해서도 작동하며 주어진 배열의 첫 원소를 가리키는 포인터를 돌려준다. const 배열의 원소들은 const이므로 정상적으로 작동한다.`
+
+- 항목 14 : 예외를 방출하지 않을 함수는 noexcept로 선언하라
+    - C++11부터 예외에 대해 의미 있는 정보는 함수가 예외를 하나라도 던질 수 있는지 아니면 절대 던지지 않는지라는 이분법적 정보뿐이라고 판단했다. 그렇게 noexcept 키워드가 생겼다. 그러면서 C++98 스타일의 예외 명세(throw)는 deprecate 기능으로 분류되었다. 또한, 빈 예외 명세 ( throw() )도 deprecate 되었다.
+        
+        ```cpp
+        int f(int x) throw(); // C++98
+        int f(int x) noexcept; // C++11
+        ```
+        
+    - 왜일까? 컴파일러 최적화 때문이다. 컴파일러의 최적화기(optimizer)가, C++98 방식은 예외가 발생하면 예외 명세를 위반했는지 검사하기 위해 f를 호출한 지점에 도달할 때까지 **언와인딩을 해야 한다**. 빈 명세인 경우에도 동일하게 진행하도록 설계됐다. 이처럼 C++98 방식은 런타임에 예외에 대해 검사하는 방식이라 동적 예외 명세라고 한다. C++11 방식은 예외 명세를 확인할 필요가 없기 때문에 **언와인딩을 안 해도 된다**. 따라서 언와인딩을 위한 메타데이터를 저장하지 않는 등의 컴파일러 최적화가 가능하다.
+    - std::vector에서 push_back 함수에 대해 공간이 부족할 때 더 큰 메모리로 옮기는 과정에서, 기존 방식은 새 메모리로 요소들을 복사하고 기존 메모리에 있는 객체를 파괴하는 방식이라 강한 예외 안전성을 보장했다. 그러나 C++11에서 move가 생기면서 예외 안전성 보장이 위반될 수 있게 됐다. 이처럼 std::vector::push_back이나 표준 라이브러리의 여러 함수는 “가능하면 이동하되 필요하면 복사한다” 전략을 사용한다. 이는 이동 연산이 예외를 방출하지 않음이 확실한 경우에만 복사 연산을 이동 연산으로 대체하는 것이다. 이동 연산이 예외를 방출하지 않음을 어떻게 알아낼 수 있을까? 주어진 이동 연산이 noexcept로 선언되어 있는지를 점검한다.
+    - 표준 라이브러리에 있는 swap의 noexcept 여부는 사용자 정의 swap의 noexcept 여부에 어느 정도 의존한다.
+        
+        ```cpp
+        template <class T, size_t N>
+        void swap(T (&a)[N], T(&b)[N]) noexcept(noexcept(swap(*a, *b)));
+        ```
+        
+    - noexcept의 정확성이 매우 중요하다. 함수의 구현이 예외를 방출하지 않는다는 성질을 오랫동안 유지할 결심이 선 경우에만 함수를 noexcept로 선언하자. 대부분의 함수가 예외에 중립적이다. 예외 중립적 함수는 스스로 예외를 던지지는 않지만, 예외를 던지는 다른 함수들을 호출할 수는 있는 경우이다. 이는 결코 noexcept가 될 수 없다.
+    - 함수를 noexcept로 선언하기 위해 함수의 구현을 작위적으로 변경하는 것의 오버헤드가 noexcept를 통해서 가능한 최적화가 주는 성능 향상을 능가할 수 있음을 인지하자.
+    - 기본적으로 모든 메모리 해제 함수와 모든 소멸자는 암묵적으로 noexcept이다. 따라서 그런 함수들은 noexcept로 선언할 필요가 없다. (직접 선언해도 해가 되지는 않는다.)
+
+- 항목 15 : 가능하면 항상 constexpr을 사용하라
+    - constexpr 객체는 const이며, 컴파일 도중에 알려지는 값들로 초기화된다. 이렇게 컴파일 시점에서 알려지는 값들은 읽기 전용 메모리에 배치될 수 있다. 또한, 정수 상수 표현식이 요구되는 문맥에서 사용할 수 있다. 예를 들면, 배열 크기, 정수 템플릿 인수(std::array 객체의 길이), 열거자 값 등이 있다.
+    - const는 반드시 컴파일 시점에서 알려지는 값으로 초기화되는 것은 아니기 때문에 constexpr과 다르다.
+    - constexpr 함수는 컴파일 시점 상수를 인수로 해서 호출된 경우에는 컴파일 시점 상수를 산출한다. 런타임에 알려지는 값으로 호출하면 보통의 함수처럼 런타임에 계산하여 런타임 값을 산출한다. 즉, 함수를 컴파일 시점 상수를 위한 버전과 아닌 경우의 버전으로 나누어서 구현할 필요가 없다. 컴파일 시점 상수를 요구하는 문맥에 constexpr 함수를 사용할 수 있다. 그런 경우에는 인수의 값이 컴파일 시점에서 알려지지 않는다면 컴파일 오류가 발생한다.
+    - constexpr 함수는 반드시 리터럴 형식들을 받고 돌려주어야 한다. 리터럴 형식은 컴파일 도중에 값을 결정할 수 있는 형식이다. C++11에서 void를 제외한 모든 내장 형식이 리터럴 형식에 해당한다. 즉, 반환 형식이 void일 수 없다. (C++14에서는 void가 리터럴 형식에 속하게 되었다.)
+    - C++11에서는 constexpr 함수에 제약이 있다. 실행 가능 문장이 많아야 하나이어야 한다는 것이다. 반환 형식이 void일 수 없으므로 많아야 하나있는 문장은 보통의 경우 return문일 수밖에 없다. 요령을 이용하면 확장할 수 있는데 하나는 조건부 연산자 ?:를 if-else 문 대신 사용하는 것이고, 또 하나는 루프 대신 재귀를 사용하는 것이다. (또한 C++11에서 constexpr 함수는 return문이 최대 하나여야 한다.)
+        
+        ```cpp
+        // C++11
+        constexpr int pow(int base, int exp) noexcept
+        {
+        	return (exp == 0 ? 1 : base * pow(base, exp - 1));
+        }
+        ```
+        
+    - C++14에서는 해당 제약이 사라졌다. void가 리터럴 형식에 속하고, return 문이 최대 한 개도 아니고, 실행 가능 문장이 많아야 하나도 아니다.
+        
+        ```cpp
+        // C++14
+        constexpr int pow(int base, int exp) noexcept
+        {
+        	auto result = 1;
+        	for (int i = 0; i < exp; ++i) result *= base;
+        	
+        	return result;
+        }
+        ```
+        
+    - constexpr 예시이다.
+        
+        ```cpp
+        class Point {
+        public:
+        	constexpr Point(double xVal = 0, double yVal = 0) noexcept
+        	: x(xVal), y(yVal)
+        	{}
+        	
+        	constexpr double xValue() const noexcept { return x; }
+        	constexpr double yValue() const noexcept { return y; }
+        	
+        	constexpr void setX(double newX) noexcept { x = newX; } // C++14
+        	constexpr void setY(double newY) noexcept { y = newY; } // C++14
+        	
+        private:
+        	double x, y;
+        };
+        
+        constexpr Point midpoint(const Point& p1, const Point& p2) noexcept
+        {
+        	return { (p1.xValue() + p2.xValue()) / 2,
+        	         (p1.yValue() + p2.yValue()) / 2 };
+        }
+        
+        constexpr Point p1(9.4, 27.6);
+        constexpr Point p2(42.4, 12.6);
+        
+        constexpr auto mid = midpoint(p1, p2);
+        ```
+        
+    - constexpr이 객체나 함수의 인터페이스의 일부이다. 이를 지정한다는 것은 이것이 상수 표현식을 요구하는 문맥에서 사용할 수 있다는 사실을 전하는 것이다. 나중에 constexpr을 제거하면 갑자기 컴파일이 되지 않는 코드가 생길지도 모르는 것이다. 이를 명심하고 적절히 사용하자.
+
