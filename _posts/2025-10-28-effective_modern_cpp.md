@@ -909,3 +909,111 @@ last_modified_at: 2025-10-28
         - shared_ptr은 추가 비용이 있다. 물론 그렇게 크지 않다. 그래도 소유권이 독점 소유권으로도 충분하다면, 심지어는 반드시 충분하지는 않더라도 충분할 가능성이 있다면 std::unique_ptr을 사용하자. std::unique_ptr을 std::shared_ptr로 업그레이드하기는 쉽다. (그 역은 참이 아니다.)
         - std::shared_ptr은 내장 배열 관리는 못 한다. std::unique_ptr과 달리, std::shared_ptr<T[]>은 없다. std::array, std::vector 등이 내장 배열보다 좋으니 이를 사용하면 된다.
 
+- 항목 20 : std::shared_ptr처럼 작동하되 대상을 잃을 수도 있는 포인터가 필요하면 std::weak_ptr를 사용하라
+    - std::weak_ptr은 std::shared_ptr와 비슷하되 참조 횟수에는 영향을 미치지 않는 포인터이다.
+    - std::weak_ptr은 독립적인 포인터가 아니기 때문에 역참조하거나 널인지 판정할 수 없다.
+    - std::weak_ptr은 자신이 가리키는 객체가 더 이상 존재하지 않는 상황을 검출할 수 있다.
+    - 아래와 같이 std::shared_ptr을 이용해서 생성할 수 있다.
+        
+        ```cpp
+        auto spw = std::make_shared<Widget>();
+        std::weak_ptr<Widget> wpw(spw);
+        ```
+        
+    - 대상을 잃은 std::weak_ptr을 가리켜 만료되었다(expired)라고 말한다. 만료 여부를 직접 판정할 수 있다.
+        
+        ```cpp
+        if (wpw.expired())
+        ```
+        
+    - 만료 여부를 판정하고 만료되지 않았으면 피지칭 객체에 접근하는 방식을 생각할 수 있다. 그러나 std::weak_ptr은 역참조 연산이 없어서 불가능하다. 또한, 가능하다고 해도 점검과 참조를 분리하면 race condition이 발생할 수 있다. 하나의 원자적 연산으로 이를 수행하기 위해서는 std::weap_ptr로부터 std::shared_ptr을 생성하면 되는데, 두 가지 방법이 있다.
+        - `std::weak_ptr::lock`을 사용. 이 멤버 함수는 std::shared_ptr 객체를 돌려준다. 만약 만료된 상태라면 그 std::shared_ptr은 널이다.
+            
+            ```cpp
+            std::shared_ptr<Widget> spw1 = wpw.lock();
+            
+            auto spw2 = wpw.lock(); // auto 사용
+            ```
+            
+        - std::weak_ptr을 인수로 받는 std::shared_ptr 생성자를 사용. 만약 만료된 상태라면 예외가 발생한다.
+            
+            ```cpp
+            std::shared_ptr<Widget> spw3(wpw);
+            ```
+            
+    - std::weak_ptr의 활용 예시 세 가지이다.
+        - 팩토리 함수에서의 캐싱. 팩토리 함수가 반환하는 객체를 생성하는 것의 비용이 크다면 이 객체를 캐싱해둘 수 있다. 대신, 더이상 사용하지 않는다면 캐싱된 객체를 메모리 해제시켜줘야 할 것이다. 이때, 캐싱값을 std::weak_ptr로, 반환값을 std::shared_ptr로 두면 된다. (좋은 예제인 거 같다. 추가로, 만료된 std::weak_ptr들이 캐시 맵에 남아있는 것을 해결하면 더 좋을 것 같다.)
+            
+            ```cpp
+            std::shared_ptr<const Widget> fastLoadWidget(WidgetID id)
+            {
+            	static std::unordered_map<WidgetID, std::weak_ptr<const Widget>> cache;
+            	
+            	auto objPtr = cache[id].lock();
+            	
+            	if(!objPtr) {
+            		objPtr = loadWidget(id);
+            		cache[id] = objPtr;
+            	}
+            	return objPtr;
+            }
+            ```
+            
+        - 관찰자 패턴에서 관찰 대상 객체에는 자신의 관찰자들을 가리키는 포인터들을 담은 자료 멤버가 있다. 관찰자들을 가리키는 std::weak_ptr들의 컨테이너를 자료 멤버로 두는 것이다.
+        - 객체 A, B, C가 있을 때, A와 C가 B를 가리키는 std::shared_ptr를 가지고 있을 때, B가 A를 가리키는 포인터가 필요하게 되었을 때, weak_ptr이 적합하다. 생 포인터는 실수로 파괴되어 유효하지 않은 객체를 역참조하는 일이 생길 수 있고, shared_ptr은 순환 참조 문제가 생긴다.
+    - 효율성 면에서 std::weak_ptr은 std::shared_ptr과 동일하다. 크기가 같으며, 제어 블록도 동일하게 사용한다. 생성이나 파괴, 배정 연산에서 원자적 참조 횟수 연산도 진행된다. 참조 횟수에 대해서는 std::shared_ptr이 관리하는 참조 횟수랑 다른, weak_ptr이 관리하는 참조 횟수가 제어 블록에 존재한다. 이를 weak count라고 부른다.
+
+- 항목 21 : new를 직접 사용하는 것보다 std::make_unique와 std::make_shared를 선호하라
+    - std::make_shared는 C++11이지만, std::make_unique는 C++14이다. std::make_unique를 C++11에서 만드는 것은 어렵지 않다.
+        
+        ```cpp
+        template<typename T, typename... Ts>
+        std::unique_ptr<T> make_unique(Ts&&... params)
+        {
+        	return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
+        }
+        ```
+        
+    - 스마트 포인터를 반환하는 make 함수는 3개가 있다. std::make_unique, std::make_shared, 그리고 std::allocate_shared이다. std::allocate_shared는 std::make_shared처럼 작동하되, 첫 인수가 동적 메모리 할당에 쓰일 할당자 객체라는 차이가 있다.
+    - new를 직접 사용하는 방식과 make 함수를 사용하는 방식의 코드이다.
+        
+        ```cpp
+        auto upw1(std::make_unique<Widget>());
+        std::unique_ptr<Widget> upw2(new Widget);
+        
+        auto spw1(std::make_shared<Widget>());
+        std::shared_ptr<Widget> spw2(new Widget);
+        ```
+        
+    - make 함수를 선호할 이유 세 가지이다.
+        - 객체의 형식(Widget)이 되풀이되지 않는다. 이는 코드 중복의 단점들을 가진다.
+        - 예외 안전성이다. 아래 예제는 우선도를 계산해서 이에 따라 위젯을 동작하는 함수이다. 컴파일러가 소스 코드를 목적 코드로 번역하는 방식에 있어서, new 방식은 1. new Widget, 2. computePriority, std::shared_ptr 생성자 이 세 개가 따로 진행된다. 만약 해당 순서로 진행되다가 2번에서 예외가 발생하면 메모리 누수가 발생한다. make 방식은 new와 생성자가 함께 진행돼서 그렇지 않다.
+            
+            ```cpp
+            processWidget(std::shared_ptr<Widget>(new Widget), computePriority());
+            
+            processWidget(std::make_shared<Widget>(), computePriority());
+            ```
+            
+        - 효율성이다. new를 사용하면 Widget 객체를 위한 메모리 할당과 제어 블록을 위한 메모리 할당이 따로 일어난다. make 함수를 사용하면 이 둘 모두를 담을 수 있는 크기의 메모리 조각을 한 번에 할당한다. 즉, 할당이 한 번 덜 일어난다.
+    - make 함수를 사용할 수 없거나 사용하지 않아야 하는 상황도 존재한다.
+        - make 함수는 커스텀 삭제자를 지정할 수 없다.
+        - make 함수는 생성자 인수를 괄호로 감싸든 중괄호로 감싸든 괄호를 사용한다. (항목 7 벡터 예제) 따라서, 중괄호 초기치로 생성하려면 반드시 new를 사용해야 한다. std::initializer_list 객체를 만들어서 make 함수에 넘기는 우회책이 있긴 하다.
+        - 클래스 중 클래스의 객체와 정확히 같은 크기의 메모리 조각들을 할당, 해제하는 커스텀 operator new와 operator delete를 정의하는 경우 std::allocate_shared는 바람직하지 않다. std::allocate_shared가 요구하는 메모리 조각의 크기는 동적으로 할당되는 객체의 크기가 아니라 그 크기에 제어 블록의 크기를 더한 것이기 때문이다.
+        - (중요!) make 함수를 쓰면 std::shared_ptr의 제어 블록이 관리 대상 객체와 동일한 메모리 조각에 할당된다고 장점에서 말했다. 근데 만약 std::weak_ptr을 사용 중이라면 제어 블록의 weak count를 사용해야 해서, 제어 블록을 참조하는 std::weak_ptr들이 존재하는 한(weak count가 0보다 크다면), 제어 블록은 계속해서 존재해야 한다. 그리고 객체와 제어 블록이 동적으로 할당된 같은 메모리 조각에 들어 있기 때문에 제어 블록이 존재하는 한 그 메모리 조각은 해제될 수 없다. 다시 말해, 그 메모리 조각은 객체를 참조하는 마지막 shared_ptr과 마지막 weak_ptr 둘 다 파괴된 후에만 해제될 수 있다. 반면에 new는 객체를 가리키던 마지막 shared_ptr이 파괴되면 즉시 객체의 메모리를 해제할 수 있다. 따라서, 객체 형식이 상당히 크고 마지막 shared_ptr과 weak_ptr의 파괴 사이 시간 간격이 꽤 길다면 new가 적합할 수도 있다.
+        - 만약 std::make_shared를 사용할 수 없거나 사용이 부적합한 상황이라 new를 사용하게 된다면, 예외 안전성 문제를 해결해줘야 한다. 그 방법은 new의 결과를 다른 일은 전혀 하지 않는 문장에서 스마트 포인터의 생성자에 즉시 넘겨주는 것이다.
+            
+            ```cpp
+            // 메모리 누수 위험. 예외에 안전하지 않다.
+            processWidget(std::shared_ptr<Widget>(new Widget, cusDel), 
+                          computePriority()
+            );
+            
+            // 예외에 안전
+            std::shared_ptr<Widget> spw(new Widget, cusDel)
+            processWidget(spw, computePriority());
+            
+            // 이동 생성으로 변경
+            processWidget(std::move(spw), computePriority());
+            ```
+
