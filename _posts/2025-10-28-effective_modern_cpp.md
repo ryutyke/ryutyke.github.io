@@ -796,3 +796,116 @@ last_modified_at: 2025-10-28
         };
         ```
 
+- 항목 18 : 소유권 독점 자원의 관리에는 std::unique_ptr를 사용하라
+    - std::unique_ptr은 생 포인터와 같은 크기이다. (커스텀 삭제자에 따라 더 커질 수 있다.) 또한, 대부분의 연산을 생 포인터와 동일하게 처리한다. 따라서 메모리와 CPU 오버헤드를 크게 걱정하지 않아도 된다.
+    - 널이 아닌 std::unique_ptr은 자신이 가리키는 객체를 소유한다. 이동하면 소유권이 원본 포인터에서 대상 포인터로 옮겨지고, 원본 포인터는 널로 설정된다.
+    - std::unique_ptr의 복사는 허용되지 않는다.
+    - 널이 아닌 std::unique_ptr은 소멸 시 자신이 가리키는 자원(생포인터)을 파괴한다. 기본적으로는 delete로 파괴하지만, 커스텀 삭제자를 사용하도록 지정이 가능하다. 커스텀 삭제자는 함수 객체인데, 람다를 사용하면 크기가 증가하지 않지만, 상태 있는 함수 객체의 경우엔 가진 상태만큼 std::unique_ptr 인스턴스의 크기가 증가한다.
+        
+        ```cpp
+        auto delInvmt1 = [](Investment* pInvestment)
+                         {
+        	                 makeLogEntry(pInvestment);
+        	                 delete pInvestment;
+                         }
+        template<typename... Ts>
+        std::unique_ptr<Investment, decltype(delInvmt1)> 
+        makeInvestment(Ts&&... args); // 반환 크기 : Investment*와 같은 크기
+        
+        void delInvmt2(Investment* pInvestment)
+        {
+        	makeLogEntry(pInvestment);
+        	delete pInvestment;
+        }
+        
+        template<typename... Ts>
+        std::unique_ptr<Investment, void (*)(Investment*)> 
+        makeInvestment(Ts&&... params); // 반환 크기 : Investment*에 함수 포인터 더한 크기
+        ```
+        
+    - std::unique_ptr은 개별 객체를 위한 것(std::unique_ptr<T>)와 배열을 위한 것(std::unique_ptr<T[]>) 두 종류이다. 그래서 어떤 개체를 가리키는지 애매하지 않다. 그러나 내장 배열보다 std::array 등의 자료구조가 더 나은 선택이기에 배열용 unique_ptr은 잘 쓰이지 않는다.
+    - std::unique_ptr은 팩토리 함수처럼, 반환 객체를 삭제하는 책임이 반환 객체를 받는 호출자의 책임이 되는 경우 유용하다. 팩토리 함수 안에서 이를 관리해 주지는 않지만 자동 관리 수단을 넣어주는 방법을 쓰는 것이다. Pimple 관용구에서도 유용하다고 하다.(항목 22)
+    - 생포인터를 std::unique_ptr에 배정하는 문장은 컴파일되지 않는다. reset 함수를 호출해야 한다.
+        
+        ```cpp
+        pInv.reset(new RealEstate(std::forward<Ts>(params)...));
+        ```
+        
+    - std::shared_ptr로의 변환이 쉽고 효율적이라는 장점이 있다. 호출자가 반환값을 어떻게 사용할지 몰라도 std::unique_ptr로 주면 알아서 변환해서 사용할 수 있다.
+
+- 항목 19 : 소유권 공유 자원의 관리에는 std::shared_ptr을 사용하라
+    - 여러 shared_ptr이 하나의 객체를 공유 소유할 수 있다. 어떤 객체를 가리키던 마지막 std::shared_ptr가 객체를 더이상 가리키지 않게 되면(다른 객체를 가리키거나 자신이 파괴되거나), 자신이 가리키는 객체를 파괴한다. 마지막 shared_ptr인지는 참조 횟수(reference count)로 알아낸다.
+    - std::shared_ptr의 생성자는 참조 횟수를 증가시키고, 소멸자는 감소시킨다. 복사 대입 연산자는 증가와 감소를 모두 수행한다. 이동 생성의 경우엔 참조 횟수를 증가시키지 않는다.
+    - std::unique_ptr과 동일하게 delete를 기본적인 자원 파괴 메커니즘으로 사용하고, 커스텀 삭제자를 지원한다. 커스텀 삭제자를 지원하는 방식은 std::unique_ptr과 다르다. std::unique_ptr에서는 삭제자의 형식이 스마트 포인터의 형식의 일부였지만 std::shared_ptr에서는 그렇지 않다. 이는 커스텀 삭제자의 형식이 달라도 같은 컨테이너에 넣을 수 있다는 장점이 있다.
+        
+        ```cpp
+        auto loggingDel = [](Widget *pw)
+                          {
+        	                  makeLogEntry(pw);
+        	                  delete pw;
+                          };
+                          
+        std::unique_ptr<Widget, decltype(loggingDel)> upw(new Widget, loggingDel);
+        std::shared_ptr<Widget> spw(new Widget, loggingDel);
+        
+        =======================================================================
+        
+                                                  // 둘이 커스텀 삭제자 형식이 다름
+        auto customDeleter1 = [](Widget *pw) { }; // decltype(customDeleter1)
+        auto customDeleter2 = [](Widget *pw) { }; // decltype(customDeleter2)
+        
+        std::shared_ptr<Widget> pw1(new Widget, customDeleter1); // 둘이 형식이 같음
+        std::shared_ptr<Widget> pw1(new Widget, customDeleter2); // 둘이 형식이 같음
+        
+        std::vector<std::shared_ptr<Widget>> vpwP{ pw1, pw2 }; // 같은 벡터에 저장 가능
+        ```
+        
+    - std::shared_ptr의 크기는 생 포인터의 두 배이다. 참조 횟수를 가리키는 생 포인터도 저장하기 때문이다. 객체 자체의 크기는 이게 맞는데, 사실 참조 횟수, 커스텀 파괴자의 복사본 등을 보관하는 메모리가 따로 있다. **제어 블록**이라고 부른다. std::shared_ptr이 관리하는 객체당 하나의 제어 블록이 존재한다.  (약한 참조 횟수, 커스텀 할당자 등도 있음)
+    - 어떤 하나의 객체의 제어 블록은 최대 한 개만 존재해야 한다. 둘 이상의 제어 블록이 존재하면 여러 번 파괴되는 일이 발생할 수 있으며 이는 미정의 동작이다.
+        - std::make_shared는 항상 제어 블록을 생성한다. 이 함수는 공유 포인터가 가리킬 객체를 새로 생성하므로 안전하다.
+        - std::unique_ptr로부터 std::shared_ptr 객체를 생성하면 제어 블록이 생성된다. unique_ptr은 제어 블록을 사용하지 않으므로 제어 블록이 이미 존재할 가능성이 없어 안전하다.
+        - 생 포인터로 std::shared_ptr 생성자를 호출하면 제어 블록이 생성된다. 같은 생 포인터로 여러 개의 std::shared_ptr을 생성해서 여러 개의 제어 블록이 만들어지는 것을 조심해야 한다.
+        - 이미 제어 블록이 있는 객체로부터 std::shared_ptr를 생성하고 싶다면 생 포인터가 아니라 std::shared_ptr나 std::weak_ptr를 생성자의 인수로 지정하면 된다. 이 둘을 인수로 받는 std::shared_ptr 생성자들은 새 제어 블록을 만들지 않는다.
+        - std::shared_ptr에 생 포인터를 넘겨주는 일을 피하자. 흔히 쓰이는 대안은 std::make_shared를 사용하는 것이지만, std::make_shared는 커스텀 삭제자를 지정할 수 없다는 문제가 있다. 만약 커스텀 삭제자 등의 이유로 생 포인터로 생성자를 호출할 수 밖에 없다면 생 포인터 변수를 거치지 말고 new의 결과를 직접 전달하도록 하자.
+        - this 포인터가 연관되면 또 다른 일이 생길 수 있다.  아래 예제에서 emplace_back()을 썼기 때문에 생 포인터(this)로 std::shared_ptr 객체가 생성되면서 Widget(*this) 객체에 대한 새 제어 블록이 만들어진다. 만약 그 Widget을 가리키는 다른 std::shared_ptr이 있다면 문제가 된다.
+            
+            ```cpp
+            std::vector<std::shared_ptr<Widget>> processedWidgets;
+            
+            void Widget::process()
+            {
+            	processedWidgets.emplace_back(this);
+            }
+            ```
+            
+        - 위의 예시 상황을 위한 것이 있다. std::enable_shared_from_this라는 템플릿이다. 이 템플릿을 클래스의 기본 클래스로 삼으면 shared_from_this()라는 멤버 함수를 가지게 된다. 이는 현재 객체를 가리키는 std::shared_ptr를 생성하되 제어 블록을 새로 생성하지 않는다. 현재 객체에 이미 제어 블록이 있다고 가정하고 그 제어 블록을 조회하고, 그 제어 블록을 지칭하는 새 std_shared_ptr를 생성한다. 만약 현재 객체에 제어 블록이 연관되어 있지 않으면 함수의 행동은 정의되지 않는다.
+            
+            ```cpp
+            class Widget : public std::enable_shared_from_this<Widget> {
+            public:
+            	void process();
+            };
+            
+            void Widget::process()
+            {
+            	processedWidgets.emplace_back(shared_from_this());
+            }
+            ```
+            
+        - std::shared_ptr가 유효한 객체를 가리키기도 전에 shared_from_this를 호출하는 일을 방지하기 위해 std::enable_shared_form_this를 상속받은 클래스는 자신의 생성자들을 private으로 선언한다. 그리고 클라이언트가 객체를 생성할 수 있도록, std::shared_ptr를 돌려주는 팩토리 함수를 제공한다.
+            
+            ```cpp
+            class Widget : public std::enable_shared_from_this<Widget> {
+            public:
+            	template<typename... Ts>
+            	static std::shared_ptr<Widget> create(Ts&&... params);
+            	void process();
+            	
+            private:
+            	// 생성자들
+            };
+            ```
+            
+        - shared_ptr은 추가 비용이 있다. 물론 그렇게 크지 않다. 그래도 소유권이 독점 소유권으로도 충분하다면, 심지어는 반드시 충분하지는 않더라도 충분할 가능성이 있다면 std::unique_ptr을 사용하자. std::unique_ptr을 std::shared_ptr로 업그레이드하기는 쉽다. (그 역은 참이 아니다.)
+        - std::shared_ptr은 내장 배열 관리는 못 한다. std::unique_ptr과 달리, std::shared_ptr<T[]>은 없다. std::array, std::vector 등이 내장 배열보다 좋으니 이를 사용하면 된다.
+
