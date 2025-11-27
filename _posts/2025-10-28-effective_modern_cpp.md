@@ -1017,3 +1017,100 @@ last_modified_at: 2025-10-28
             processWidget(std::move(spw), computePriority());
             ```
 
+- 항목 22 : Pimple 관용구를 사용할 때에는 특수 멤버 함수들을 구현 파일에서 정의하라
+    - Pimpl 관용구는 클래스의 **자료 멤버들을** 구현 클래스를 가리키는 **포인터로 대체**하고, 일차 클래스에 쓰이는 자료 멤버들을 그 구현 클래스로 옮기고, 포인터를 통해서 그 자료 멤버들에 간접적으로 접근하는 기법이다. 컴파일 헤더 의존성을 줄여 컴파일 시간을 줄여준다.
+        
+        ```cpp
+        class Widget {
+        public:
+        	Widget();
+        private:
+        	std::string name;
+        	std::vector<double> data;
+        	Gadget g1, g2, g3;
+        };
+        
+        ======================================
+        // Pimpl 관용구
+        class Widget {
+        public:
+        	Widget();
+        	~Widget();
+        private:
+        	struct Impl;
+        	Impl *pImpl;
+        };
+        
+        // 구현 파일 Widget.cpp
+        #include "widget.h"
+        #include "gadget.h"
+        #include <string>
+        #include <vector>
+        
+        struct Widget::Impl {
+        	std::string name;
+        	std::vector<double> data;
+        	Gadget g1, g2, g3;
+        };
+        
+        Widget::Widget()
+        : pImpl(new Impl)
+        {}
+        
+        Widget::~Widget()
+        { delete pImpl; }
+        ```
+        
+    - 여기서 pImpl을 std::unique_ptr로 대체할 수 있을 것이다.
+        
+        ```cpp
+        private:
+        	struct Impl;
+        	std::unique_ptr<Impl> pImpl;
+        	
+        Widget::Widget()
+        : pImpl(std::make_unique<Impl>()
+        {}
+        ```
+        
+    - 여기서 주의해야 하는 것은, std::unique_ptr을 사용하지만, 소멸자를 선언 및 정의해줘야 한다는 것이다. 만약 소멸자를 선언하지 않는다면 컴파일러가 자동으로 헤더 파일에서 inline으로 만들어줄 것이다. 그때 컴파일러는 소멸자 안에 Widget의 멤버 pImpl의 소멸자를 호출하는 코드를 삽입할 것이다. std::unique_ptr의 삭제자는 자신이 가진 생 포인터가 불완전한 형식을 가리키지는 않는지 static_assert를 이용해서 점검한다. 그러나 헤더 파일에서 현재 Impl은 불완전한 형식이다. 이를 해결하기 위해서는, std::unique_ptr<Widget::Impl>을 파괴하는 코드가 만들어지는 지점에서 Widget::Impl이 완전한 형식이 되게 하면 된다. 이를 위해, 소멸자를 소스 파일에서 만들어지게 하는 것이다.
+        
+        ```cpp
+        // 헤더 파일
+        ~Widget();
+        
+        // 소스 파일
+        Widget::~Widget()
+        {}
+        
+        // 또는
+        
+        Widget::~Widget() = default;
+        ```
+        
+    - 소멸자를 선언하면 이동 연산들을 자동 생성 안 해주기 때문에, 직접 선언해야 한다. 근데 이동 연산들도 같은 이유로 헤더 파일에서 선언, 정의를 모두 해버리면 컴파일 오류가 발생한다.
+        
+        ```cpp
+        Widget(Widget&& rhs) = default; // 컴파일 오류
+        Widget& operator=(Widget&& rhs) = default; // 컴파일 오류
+        ```
+        
+    - 그 이유는, 이동 생성자 안에서 예외가 발생했을 때 pImpl을 파괴하기 위한 코드를 작성하는데, pImpl을 파괴하려면 Impl이 완전한 형식이어야 하기 때문이다. 따라서 이것도 소스 파일에서 정의해줘야 한다.
+    - 만약 복사 연산이 필요한 경우, 똑같이 선언 및 정의해주되, unique_ptr은 복사를 지원하지 않으니 정의에서 따로 작성해 줘야 할 것이다.
+        
+        ```cpp
+        Widget::Widget(const Widget& rhs)
+        : pImpl(nullptr)
+        { if (rhs.pImpl) pImpl = std::make_uniqe<Impl>(*rhs.pImpl); }
+        
+        Widget& Widget::operator=(const Widget& rhs)
+        {
+        	if (!rhs.pImpl) pImpl.reset();
+        	else if (!pImpl) pImpl = std::make_unique<Impl>(*rhs.pImpl);
+        	else *pImpl = *rhs.pImpl;
+        	
+        	return *this
+        }
+        ```
+        
+    - std::shared_ptr에 대해서는 이런 일이 없다. 그 이유는 std::unique_ptr에서 삭제자의 형식은 해당 스마트 포인터 형식의 일부이지만, std::shared_ptr은 삭제자 형식이 스마트 포인터 형식의 일부가 아니기 때문이다.
