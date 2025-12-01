@@ -1114,3 +1114,175 @@ last_modified_at: 2025-10-28
         ```
         
     - std::shared_ptr에 대해서는 이런 일이 없다. 그 이유는 std::unique_ptr에서 삭제자의 형식은 해당 스마트 포인터 형식의 일부이지만, std::shared_ptr은 삭제자 형식이 스마트 포인터 형식의 일부가 아니기 때문이다.
+
+- 항목 23 : std::move와 std::forward를 숙지하라
+    - std::move는 오른값으로 캐스팅을 수행하지만, 이동은 수행하지 않는다. 이동에 적합하게 캐스팅할 뿐이다.
+    - std::forward는 인수가 오른값으로 초기화된 것일 때에만 그것을 오른값으로 캐스팅하는 조건부 캐스팅이다. 인수가 왼값으로 초기화되었는지, 오른값으로 초기화되었는지 여부는 템플릿 매개변수 T에 부호화되어 있고, 이를 통해 판단한다.
+    - std::move의 구현이다.
+        
+        ```cpp
+        template<typename T>
+        typename remove_reference<T>::type&&
+        move(T&& param)
+        {
+        	using ReturnType =
+        	  typename remove_reference<T>::type&&;
+        	 
+        	return static_cast<ReturnType>(param);
+        }
+        
+        =========================
+        // C++14
+        
+        template<typename T>
+        decltype(auto) move(T&& param)
+        {
+        	using ReturnType = remove_reference_t<T>&&;
+        	return static_cast<ReturnType>(param);
+        }
+        ```
+        
+    - 이동을 지원할 객체는 const로 선언하지 말아야 한다. 왜냐하면 const 객체에 대한 이동 요청은 복사 연산으로 변환되기 때문이다. 아래 예제를 보자. text가 우측값 캐스팅이 되는 것은 맞다. 그러나 const성이 유지되기 때문에 이동 생성자에는 들어갈 수 없다. 이동하면 객체가 수정될 수 있기 때문이다. 더해서, const 왼값 참조를 const 오른값에 묶는 것은 가능해서 이는 std::string의 복사 생성자를 호출한다.
+        
+        ```cpp
+        class Annotation {
+        public:
+        	explicit Annotation(const std::string text)
+        	: value(std::move(text))
+        	{}
+        	
+        	private:
+            std::string value;
+        };
+        
+        =========================
+        class string {  // std::string은 사실
+        public:         // std::basic_string<char>의 typedef이다.
+        	string(const string& rhs); // 복사 생성자
+        	string(string&& rhs); // 이동 생성자
+        };
+        ```
+        
+    - std::forward 사용 예제이다.
+        
+        ```cpp
+        void process(const Widget& lvalArg);
+        void process(Widget&& rvalArg);
+        
+        template<typename T>
+        void logAndProcess(T&& param)
+        {
+        	auto now =
+        	  std::chrono::system_clock::now();
+        	  
+        	  makeLogEntry("Calling 'process'", now);
+        	  process(std::forward<T>(param));
+        }
+        -------------------------
+        Widget w;
+        
+        logAndProcess(w);
+        logAndProcess(std::move(w));
+        ```
+        
+    - std::move를 안 쓰고 항상 std::forward만 쓰면 되는 것 아닌가? 기술적으로는 그래도 된다. 그래도 둘의 의미 차이는 있다.
+
+- 항목 24 : 보편 참조와 오른값 참조를 구별하라
+    - &&는 두 가지 종류가 있다. 하나는 오른값 참조이다. 또 하나는 보편참조, 이는 오른값이 될 수도 있고 왼값이 될 수도 있는 것이다. 또한 const, volatile도 될 수 있다.
+    - 보편 참조는 두가지 문맥에서 나타난다. 하나는 함수 템플릿 매개변수이고, 또 하나는 auto이다. 이 둘의 공통점은 형식 연역이 일어난다는 것이다. 형식 연역이 일어나며, “T(형식)&&”의 형태가 정확한 경우에 보편 참조이다. 아래 예제에서 4번은 T&& 형태가 아니라 std::vector<T>&&이기 때문에 보편 참조가 아니다. 6번처럼 const처럼 한정사가 붙어도 보편 참조가 아니다.
+        
+        ```cpp
+        void f(Widget&& param); // 1. 오른값 참조
+        
+        Widget&& var1 = Widget(); // 2. 오른값 참조
+        
+        auto&& var2 = var1; // 3. 보편 참조
+        
+        template<typename T>
+        void f(std::vector<T>&& param); // 4. 오른값 참조
+        
+        template<typename T>
+        void f(T&& param); // 5. 보편 참조
+        
+        template<typename T>
+        void f(const T&& param); // 6. 오른값 참조
+        ```
+        
+    - 한 가지 예외가 있다. 예를 들어 템플릿 클래스 속 T&& 함수 템플릿 매개변수이다. 아래 예제에서, push_back은 반드시 구체적으로 인스턴스화된 vector의 일부이어야 하며, 인스턴스 형식은 push_back의 T를 완전하게 결정한다. 따라서 이는 오른값 참조이다.
+        
+        ```cpp
+        template<class T, class Allocator = allocator<T>>
+        class vector {
+        public:
+          void push_back(T&& x);
+        };
+        ```
+        
+    - emplace_back 멤버 함수는 형식 연역이 일어난다. 그래서 보편 참조이다.
+        
+        ```cpp
+        template<class T, class Allocator = allocator<T>>
+        class vector {
+        public:
+          template <class... Args>
+          void emplace_back(Args&&... args);
+        };
+        ```
+        
+    - auto&&와 forward를 활용한 예제이다.
+        
+        ```cpp
+        auto timeFuncInvocation =
+          [](auto&& func, auto&&... params)      // C++14
+          {
+            std::forward<decltype(func)>(func)(
+              std::forward<decltype(params)>(params)...
+              );
+          };
+        ```
+        
+
+- 항목 25 : 오른값 참조에는 std::move를, 보편 참조에는 std::forward를 사용하라
+    - 오른값 참조에는 std::move를, 보편 참조에는 std::forward를 사용하라. 오른값 참조에 std::forward를 사용하는 것도 가능하지만, 소스 코드가 장황하고 실수의 여지가 있으며 관용구에서 벗어난 모습이 되기에 피해야 한다.
+    - set 함수의 매개변수를 보편 참조로 선언하는 것에 대해서 생각해 보자. set 함수는 자신의 매개변수를 수정하면 안 된다. 그러나 보편 참조는 const일 수 없다. 왼값과 오른값에 대한 두 가지로 오버로딩하는 해결책이 있다. 왼값은 const로 받는 것이다. 하지만 이 해결책은 작성하고 유지보수해야 할 소스 코드 양이 늘어난다는 문제가 있다. 또한, 보편 참조가 아니기 위해 형식을 지정해야 하는데, 만약 std::string 매개변수를 받는 함수라면 const char*를 인자로 넣으면 오른값이어도 임시 std::string가 생성되고 파괴된다.
+        
+        ```cpp
+        template<typename T>
+        void setName(T&& newName)
+        { name = std::forward(newName); }
+        
+        void setName(const std::string& newName)
+        { name = newName; }
+        void setName(std::string&& newName)
+        { name = std::move(newName); }
+        ```
+        
+    - 위의 상황에서 가장 큰 문제는, “…” 매개변수를 쓰는 경우이다. 이는 왼값일 수도 오른값일 수도 있는 매개변수를 무제한으로 받을 수 있기에 오버로딩으로 해결이 불가능하다.
+        
+        ```cpp
+        template<class T, class... Args>
+        shared_ptr<T> make_shared(Args&&... args);
+        ```
+        
+    - 함수 반환 형식이 값일 때 (return by value), return문에서 std::move나 std::forward를 사용하는 것이 바람직하다. lhs도 결국 왼값이다. **매개변수의 형식이 오른값 참조인 경우에도 매개변수 자체는 왼값이다.** 따라서 반환값 장소로 옮길 때 move를 써주는 게 더 좋다. (보편 참조라면 forward)
+        
+        ```cpp
+        Matrix operator(Matrix&& lhs, const Matrix& rhs)
+        {
+          lhs += rhs;
+          return std::move(lhs);
+        }
+        ```
+        
+    - 함수의 지역 변수에 대해서는 위와 다르므로 주의해야 한다. 이는 반환값 최적화(RVO) 때문이다. 반환값 최적화는 지역 변수를 반환할 때 지역 변수를 처음부터 반환값 메모리에 할당하여 반환값으로 옮기는 과정을 없애는 것이다. 반환값 최적화의 조건은 (1) 그 지역 객체의 형식이 함수의 반환 형식과 같아야 하고 (2) 그 지역 객체가 바로 함수의 반환값이어야 한다. std::move를 사용하면 2번 조건을 충족하지 못한다. 그리고 반환값 최적화의 조건들이 성립했지만 컴파일러가 반환값 최적화를 수행하지 않기로 한 경우, 반환되는 객체는 반드시 오른값으로 취급해야 한다는 컴파일러 규칙이 있다. 따라서 반환값 최적화가 되지 않더라도 알아서 move() 처리된다. **따라서 함수 지역 변수를 반환할 때는 std::move나 std::forward를 쓰지 말자.**
+        
+        ```cpp
+        Widget makeWidget()
+        {
+          Widget w;
+          
+          return w; // 좋다.
+          // return std::move(w); // 좋지 않다
+        }
+        ```
+
