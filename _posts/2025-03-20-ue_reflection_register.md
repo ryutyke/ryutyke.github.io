@@ -75,6 +75,17 @@ last_modified_at: 2025-03-20
 
 <br>
 
+# 밑에 내용 요약 (25/12/09)
+gen.cpp는 Unreal Header Tool (UHT)이 생성한 파일이고, 각 UCLASS, USTRUCT, UENUM 등에 대한 리플렉션 메타데이터 등록 코드를 담고 있다.
+
+그중에 정적 객체인 FRegisterCompiledInInfo는 생성자 내부에서 UClass, UFunction, UProperty 등을 리플렉션 시스템에 등록하기 위한 정보들을 등록한다. (정적 객체 생성자는 MyGame.exe 또는 MyModule.dll 이 로드될 때 호출될 것이다.)
+
+이후, FEngineLoop.PreInitPostStartupScreen() -> ProcessNewlyLoadedUObjects()에서 리플렉션 시스템에 등록하고, CDO를 생성한다.
+
+모듈의 경우 load 시, ProcessLoadedObjectsCallback.Broadcast()에서 ProcessNewlyLoadedUObjects()가 호출되어 CDO가 생성된다.
+
+<br>
+
 # 리플렉션 등록 과정
 
 ## 1. 메타데이터 파일 생성
@@ -85,7 +96,8 @@ last_modified_at: 2025-03-20
 
 이들이 힘을 합쳐서 .generated.h, .gen.cpp 파일을 만듭니다.
 
-파일 안에는 런타임에 정적 객체를 생성하기 위한 데이터들이 생성됩니다.
+파일 안에는 런타임에 객체를 정적 생성하기 위한 메타데이터들이 생성됩니다.
+(StaticConstructObject_Internal(). 여기서 Static Construct는 우리가 아는 그 정적 생성을 의미하지 않는다. UObject는 정적 생성이 안 된다. 이는 클래스 메타데이터(Reflection Data)가 정적으로 존재한다는 의미에서 나온 것이다.)
 
 <br>
 
