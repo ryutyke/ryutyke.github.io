@@ -892,7 +892,7 @@ last_modified_at: 2025-10-28
             }
             ```
             
-        - std::shared_ptr가 유효한 객체를 가리키기도 전에 shared_from_this를 호출하는 일을 방지하기 위해 std::enable_shared_form_this를 상속받은 클래스는 자신의 생성자들을 private으로 선언한다. 그리고 클라이언트가 객체를 생성할 수 있도록, std::shared_ptr를 돌려주는 팩토리 함수를 제공한다.
+        - std::shared_ptr가 유효한 객체를 가리키기도 전에 shared_from_this를 호출하는 일을 방지하기 위해 std::enable_shared_form_this를 상속받은 클래스는 자신의 생성자들을 private으로 선언한다. 그리고 클라이언트가 객체를 생성할 수 있도록, std::shared_ptr를 돌려주는 팩토리 함수를 제공한다. (해당 클래스의 객체는 무조건 제어블록을 가지게끔.)
             
             ```cpp
             class Widget : public std::enable_shared_from_this<Widget> {
