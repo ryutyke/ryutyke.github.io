@@ -30,6 +30,8 @@ categories:
     url: /categories/unity/
   - title: "etc."
     url: /categories/etc/
+  - title: "AI"
+    url: /categories/ai/
   - title: "Portfolio"
     url: /categories/portfolio/
     children:
