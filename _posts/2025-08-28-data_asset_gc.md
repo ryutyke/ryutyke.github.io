@@ -58,11 +58,11 @@ DataTables는 UPROPERTY로 가지고 있을 것이어서 걱정이 없었습니�
 그러나 함수에서 정적 맵을 만들고, 가져오는 방식에서는 TMap을 UPROPERTY로 관리할 수 없었습니다. 
 
 <div>
-    <img src="/assets/images/posts_img/DataSubsystem/image9.png" alt="dataasset" width="100%" min-width="100px" itemprop="image">
+    <img src="/assets/images/posts_img/DataSubsystem/image6.png" alt="dataasset" width="100%" min-width="100px" itemprop="image">
 </div>
 
 <div>
-    <img src="/assets/images/posts_img/DataSubsystem/image10.png" alt="dataasset" width="100%" min-width="100px" itemprop="image">
+    <img src="/assets/images/posts_img/DataSubsystem/image9.png" alt="dataasset" width="100%" min-width="100px" itemprop="image">
 </div>
 
 처음에는 엔진 코드를 뜯어보는 것을 다음으로 미루고, 일단 TStrongObjectPtr을 사용해서 GC에 넘겨줬습니다.
@@ -99,6 +99,11 @@ Load된 에셋은 FStreamable 객체의 Target 변수에 보관되고 이 FStrea
 </div>
 
 따라서 TStrongObjectPtr을 사용하지 않아도 됩니다.
+
+그러나, 댕글링 포인터 문제가 있습니다.
+
+만약 AssetManager가 관리하는 에셋이 Unload되면, Key에 해당하는 포인터는 메모리 주소를 가리키지만 해당 메모리는 이미 해제되어 댕글링 포인터가 됩니다. 
+이는 TWeakObjectPtr을 사용해서 해결할 수 있습니다.
 
 <br>
 
